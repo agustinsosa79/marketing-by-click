@@ -1,25 +1,23 @@
 import Lenis from 'lenis'
-import { prefersReducedMotion } from '../hooks/useReducedMotion'
 import { gsap, ScrollTrigger } from './gsap'
 
 let lenisInstance: Lenis | null = null
 let tick: ((time: number) => void) | null = null
 
 /**
- * Única instancia de Lenis, sincronizada con el ticker de GSAP y con ScrollTrigger.
- * Con movimiento reducido el lerp sube (scroll más directo) sin cortar el desplazamiento.
- * `respectReducedMotion: false` evita que Lenis fuerce lerp 1 por su cuenta; lo resolvemos acá.
+ * Única instancia de Lenis (configuración del cliente), sincronizada con el ticker de GSAP y con ScrollTrigger.
+ * `respectReducedMotion: false`: Lenis trae `true` por defecto y, con "efectos de animación"
+ * desactivados en Windows, forzaba lerp 1 (scroll sin suavizado).
  */
 export function initLenis() {
   if (lenisInstance) return lenisInstance
 
-  const reduced = prefersReducedMotion()
   lenisInstance = new Lenis({
     autoRaf: false,
-    lerp: reduced ? 0.18 : 0.06,
+    lerp: 0.06,
     smoothWheel: true,
     wheelMultiplier: 1,
-    respectReducedMotion: false,
+    respectReducedMotion: false, // ignora la preferencia de accesibilidad del usuario
     anchors: true,
   })
 

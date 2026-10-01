@@ -59,18 +59,18 @@ html.lenis.lenis-stopped {
   --text-menu: clamp(2.75rem, min(10.5vh, 13vw), 9rem);
   --text-menu--line-height: 0.92;
 
-  /* Sombras neutras y discretas, sin halos de color. */
-  --shadow-soft: 0 0.75rem 1.5rem -1rem rgb(23 26 28 / 0.18);
-  --shadow-lift: 0 1rem 2rem -1.25rem rgb(23 26 28 / 0.24);
+  /* Profundidad: sombras suaves en el azul de la marca + brillo celeste para lo accionable */
+  --shadow-soft: 0 1.5rem 3rem -1.25rem rgb(12 22 64 / 0.28);
+  --shadow-lift: 0 2.5rem 4.5rem -1.5rem rgb(12 22 64 / 0.42);
+  --shadow-glow: 0 1.5rem 4rem -1rem rgb(66 184 253 / 0.55);
 
   /* Medidas que no están en la escala */
   --spacing-hero: 200svh;
   --spacing-hair: 0.0625rem;
   --spacing-descender: 0.14em; /* aire para descendentes dentro de las máscaras de línea */
-  --spacing-italic-overhang: 0.12em;
+  --spacing-italic-overhang: 0.12em; /* la itálica de Instrument Serif sobresale de su caja */
   --spacing-pill: 0.78em; /* píldoras de imagen dentro de una frase */
   --spacing-pill-wide: 1.9em;
-  --blur-cursor: 0.1rem;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-hop: cubic-bezier(0.71, 0, 0.13, 1);
@@ -183,71 +183,13 @@ html.lenis.lenis-stopped {
     background: currentColor;
     transform: scaleX(0);
     transform-origin: right center;
-    transition: transform 0.42s var(--ease-expo);
+    transition: transform 0.6s var(--ease-expo);
   }
   .link-underline:hover::after,
   .link-underline:focus-visible::after,
   .group:hover .link-underline::after {
     transform: scaleX(1);
     transform-origin: left center;
-  }
-
-  /* Brillo interior de pastillas (botones y cards): estático + barrido al hover fino */
-  .sheen {
-    position: relative;
-    isolation: isolate;
-  }
-  .sheen::before {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: inherit;
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.2), transparent 46%);
-    opacity: 0.55;
-  }
-  .sheen::after {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: inherit;
-    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.28), transparent 65%);
-    transform: translateX(-120%) skewX(-16deg);
-    opacity: 0;
-    transition:
-      transform 0.7s var(--ease-expo),
-      opacity 0.35s var(--ease-expo);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .group:hover > .sheen::after,
-    .sheen:hover::after {
-      transform: translateX(120%) skewX(-16deg);
-      opacity: 1;
-    }
-  }
-
-  /* Halo del play: confirma que el video es accionable, sin competir con el titular */
-  .play-ring::after {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    box-shadow: 0 0 0 0.125rem rgb(227 232 255 / 0.55);
-    animation: play-ring 2.4s var(--ease-expo) infinite;
-  }
-  @keyframes play-ring {
-    0% {
-      transform: scale(1);
-      opacity: 0.4;
-    }
-    100% {
-      transform: scale(1.42);
-      opacity: 0;
-    }
   }
 }
 
@@ -283,22 +225,12 @@ html.lenis.lenis-stopped {
     cursor: none !important;
   }
 
-  /* Versión reducida: ?motion=reduce o prefers-reduced-motion (data-motion lo setea useReducedMotion).
+  /* Versión reducida solo a pedido (?motion=reduce): no depende del sistema operativo.
      0s y no 0.01ms: con 0.01ms todo cambio de estilo es una transición y las mediciones por JS leen el valor viejo */
   html[data-motion='reduce'] *,
   html[data-motion='reduce'] *::before,
   html[data-motion='reduce'] *::after {
-    transition-duration: 0.18s !important;
-    animation-duration: 0s !important;
-    animation-iteration-count: 1 !important;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html:not([data-motion='full']) *,
-    html:not([data-motion='full']) *::before,
-    html:not([data-motion='full']) *::after {
-      scroll-behavior: auto;
-    }
+    transition-duration: 0s !important;
   }
 }
 

@@ -1,12 +1,12 @@
 export type PageBg = 'paper' | 'night' | 'deep' | 'primary' | 'sky'
 
-/** Superficies sólidas por sección: el texto no depende de un color intermedio del scroll. */
-export const SECTION_SURFACE: Record<PageBg, string> = {
-  paper: 'bg-brand-paper',
-  night: 'bg-brand-night',
-  deep: 'bg-brand-deep',
-  primary: 'bg-brand-primary',
-  sky: 'bg-brand-sky',
+/** Fondo de página por sección (se interpola con el scroll en una sola capa: hooks/usePageColors.ts). */
+export const PAGE_COLORS: Record<PageBg, string> = {
+  paper: '#e3e8ff',
+  night: '#0c1640',
+  deep: '#223a8d',
+  primary: '#004aad',
+  sky: '#42b8fd',
 }
 
 /** Color de texto fijo de cada sección (contraste AA sobre su fondo). */

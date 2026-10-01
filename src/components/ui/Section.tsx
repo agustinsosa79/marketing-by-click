@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
-import { SECTION_SURFACE, SECTION_TEXT, type PageBg } from '../../lib/pageColors'
+import { SECTION_TEXT, type PageBg } from '../../lib/pageColors'
 
 interface SectionProps extends ComponentProps<'section'> {
   bg: PageBg
@@ -8,11 +8,12 @@ interface SectionProps extends ComponentProps<'section'> {
 }
 
 /**
- * Cada sección controla su superficie y su color de texto; no hay mezclas de fondo durante el scroll.
+ * Sección de página: sin fondo propio (lo pinta la capa [data-page-bg] de <main>, interpolada con el scroll)
+ * y con su color de texto fijo. `data-bg` alimenta la interpolación (hooks/usePageColors.ts).
  */
 export function Section({ bg, ownColors = false, className = '', children, ...rest }: SectionProps) {
   return (
-    <section data-bg={bg} className={`relative ${SECTION_SURFACE[bg]} ${ownColors ? '' : SECTION_TEXT[bg]} ${className}`} {...rest}>
+    <section data-bg={bg} className={`relative ${ownColors ? '' : SECTION_TEXT[bg]} ${className}`} {...rest}>
       {children}
     </section>
   )
