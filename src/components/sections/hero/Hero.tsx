@@ -91,8 +91,8 @@ export function Hero() {
   )
 
   return (
-    <section id={sections.hero} ref={scope} data-bg="paper" className="relative h-hero">
-      <div className="sticky top-0 h-svh overflow-hidden bg-brand-paper">
+    <section id={sections.hero} ref={scope} data-bg="paper" className="relative isolate h-hero">
+      <div className="sticky top-0 h-svh overflow-hidden bg-transparent">
         {/* z-0: copia sobre el papel (la semántica: h1) */}
         <div className="absolute inset-0 z-0">
           <HeroCopy variant="back" />

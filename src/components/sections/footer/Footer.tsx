@@ -125,19 +125,6 @@ export function Footer() {
           </span>
         </p>
 
-        <div className="mt-6 flex flex-col gap-4 border-t border-brand-paper/15 pt-5 text-label font-semibold md:flex-row md:items-center md:justify-between">
-          <p className="opacity-80">{footer.copyright}</p>
-          <button
-            type="button"
-            onClick={() => scrollTo(0, { duration: 2.2 })}
-            className="group flex min-h-11 items-center gap-3 self-start border-t border-brand-paper/25 py-2 transition-transform duration-300 ease-expo active:scale-97"
-          >
-            <span className="link-underline">{footer.backToTop}</span>
-            <span aria-hidden="true" className="grid size-8 place-items-center bg-brand-sky text-brand-night transition-transform duration-500 ease-expo group-hover:-translate-y-1">
-              ↑
-            </span>
-          </button>
-        </div>
       </div>
     </footer>
   )

@@ -5,7 +5,7 @@ import { setupReveals } from '../../../lib/motion'
 import { deferSetup } from '../../../lib/schedule'
 import { Icon } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
-import { Label, SectionTitle } from '../../ui/SectionTitle'
+import { SectionTitle } from '../../ui/SectionTitle'
 import { VideoPlayer } from '../../ui/VideoPlayer'
 
 /**
@@ -20,8 +20,7 @@ export function Founder() {
   return (
     <Section id={sections.founder} ref={ref} bg="paper" className="overflow-hidden px-5 py-28 md:px-10 md:py-40">
       <div className="relative">
-        <Label>{founder.eyebrow}</Label>
-        <SectionTitle text={founder.title} className="mt-6 font-display text-giant" emphasisClassName="font-accent text-brand-electric" />
+        <SectionTitle text={founder.title} className="font-display text-giant" emphasisClassName="font-accent text-brand-electric" />
       </div>
 
       <div className="relative mt-12 grid gap-10 md:mt-16 lg:grid-cols-12 lg:items-center lg:gap-14">

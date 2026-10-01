@@ -19,6 +19,7 @@ function Page({ menuOpen, pageRef }: { menuOpen: boolean; pageRef: RefObject<HTM
   return (
     <div ref={pageRef} inert={menuOpen} className="relative z-10 overflow-x-clip bg-brand-paper">
       <main id="contenido" className="relative isolate z-10">
+        <div data-page-bg aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-brand-paper" />
         <Hero />
         {hydrated && (
           <Suspense fallback={null}>
