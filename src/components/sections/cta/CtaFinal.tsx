@@ -66,15 +66,15 @@ export function CtaFinal() {
             </p>
           </div>
 
-          <div className="flex flex-col items-start gap-8 lg:col-span-5 lg:col-start-8">
-            <p data-reveal="lines" className="font-display text-big">
+          <div className="flex w-full min-w-0 flex-col items-start gap-8 lg:col-span-5 lg:col-start-8">
+            <p data-reveal="lines" className="w-full min-w-0 font-display text-big">
               {cta.title}
             </p>
             <p data-reveal="fade" className="font-accent text-3xl md:text-4xl">
               {cta.text}
             </p>
-            <div data-reveal="cta">
-              <Button href={cta.button.href} label={cta.button.label} size="lg" variant="night" icon="whatsapp" cursor={cta.cursor} magnetic />
+            <div data-reveal="cta" className="w-full md:w-auto">
+              <Button href={cta.button.href} label={cta.button.label} size="lg" variant="night" icon="whatsapp" cursor={cta.cursor} magnetic className="w-full md:w-auto" />
             </div>
             <ul data-reveal="fade" className="flex flex-wrap gap-x-8 gap-y-3 text-label font-semibold">
               <li>

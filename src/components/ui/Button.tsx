@@ -70,8 +70,8 @@ export function Button({ href, label, variant = 'sky', size = 'md', magnetic = f
     moveTo.current.iy(0)
   }
 
-  const sizes = size === 'lg' ? 'gap-4 py-2.5 pr-2.5 pl-7 text-base md:py-3 md:pr-3 md:pl-9 md:text-lg' : 'gap-3 py-2 pr-2 pl-6 text-sm md:text-base'
-  const badge = size === 'lg' ? 'size-11 md:size-14' : 'size-9 md:size-10'
+  const sizes = size === 'lg' ? 'gap-2 py-2 pr-2 pl-4 text-sm md:gap-4 md:py-3 md:pr-3 md:pl-9 md:text-lg' : 'gap-3 py-2 pr-2 pl-6 text-sm md:text-base'
+  const badge = size === 'lg' ? 'size-9 md:size-14' : 'size-9 md:size-10'
 
   return (
     <a
