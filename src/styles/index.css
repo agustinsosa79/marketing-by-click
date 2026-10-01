@@ -1,0 +1,309 @@
+@import 'tailwindcss';
+@import 'lenis/dist/lenis.css';
+
+/* Lenis: CSS oficial + ajustes. Sin scroll-behavior: smooth en ningún lado (pelea con Lenis). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+/* lenis.css usa overflow: clip, que además bloquea el scroll programático (lenis.scrollTo con force) */
+html.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------
+   Tokens de marca: extraídos de marketingbyclic.com (docs/brand-analysis.md)
+   ------------------------------------------------------------------ */
+@theme {
+  --color-brand-night: #0c1640; /* derivado de deep: menú, secciones oscuras */
+  --color-brand-deep: #223a8d; /* azul Clic */
+  --color-brand-primary: #004aad; /* cobalto */
+  --color-brand-sky: #42b8fd; /* celeste medido: acentos, CTA, progreso */
+  --color-brand-electric: #1e84f0;
+  --color-brand-mid: #4667af;
+  --color-brand-soft: #98acd9;
+  --color-brand-powder: #93bcd5;
+  --color-brand-paper: #e3e8ff;
+  --color-brand-mist: #f3f5ff; /* superficie de cards sobre paper */
+  --color-brand-ink: #1a4292;
+  --color-brand-gold: #a8944d;
+
+  /* Escala tipográfica (fluida) */
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.4;
+  /* Wordmark del preloader (medido con Montserrat Black): "MARKETING" al 88% del ancho en dos líneas,
+     "MARKETING BY CLIC" al 96% en una línea desde md. Puro CSS: pinta antes de que corra el JS. */
+  --text-wordmark: 14.39vw;
+  --text-wordmark--line-height: 1;
+  --text-wordmark-wide: 9.353vw;
+  --text-wordmark-wide--line-height: 1;
+  --text-hero: clamp(3rem, min(9.6vw, 17vh), 12.5rem);
+  --text-hero--line-height: 0.84;
+  --text-mega: clamp(6rem, 27vw, 32rem);
+  --text-mega--line-height: 0.78;
+  --text-giant: clamp(2.5rem, 11vw, 12rem);
+  --text-giant--line-height: 0.86;
+  --text-huge: clamp(2.5rem, 7vw, 7.5rem);
+  --text-huge--line-height: 0.9;
+  --text-index: clamp(1.875rem, 6.2vw, 7.25rem);
+  --text-index--line-height: 0.92;
+  --text-big: clamp(2rem, 4.4vw, 4.75rem);
+  --text-big--line-height: 0.95;
+  --text-statement: clamp(1.75rem, 4.1vw, 4.5rem);
+  --text-statement--line-height: 1.1;
+  --text-lead: clamp(1.375rem, 2.3vw, 2.5rem);
+  --text-lead--line-height: 1.18;
+  --text-menu: clamp(2.75rem, min(10.5vh, 13vw), 9rem);
+  --text-menu--line-height: 0.92;
+
+  /* Sombras neutras y discretas, sin halos de color. */
+  --shadow-soft: 0 0.75rem 1.5rem -1rem rgb(23 26 28 / 0.18);
+  --shadow-lift: 0 1rem 2rem -1.25rem rgb(23 26 28 / 0.24);
+
+  /* Medidas que no están en la escala */
+  --spacing-hero: 200svh;
+  --spacing-hair: 0.0625rem;
+  --spacing-descender: 0.14em; /* aire para descendentes dentro de las máscaras de línea */
+  --spacing-italic-overhang: 0.12em;
+  --spacing-pill: 0.78em; /* píldoras de imagen dentro de una frase */
+  --spacing-pill-wide: 1.9em;
+  --blur-cursor: 0.1rem;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-hop: cubic-bezier(0.71, 0, 0.13, 1);
+
+  /* Entrada del wordmark por CSS (antes del JS); GSAP la toma desde donde esté (usePreloaderTimeline) */
+  --animate-rise: rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* 0.01 y no 0: a la vista es igual, pero así el wordmark cuenta como pintado desde el primer frame */
+  @keyframes rise {
+    from {
+      opacity: 0.01;
+      transform: translateY(35%);
+    }
+  }
+}
+
+/* Montserrat Black alojada localmente (subset latin, 18 KB) y precargada en index.html:
+   es la del wordmark del preloader y de todos los títulos, así no espera la cadena CSS → fuente de Google. */
+@font-face {
+  font-family: 'Montserrat Display';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block; /* precargada: llega enseguida y así el wordmark no salta de una fuente a otra */
+  src: url('/fonts/montserrat-900-latin.woff2') format('woff2');
+}
+
+/* Clases propias en la capa components: las utilidades de Tailwind pueden sobrescribirlas */
+@layer components {
+  /* ------------------------------------------------------------------
+     Tipografías (cargadas con <link> en index.html)
+     ------------------------------------------------------------------ */
+  .font-display {
+    font-family: 'Montserrat Display', 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.045em;
+  }
+
+  .font-body {
+    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Acento editorial: Instrument Serif itálica */
+  .font-accent {
+    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+
+  /* Serif recta (menú) */
+  .font-editorial {
+    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* Etiquetas y UI chica: la misma Montserrat de la marca, semibold, sin tracking forzado */
+  .font-label {
+    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+  }
+
+  .animation-delay-word {
+    animation-delay: 0.12s;
+  }
+
+  /* ------------------------------------------------------------------
+     Íconos y logo de marca como máscara: toman el color del texto (currentColor)
+     ------------------------------------------------------------------ */
+  .icon-mask {
+    display: inline-block;
+    background-color: currentColor;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+  }
+  .icon-instagram {
+    mask-image: url('/media/icono-instagram.webp');
+  }
+  .icon-whatsapp {
+    mask-image: url('/media/icono-whatsapp.webp');
+  }
+  .logo-mask {
+    aspect-ratio: 640 / 178;
+    mask-image: url('/media/logo.webp');
+  }
+  .isotipo-mask {
+    aspect-ratio: 211 / 222;
+    mask-image: url('/media/isotipo.webp');
+  }
+
+  /* ------------------------------------------------------------------
+     Link con subrayado que se dibuja de izquierda a derecha (y se va hacia la derecha)
+     ------------------------------------------------------------------ */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.12em;
+    height: 0.08em;
+    min-height: 0.0625rem;
+    border-radius: 1em;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.42s var(--ease-expo);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after,
+  .group:hover .link-underline::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* Brillo interior de pastillas (botones y cards): estático + barrido al hover fino */
+  .sheen {
+    position: relative;
+    isolation: isolate;
+  }
+  .sheen::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.2), transparent 46%);
+    opacity: 0.55;
+  }
+  .sheen::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.28), transparent 65%);
+    transform: translateX(-120%) skewX(-16deg);
+    opacity: 0;
+    transition:
+      transform 0.7s var(--ease-expo),
+      opacity 0.35s var(--ease-expo);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover > .sheen::after,
+    .sheen:hover::after {
+      transform: translateX(120%) skewX(-16deg);
+      opacity: 1;
+    }
+  }
+
+  /* Halo del play: confirma que el video es accionable, sin competir con el titular */
+  .play-ring::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0.125rem rgb(227 232 255 / 0.55);
+    animation: play-ring 2.4s var(--ease-expo) infinite;
+  }
+  @keyframes play-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1.42);
+      opacity: 0;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background-color: var(--color-brand-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    color: var(--color-brand-deep);
+  }
+
+  ::selection {
+    background-color: var(--color-brand-sky);
+    color: var(--color-brand-night);
+  }
+
+  :focus-visible {
+    outline: 0.125rem solid var(--color-brand-sky);
+    outline-offset: 0.25rem;
+  }
+
+  /* Cursor propio (solo puntero fino, lo activa src/components/ui/Cursor.tsx) */
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+
+  /* Versión reducida: ?motion=reduce o prefers-reduced-motion (data-motion lo setea useReducedMotion).
+     0s y no 0.01ms: con 0.01ms todo cambio de estilo es una transición y las mediciones por JS leen el valor viejo */
+  html[data-motion='reduce'] *,
+  html[data-motion='reduce'] *::before,
+  html[data-motion='reduce'] *::after {
+    transition-duration: 0.18s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion='full']) *,
+    html:not([data-motion='full']) *::before,
+    html:not([data-motion='full']) *::after {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* index.html oculta #root hasta que esta hoja está aplicada.
+   Sin capa y con más especificidad para ganarle al <style> crítico. */
+html #root {
+  visibility: visible;
+}

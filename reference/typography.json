@@ -1,0 +1,1051 @@
+{
+  "fontFaces": {
+    "Canva Sans|400 700|normal": {
+      "family": "Canva Sans",
+      "src": "https://marketingbyclic.com/_assets/images/a9b8e7902ec1ab885d382156f33738e5.woff2",
+      "weight": "400 700",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "IBM Plex Sans Arabic|400|normal": {
+      "family": "IBM Plex Sans Arabic",
+      "src": "https://marketingbyclic.com/_assets/images/fb9d501d06fd0c338178a4fcd0dc75f1.woff2",
+      "weight": "400",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "IBM Plex Sans Arabic|500|normal": {
+      "family": "IBM Plex Sans Arabic",
+      "src": "https://marketingbyclic.com/_assets/images/3494a558a74de966041d0f3b6c4c5a0a.woff2",
+      "weight": "500",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "IBM Plex Sans Arabic|600|normal": {
+      "family": "IBM Plex Sans Arabic",
+      "src": "https://marketingbyclic.com/_assets/images/191499f59a19d63e576f9b7f734eccce.woff2",
+      "weight": "600",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "IBM Plex Sans Arabic|700|normal": {
+      "family": "IBM Plex Sans Arabic",
+      "src": "https://marketingbyclic.com/_assets/images/f29632870b8e3c47e84887200c088f5f.woff2",
+      "weight": "700",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "Noto Sans Variable|100 900|normal": {
+      "family": "Noto Sans Variable",
+      "src": "https://marketingbyclic.com/_assets/images/762fe37b99d49707e783d6281412d12f.woff2",
+      "weight": "100 900",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "Noto Sans|400|normal": {
+      "family": "Noto Sans",
+      "src": "https://marketingbyclic.com/_assets/images/d83221ee6a6841b17a754f68b6c5a3de.woff2",
+      "weight": "400",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "Noto Sans|600|normal": {
+      "family": "Noto Sans",
+      "src": "https://marketingbyclic.com/_assets/images/e237b20d624e9275cdc02a523ab7f983.woff2",
+      "weight": "600",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "Noto Sans|700|normal": {
+      "family": "Noto Sans",
+      "src": "https://marketingbyclic.com/_assets/images/3b5447850810ff964de17bcd37e03d5a.woff2",
+      "weight": "700",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "Noto Sans Vietnamese|400|normal": {
+      "family": "Noto Sans Vietnamese",
+      "src": "https://marketingbyclic.com/_assets/images/f4113bb9d3def37ca7f5c7cd2341ec33.woff2",
+      "weight": "400",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "Noto Sans Vietnamese|600|normal": {
+      "family": "Noto Sans Vietnamese",
+      "src": "https://marketingbyclic.com/_assets/images/5989cf357de7427311e30576891372df.woff2",
+      "weight": "600",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "Noto Sans Vietnamese|700|normal": {
+      "family": "Noto Sans Vietnamese",
+      "src": "https://marketingbyclic.com/_assets/images/5d050a324d95a6a18dae93e08c01bd6b.woff2",
+      "weight": "700",
+      "style": "normal",
+      "error": "Decompression failed"
+    },
+    "calibrate||": {
+      "family": "calibrate",
+      "src": "https://marketingbyclic.com/_assets/images/b46630e470f4040eba7033cf2435edce.woff",
+      "weight": "",
+      "style": "",
+      "subfamily": "Regular",
+      "fullName": "calibrate",
+      "postscript": "calibrate"
+    },
+    "YAEnXHTFXhg_0|900|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "900",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|900|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "900",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|800|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "800",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|800|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "800",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|600|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "600",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|600|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "600",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|500|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "500",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|500|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "500",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|300|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "300",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|300|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "300",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|200|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "200",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|200|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "200",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|100|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "100",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|100|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "100",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|700|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "700",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|400|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "400",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|400|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "400",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|900|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "900",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|900|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "900",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|800|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "800",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|800|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "800",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|600|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "600",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|600|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "600",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|500|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "500",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|500|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "500",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|300|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "300",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|300|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "300",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|200|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "200",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|200|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "200",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|100|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "100",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|100|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "100",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|700|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "700",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|400|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "400",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAEnXHTFXhg_0|700|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/66b47a017150a57e0f1b10bdf6986fcf.woff",
+      "weight": "700",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|700|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/fb07aeec8b2f2d96eec10760b061091a.woff",
+      "weight": "700",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdJn5d8s0_0|400|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/9316c3aa327b3e649a6963fdeb11e7e9.woff",
+      "weight": "400",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|900|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "900",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|900|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "900",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|800|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "800",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|800|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "800",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|600|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "600",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|600|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "600",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|500|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "500",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|500|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "500",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|300|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "300",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|300|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "300",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|200|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "200",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|200|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "200",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|100|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "100",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|100|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "100",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|700|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "700",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|400|italic": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "400",
+      "style": "italic",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|400|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/f8379cdb66878cb9f02f8bacbc3fdb36.woff",
+      "weight": "400",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    },
+    "YAFdtQi73Xs_0|700|normal": {
+      "family": ".",
+      "src": "https://marketingbyclic.com/_assets/fonts/677a5a6175ed03ad71aa851acdcefee6.woff",
+      "weight": "700",
+      "style": "normal",
+      "subfamily": "",
+      "fullName": ".",
+      "postscript": ""
+    }
+  },
+  "fontFamily": [
+    {
+      "value": "YAFdtQi73Xs_0",
+      "count": 3838
+    },
+    {
+      "value": "YAFdJn5d8s0_0",
+      "count": 331
+    },
+    {
+      "value": "YAEnXHTFXhg_0",
+      "count": 3
+    },
+    {
+      "value": "Canva Sans",
+      "count": 1
+    }
+  ],
+  "fontWeight": [
+    {
+      "value": "700",
+      "count": 2634
+    },
+    {
+      "value": "400",
+      "count": 1539
+    }
+  ],
+  "fontSize": [
+    {
+      "value": "97px",
+      "count": 2
+    },
+    {
+      "value": "75px",
+      "count": 7
+    },
+    {
+      "value": "74px",
+      "count": 6
+    },
+    {
+      "value": "73px",
+      "count": 14
+    },
+    {
+      "value": "72px",
+      "count": 25
+    },
+    {
+      "value": "71px",
+      "count": 16
+    },
+    {
+      "value": "70px",
+      "count": 1
+    },
+    {
+      "value": "68px",
+      "count": 15
+    },
+    {
+      "value": "67px",
+      "count": 1
+    },
+    {
+      "value": "66px",
+      "count": 10
+    },
+    {
+      "value": "65px",
+      "count": 34
+    },
+    {
+      "value": "64px",
+      "count": 5
+    },
+    {
+      "value": "61px",
+      "count": 17
+    },
+    {
+      "value": "60px",
+      "count": 67
+    },
+    {
+      "value": "59px",
+      "count": 19
+    },
+    {
+      "value": "56px",
+      "count": 5
+    },
+    {
+      "value": "55px",
+      "count": 36
+    },
+    {
+      "value": "54px",
+      "count": 65
+    },
+    {
+      "value": "53px",
+      "count": 41
+    },
+    {
+      "value": "52px",
+      "count": 12
+    },
+    {
+      "value": "49px",
+      "count": 2
+    },
+    {
+      "value": "48px",
+      "count": 9
+    },
+    {
+      "value": "47px",
+      "count": 65
+    },
+    {
+      "value": "46px",
+      "count": 74
+    },
+    {
+      "value": "45px",
+      "count": 27
+    },
+    {
+      "value": "44px",
+      "count": 7
+    },
+    {
+      "value": "43px",
+      "count": 5
+    },
+    {
+      "value": "42px",
+      "count": 10
+    },
+    {
+      "value": "41px",
+      "count": 2
+    },
+    {
+      "value": "40px",
+      "count": 21
+    },
+    {
+      "value": "39px",
+      "count": 23
+    },
+    {
+      "value": "38px",
+      "count": 13
+    },
+    {
+      "value": "37px",
+      "count": 233
+    },
+    {
+      "value": "36px",
+      "count": 266
+    },
+    {
+      "value": "35px",
+      "count": 205
+    },
+    {
+      "value": "34px",
+      "count": 102
+    },
+    {
+      "value": "33px",
+      "count": 327
+    },
+    {
+      "value": "32px",
+      "count": 510
+    },
+    {
+      "value": "31px",
+      "count": 327
+    },
+    {
+      "value": "30px",
+      "count": 55
+    },
+    {
+      "value": "27px",
+      "count": 15
+    },
+    {
+      "value": "26px",
+      "count": 29
+    },
+    {
+      "value": "25px",
+      "count": 38
+    },
+    {
+      "value": "24px",
+      "count": 97
+    },
+    {
+      "value": "23px",
+      "count": 118
+    },
+    {
+      "value": "22px",
+      "count": 10
+    },
+    {
+      "value": "21px",
+      "count": 133
+    },
+    {
+      "value": "20px",
+      "count": 515
+    },
+    {
+      "value": "19px",
+      "count": 287
+    },
+    {
+      "value": "18px",
+      "count": 3
+    },
+    {
+      "value": "17px",
+      "count": 18
+    },
+    {
+      "value": "16px",
+      "count": 16
+    },
+    {
+      "value": "15px",
+      "count": 22
+    },
+    {
+      "value": "14px",
+      "count": 10
+    },
+    {
+      "value": "13px",
+      "count": 55
+    },
+    {
+      "value": "12px",
+      "count": 60
+    },
+    {
+      "value": "11px",
+      "count": 66
+    }
+  ],
+  "mobileFontSize": [
+    {
+      "value": "77px",
+      "count": 2
+    },
+    {
+      "value": "60px",
+      "count": 8
+    },
+    {
+      "value": "59px",
+      "count": 8
+    },
+    {
+      "value": "58px",
+      "count": 9
+    },
+    {
+      "value": "57px",
+      "count": 6
+    },
+    {
+      "value": "56px",
+      "count": 1
+    },
+    {
+      "value": "55px",
+      "count": 1
+    },
+    {
+      "value": "54px",
+      "count": 15
+    },
+    {
+      "value": "53px",
+      "count": 21
+    },
+    {
+      "value": "52px",
+      "count": 54
+    },
+    {
+      "value": "51px",
+      "count": 10
+    },
+    {
+      "value": "50px",
+      "count": 1
+    },
+    {
+      "value": "49px",
+      "count": 8
+    },
+    {
+      "value": "48px",
+      "count": 84
+    },
+    {
+      "value": "47px",
+      "count": 11
+    },
+    {
+      "value": "45px",
+      "count": 5
+    },
+    {
+      "value": "44px",
+      "count": 39
+    },
+    {
+      "value": "43px",
+      "count": 101
+    },
+    {
+      "value": "42px",
+      "count": 12
+    },
+    {
+      "value": "41px",
+      "count": 2
+    },
+    {
+      "value": "40px",
+      "count": 1
+    },
+    {
+      "value": "39px",
+      "count": 10
+    },
+    {
+      "value": "38px",
+      "count": 29
+    },
+    {
+      "value": "37px",
+      "count": 97
+    },
+    {
+      "value": "36px",
+      "count": 41
+    },
+    {
+      "value": "35px",
+      "count": 7
+    },
+    {
+      "value": "34px",
+      "count": 13
+    },
+    {
+      "value": "33px",
+      "count": 3
+    },
+    {
+      "value": "32px",
+      "count": 28
+    },
+    {
+      "value": "31px",
+      "count": 21
+    },
+    {
+      "value": "30px",
+      "count": 54
+    },
+    {
+      "value": "29px",
+      "count": 415
+    },
+    {
+      "value": "28px",
+      "count": 245
+    },
+    {
+      "value": "27px",
+      "count": 220
+    },
+    {
+      "value": "26px",
+      "count": 461
+    },
+    {
+      "value": "25px",
+      "count": 557
+    },
+    {
+      "value": "24px",
+      "count": 62
+    },
+    {
+      "value": "22px",
+      "count": 10
+    },
+    {
+      "value": "21px",
+      "count": 33
+    },
+    {
+      "value": "20px",
+      "count": 52
+    },
+    {
+      "value": "19px",
+      "count": 170
+    },
+    {
+      "value": "18px",
+      "count": 42
+    },
+    {
+      "value": "17px",
+      "count": 15
+    },
+    {
+      "value": "16px",
+      "count": 733
+    },
+    {
+      "value": "15px",
+      "count": 187
+    },
+    {
+      "value": "14px",
+      "count": 13
+    },
+    {
+      "value": "13px",
+      "count": 24
+    },
+    {
+      "value": "12px",
+      "count": 18
+    },
+    {
+      "value": "11px",
+      "count": 43
+    },
+    {
+      "value": "10px",
+      "count": 32
+    },
+    {
+      "value": "5px",
+      "count": 19
+    },
+    {
+      "value": "4px",
+      "count": 111
+    }
+  ]
+}

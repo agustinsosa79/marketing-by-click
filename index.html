@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marketing by Clic | Marketing digital</title>
+    <meta name="description" content="Marketing digital. Estrategias online que generan resultados. Convertimos tus redes en una herramienta de crecimiento." />
+    <meta name="theme-color" content="#223a8d" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/media/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/media/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/media/apple-touch-icon-180.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="Marketing by Clic" />
+    <meta property="og:title" content="Marketing by Clic | Marketing digital" />
+    <meta property="og:description" content="Estrategias online que generan resultados. Convertimos tus redes en una herramienta de crecimiento." />
+    <meta property="og:url" content="https://marketingbyclic.com/" />
+    <meta property="og:image" content="https://marketingbyclic.com/media/hero-poster.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://marketingbyclic.com/" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fuentes de Google sin bloquear el render: la hoja arranca deshabilitada y la habilita src/main.tsx
+         (después del primer pintado; el wordmark usa la Montserrat Black local precargada).
+         src/lib/fonts.ts espera a que carguen antes de medir/partir texto. -->
+    <link
+      id="google-fonts"
+      rel="stylesheet"
+      disabled
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@400;500;600;700;800;900&display=swap" />
+    </noscript>
+    <link rel="preload" as="font" href="/fonts/montserrat-900-latin.woff2" type="font/woff2" crossorigin />
+    <!-- CSS crítico: el primer paint ya es el fondo del preloader y la app no se ve sin estilos -->
+    <style>
+      html { background: #e3e8ff; }
+      body { margin: 0; }
+      #root { visibility: hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

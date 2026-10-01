@@ -1,0 +1,1215 @@
+{
+  "source": "https://marketingbyclic.com/",
+  "scrapedAt": "2026-10-01T03:39:39.661Z",
+  "title": "Marketing by Clic",
+  "meta": {
+    "app-name": "export_website",
+    "build-version": "03f0755f6767a4170d328621c74f24d59c8d4631",
+    "build-release-name": "20260918-03-03f0755",
+    "build-deployment-group": "STABLE",
+    "viewport": "width=device-width, initial-scale=1",
+    "referrer": "strict-origin-when-cross-origin",
+    "og:title": "Marketing by Clic",
+    "og:type": "website",
+    "description": "MARKETING DIGITAL. Estrategias online que generan resultados",
+    "og:description": "MARKETING DIGITAL. Estrategias online que generan resultados",
+    "twitter:description": "MARKETING DIGITAL. Estrategias online que generan resultados"
+  },
+  "nav": {
+    "brand": "Marketing by Clic",
+    "menu": [
+      {
+        "label": "NOSOTROS",
+        "target": "nosotros"
+      },
+      {
+        "label": "FOUNDER",
+        "target": "founder"
+      },
+      {
+        "label": "PORTFOLIO",
+        "target": "portfolio"
+      },
+      {
+        "label": "SERVICIO",
+        "target": "servicio"
+      },
+      {
+        "label": "TIEMPOS",
+        "target": "tiempos"
+      },
+      {
+        "label": "PLANES",
+        "target": "planes"
+      },
+      {
+        "label": "BRANDING",
+        "target": "branding"
+      },
+      {
+        "label": "ASESORÍA 1:1",
+        "target": "asesoria"
+      },
+      {
+        "label": "CONTÁCTANOS",
+        "target": "contacto"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "key": "hero",
+      "id": "PBMCDN6lCZybbCfG",
+      "background": "#223a8d",
+      "blocks": [
+        {
+          "text": "Convertimos tus redes",
+          "role": "heading",
+          "fontSize": 48.7,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "en una herramienta",
+          "role": "heading",
+          "fontSize": 48.7,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "de crecimiento.",
+          "role": "heading",
+          "fontSize": 48.7,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "Potenciamos la comunicación de tu marca para convertir tus redes en un sistema de ventas.",
+          "role": "heading",
+          "fontSize": 49.7,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        }
+      ]
+    },
+    {
+      "key": "nosotros",
+      "id": "PBlFnc1fR8fRsF9w",
+      "background": "#223a8d",
+      "blocks": [
+        {
+          "text": "Somos Marketing by Clic",
+          "role": "heading",
+          "fontSize": 54,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Desde",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "De la gráfica",
+          "role": "heading",
+          "fontSize": 54,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "1987",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "al mundo digital.",
+          "role": "heading",
+          "fontSize": 54,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Un estudioestratégico demarketing digitalnacido en laPatagonia.",
+          "role": "heading",
+          "fontSize": 54,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Conectamosnegocios",
+          "role": "heading",
+          "fontSize": 54,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "con lacomunidad.",
+          "role": "heading",
+          "fontSize": 54,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Acompañamoscada marca decerca y hacemoslo que realmentenecesitan.",
+          "role": "heading",
+          "fontSize": 54,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        }
+      ]
+    },
+    {
+      "key": "founder",
+      "id": "PBq0mcKNlBDNZ6TM",
+      "background": "#e3e8ff",
+      "blocks": [
+        {
+          "text": "Hola, soy Ian!",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Me apasionan el marketing y laspersonas detrás de cada negocio.",
+          "role": "text",
+          "fontSize": 31.8,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Creé Marketing by Clic para ayudar atodas esas que marcas tienen un granproducto, pero necesitan más claridad yestrategia.",
+          "role": "text",
+          "fontSize": 31.8,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Hoy en día todos compiten por atención. Por eso creo que antes de publicar más,hay que entender hacia dóndequeremos ir y construir una estrategiaque tenga sentido para el negocio.",
+          "role": "text",
+          "fontSize": 31.8,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Mi trabajo es ayudarte a ordenar,comunicar y hacer crecer tu marca, sinperder la esencia que la hace única 💙",
+          "role": "text",
+          "fontSize": 31.8,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "@ianmarketer",
+          "role": "heading",
+          "fontSize": 42.3,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Seguime para aprender sobre negocios digitales",
+          "role": "text",
+          "fontSize": 24,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        }
+      ]
+    },
+    {
+      "key": "portfolio",
+      "id": "PBTDMcjSGGN3yVTQ",
+      "background": "#223a8d",
+      "blocks": [
+        {
+          "text": "En nosotros podés confiar.",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Nuestro trabajo",
+          "role": "text",
+          "fontSize": 24,
+          "fontWeight": "400",
+          "color": "#42b8fd"
+        },
+        {
+          "text": "Diseñamos estrategias digitalespersonalizadas para conectar tumarca con su audiencia,potenciando la presencia online paraposicionarse mejor en el mercado.",
+          "role": "text",
+          "fontSize": 24,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Con nuestros clientes, logramospotenciar su alcance y fortalecer suposición en el mercado, además deredefinir su identidad de marca ymejorar de su visibilidad,aumentando sus ventas mediante laintegración de Meta Ads.",
+          "role": "text",
+          "fontSize": 33.1,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "A lo largo de nuestra trayectoria, acompañamos a marcas,profesionales y emprendimientos de distintos rubros aconstruir, comunicar y hacer crecer sus proyectos.",
+          "role": "text",
+          "fontSize": 33.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Conocé algunos de los proyectos que ya confiaron en nosotros ↓",
+          "role": "text",
+          "fontSize": 33.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "CASOS DE ÉXITO",
+          "role": "text",
+          "fontSize": 24,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        }
+      ]
+    },
+    {
+      "key": "servicio",
+      "id": "PBFNVfgzPJFz9TPh",
+      "background": "#223a8d",
+      "blocks": [
+        {
+          "text": "¿Necesitás ayuda?",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Tenés tu propia historia y tus propios desafíos. Por eso,la prioridad es escucharte antes de actuar.",
+          "role": "text",
+          "fontSize": 32,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Análisis personalizado: Identificamosjuntos qué necesita tu negocio para crecer.",
+          "role": "heading",
+          "fontSize": 36.1,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Soluciones a medida: Planificamosestrategias creativas y prácticas paraconectar con tus clientes.",
+          "role": "heading",
+          "fontSize": 36.1,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Ejecución: Implementamos las accionespara lograr el impacto que buscás.",
+          "role": "heading",
+          "fontSize": 36.1,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        }
+      ]
+    },
+    {
+      "key": "tiempos",
+      "id": "PBRd93YKdjxrzmh9",
+      "background": "#223a8d",
+      "blocks": [
+        {
+          "text": "Cronogramade Trabajo",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#fefefd"
+        },
+        {
+          "text": "Mes inicial",
+          "role": "text",
+          "fontSize": 32,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "Semanas 1 y 2",
+          "role": "text",
+          "fontSize": 32,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Semanas 3 y 4",
+          "role": "text",
+          "fontSize": 32,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Reunióninicial",
+          "role": "text",
+          "fontSize": 11.5,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Investigacióny estrategia",
+          "role": "text",
+          "fontSize": 18.9,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Propuesta",
+          "role": "text",
+          "fontSize": 11.5,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Planificación",
+          "role": "text",
+          "fontSize": 11.5,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Producción decontenidos",
+          "role": "text",
+          "fontSize": 11.5,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Aprobaciónde primeraspiezas",
+          "role": "text",
+          "fontSize": 11.5,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "y desarrollo",
+          "role": "text",
+          "fontSize": 11.5,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Publicación",
+          "role": "text",
+          "fontSize": 11.5,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Meses siguientes:",
+          "role": "heading",
+          "fontSize": 38.6,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "La renovación del contenido se planificadurante la última semana de cada mes.",
+          "role": "text",
+          "fontSize": 23.5,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Publicaciones períodicas en los canalescontratados.",
+          "role": "text",
+          "fontSize": 23.5,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Gestión a demanda de campañas depublicidad en Meta Ads*",
+          "role": "text",
+          "fontSize": 23.5,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "*(sujeto a disponibilidad del plan contratado)",
+          "role": "text",
+          "fontSize": 13.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Revisión constante de la estrategia general.",
+          "role": "text",
+          "fontSize": 23.5,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "De forma periódica, recibirán",
+          "role": "text",
+          "fontSize": 32,
+          "fontWeight": "400",
+          "color": "#4667af"
+        },
+        {
+          "text": "un reporte con los resultados",
+          "role": "text",
+          "fontSize": 32,
+          "fontWeight": "400",
+          "color": "#4667af"
+        },
+        {
+          "text": "de las actividades realizadas.",
+          "role": "text",
+          "fontSize": 32,
+          "fontWeight": "400",
+          "color": "#4667af"
+        }
+      ]
+    },
+    {
+      "key": "planes",
+      "id": "PBpl77g1PRm3Msdq",
+      "background": "#98acd9",
+      "blocks": [
+        {
+          "text": "Hagamos",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "crecer",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Premium",
+          "role": "heading",
+          "fontSize": 46.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "tus redes.",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Plus",
+          "role": "heading",
+          "fontSize": 46.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Más elegido",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Análisis avanzado",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Inicial",
+          "role": "heading",
+          "fontSize": 46.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Análisis avanzado",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Llamadas 1:1",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "semanales",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Contenido orgánico +2 campañas de ADS",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Análisis básico",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Hasta 5 campañas deADS simultáneas.",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "*inversión cotiza aparte",
+          "role": "text",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Contenido orgánico (sin ADS)",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Hasta 3 canales",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "*inversión cotiza aparte",
+          "role": "text",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "(contenido adaptado)",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Estrategia adaptada decanales (Sí, TODAS LASREDES NECESARIAS)",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Hasta 2 canales",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "12 historias al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "(contenido",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "8 posteos al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "replicado)",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "4 reel/tiktok al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "12 historias al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "8 historias al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "8 posteos al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "6 posteos al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "8 reel/tiktok al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "2 reel/tiktok al mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "115 usd",
+          "role": "text",
+          "fontSize": 33.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "/ cada mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "135 usd",
+          "role": "text",
+          "fontSize": 33.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "/ cada mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "155 usd",
+          "role": "text",
+          "fontSize": 33.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "/ cada mes",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "Sesión de fotos & videos",
+          "role": "heading",
+          "fontSize": 46.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "100 USD",
+          "role": "text",
+          "fontSize": 33.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Sujeto a disponibilidad",
+          "role": "text",
+          "fontSize": 12.9,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Jornada intensiva de 2hs de creación de contenido de alta calidadrealizada con UGC y cámara de dispositivo iPhone enfocada en generarcontenido auténtico, dinámico y alineado a tu marca.",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "El objetivo es mostrar el uso de tus productos y/o servicios de forma realy cercana, priorizando formatos que se adapten a los requerimientosactuales de las redes sociales (reels, stories e imágenes).",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Servicios adicionales",
+          "role": "heading",
+          "fontSize": 46.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Consúltanos :)",
+          "role": "text",
+          "fontSize": 33.3,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Branding personalizado",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Sitio web / e-commerce",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Campañas de ADS extra",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Sitio web / e-commerce",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Diseño gráfico profesional",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Canales extra",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "E-mail marketing",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Fotografía profesional",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Soluciones logísticas",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Nuevo!",
+          "role": "text",
+          "fontSize": 18,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Asesoría completa de marketing digital",
+          "role": "text",
+          "fontSize": 20,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        }
+      ]
+    },
+    {
+      "key": "branding",
+      "id": "PB43cPkz1XWqfTTV",
+      "background": "#4667af",
+      "blocks": [
+        {
+          "text": "Branding",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Studio.",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Caso de éxito: Hostel “El Duende Errante”",
+          "role": "heading",
+          "fontSize": 36.1,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Logo completo",
+          "role": "text",
+          "fontSize": 26.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Versión reducida",
+          "role": "text",
+          "fontSize": 26.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Mockup",
+          "role": "text",
+          "fontSize": 26.7,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Tu marca necesita más que un logo: necesitauna identidad.",
+          "role": "heading",
+          "fontSize": 45.4,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "En Clic desarrollamos manuales de marca completos:incluyendo logo, colores, tipografías, usos, aplicaciones eincluso mockups para que tu comunicación sea coherente,profesional y reconocible.",
+          "role": "heading",
+          "fontSize": 36.1,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Diseñamos identidades visuales con estrategia, criterioestético y la experiencia de diseñadores con más de 10 añosen el rubro.",
+          "role": "heading",
+          "fontSize": 36.1,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Solicitá tu manual de marca personalizado.",
+          "role": "heading",
+          "fontSize": 36.1,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        }
+      ]
+    },
+    {
+      "key": "asesoria",
+      "id": "PBxqKNs57z02DPmv",
+      "background": "#e3e8ff",
+      "blocks": [
+        {
+          "text": "Recibí una asesoría 1:1 100% personalizada",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "¿Sentís que tu negocio tiene potencial para crecer,pero no tenés claro cuál es el siguiente paso? 🤔📈",
+          "role": "text",
+          "fontSize": 31.8,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "A través de nuestras asesorías estratégicas teayudamos a ordenar ideas, detectar oportunidades ydefinir un camino claro para crecer con intención.",
+          "role": "text",
+          "fontSize": 31.8,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "Escribinos ahora y conversemos sobre tu proyecto.",
+          "role": "text",
+          "fontSize": 31.8,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "contáctanos",
+          "role": "text",
+          "fontSize": 25.4,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        }
+      ]
+    },
+    {
+      "key": "contacto",
+      "id": "PBfzTgMsmMvr3hYj",
+      "background": "#223a8d",
+      "blocks": [
+        {
+          "text": "HAGAMOS CRECER TUS REDES",
+          "role": "heading",
+          "fontSize": 60,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "Más visibilidad, más clientes, más ventas.",
+          "role": "heading",
+          "fontSize": 40,
+          "fontWeight": "400",
+          "color": "#ffffff"
+        },
+        {
+          "text": "AGENDÁ UNAVIDEOLLAMADA GRATUITA",
+          "role": "heading",
+          "fontSize": 39.7,
+          "fontWeight": "400",
+          "color": "#1a4292"
+        },
+        {
+          "text": "+54 9 2944 12-6756",
+          "role": "heading",
+          "fontSize": 36.3,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        },
+        {
+          "text": "@marketingbyclic",
+          "role": "heading",
+          "fontSize": 42.3,
+          "fontWeight": "400",
+          "color": "#e3e8ff"
+        }
+      ]
+    }
+  ],
+  "mobileTextBySection": [
+    {
+      "key": "hero",
+      "text": [
+        "Convertimos tus redes",
+        "en una herramienta",
+        "de crecimiento.",
+        "Potenciamos la comunicación de tu marca para convertir tus redes en un sistema de ventas."
+      ]
+    },
+    {
+      "key": "nosotros",
+      "text": [
+        "SomosMarketingby Clic",
+        "Desde",
+        "1987",
+        "De la gráfica",
+        "al mundodigital.",
+        "Un estudioestratégico demarketingdigital nacidoen la Patagonia.",
+        "Conectamosnegocios",
+        "con lacomunidad.",
+        "Acompañamoscada marca decerca yhacemos lo querealmentenecesitan."
+      ]
+    },
+    {
+      "key": "founder",
+      "text": [
+        "Hola, soyIan!",
+        "Me apasionan el marketingy las personas detrás decada negocio.",
+        "Creé Marketing by Clicpara ayudar a todas esasque marcas tienen un granproducto, pero necesitanmás claridad y estrategia.",
+        "Hoy en día todos compitenpor atención. Por eso creoque antes de publicar más,hay que entender haciadónde queremos ir yconstruir una estrategiaque tenga sentido para elnegocio.",
+        "Mi trabajo es ayudarte aordenar, comunicar yhacer crecer tu marca, sinperder la esencia que lahace única 💙",
+        "@ianmarketer",
+        "Seguime para aprender sobrenegocios digitales"
+      ]
+    },
+    {
+      "key": "portfolio",
+      "text": [
+        "En nosotrospodés confiar.",
+        "Nuestro trabajo",
+        "Diseñamos estrategiasdigitales personalizadaspara conectar tu marcacon su audiencia,potenciando la presenciaonline para posicionarsemejor en el mercado.",
+        "Con nuestros clientes,logramos potenciar sualcance y fortalecer suposición en el mercado,además de redefinir suidentidad de marca ymejorar de su visibilidad,aumentando sus ventasmediante la integraciónde Meta Ads.",
+        "A lo largo de nuestratrayectoria,acompañamos a marcas,profesionales yemprendimientos dedistintos rubros aconstruir, comunicar yhacer crecer susproyectos.",
+        "Conocé algunos de losproyectos que yaconfiaron en nosotros ↓",
+        "CASOS DE ÉXITO"
+      ]
+    },
+    {
+      "key": "servicio",
+      "text": [
+        "¿Necesitásayuda?",
+        "Tenés tu propia historiay tus propios desafíos.Por eso, la prioridad esescucharte antes deactuar.",
+        "Análisispersonalizado:Identificamosjuntos quénecesita tunegocio paracrecer.",
+        "Soluciones amedida:Planificamosestrategiascreativas yprácticas paraconectar con tusclientes.",
+        "Ejecución:Implementamoslas acciones paralograr el impactoque buscás."
+      ]
+    },
+    {
+      "key": "tiempos",
+      "text": [
+        "Cronogramade Trabajo",
+        "Mes inicial",
+        "Semanas 1 y 2",
+        "Semanas 3 y 4",
+        "Reunióninicial",
+        "Investigacióny estrategia",
+        "Propuesta",
+        "Planificación",
+        "y desarrollo",
+        "Producción decontenidos",
+        "Aprobaciónde primeraspiezas",
+        "Publicación",
+        "Meses siguientes:",
+        "La renovación del contenido seplanifica durante la última semanade cada mes.",
+        "Publicaciones períodicas en loscanales contratados.",
+        "Gestión a demanda de campañas depublicidad en Meta Ads*",
+        "*(sujeto a disponibilidad del plan contratado)",
+        "Revisión constante de la estrategiageneral.",
+        "De forma periódica,recibirán",
+        "un reporte con losresultados",
+        "de las actividadesrealizadas."
+      ]
+    },
+    {
+      "key": "planes",
+      "text": [
+        "Hagamos",
+        "crecer",
+        "tus redes.",
+        "Inicial",
+        "Análisis básico",
+        "Contenido orgánico (sin ADS)",
+        "Hasta 2 canales",
+        "(contenido",
+        "replicado)",
+        "8 historias al mes",
+        "6 posteos al mes",
+        "2 reel/tiktok al mes",
+        "115 usd",
+        "/ cada mes",
+        "Plus",
+        "Más elegido",
+        "Análisis avanzado",
+        "Contenido orgánico +2 campañas de ADS",
+        "*inversión cotiza aparte",
+        "Hasta 3 canales",
+        "(contenido adaptado)",
+        "12 historias al mes",
+        "8 posteos al mes",
+        "4 reel/tiktok al mes",
+        "135 usd",
+        "/ cada mes",
+        "Premium",
+        "Análisis avanzado",
+        "Llamadas 1:1",
+        "semanales",
+        "Hasta 5 campañas deADS simultáneas.",
+        "*inversión cotiza aparte",
+        "Estrategia adaptada decanales (Sí, TODAS LASREDES NECESARIAS)",
+        "12 historias al mes",
+        "8 posteos al mes",
+        "8 reel/tiktok al mes",
+        "155 usd",
+        "/ cada mes",
+        "Sesión de fotos &videos",
+        "100 USD",
+        "Sujeto a disponibilidad",
+        "Jornada intensiva de 2hs de creaciónde contenido de alta calidad realizadacon UGC y cámara de dispositivoiPhone enfocada en generarcontenido auténtico, dinámico yalineado a tu marca.",
+        "El objetivo es mostrar el uso de tusproductos y/o servicios de forma real ycercana, priorizando formatos que seadapten a los requerimientos actualesde las redes sociales (reels, stories eimágenes).",
+        "Serviciosadicionales",
+        "Consúltanos :)",
+        "Branding personalizado",
+        "Sitio web / e-commerce",
+        "E-mail marketing",
+        "Sitio web / e-commerce",
+        "Diseño gráfico profesional",
+        "Fotografía profesional",
+        "Campañas de ADS extra",
+        "Canales extra",
+        "Soluciones logísticas",
+        "Nuevo!",
+        "Asesoría completa demarketing digital"
+      ]
+    },
+    {
+      "key": "branding",
+      "text": [
+        "Branding",
+        "Studio.",
+        "Caso de éxito: Hostel“El Duende Errante”",
+        "Logo completo",
+        "Versión reducida",
+        "Mockup",
+        "Tu marca necesitamás que un logo:necesita unaidentidad.",
+        "En Clic desarrollamosmanuales de marcacompletos: incluyendologo, colores, tipografías,usos, aplicaciones eincluso mockups paraque tu comunicaciónsea coherente,profesional yreconocible.",
+        "Diseñamos identidadesvisuales con estrategia,criterio estético y laexperiencia dediseñadores con másde 10 años en el rubro.",
+        "Solicitá tu manual demarca personalizado."
+      ]
+    },
+    {
+      "key": "asesoria",
+      "text": [
+        "Recibí unaasesoría 1:1100%personalizada",
+        "¿Sentís que tu negociotiene potencial paracrecer, pero no tenés clarocuál es el siguiente paso?🤔📈",
+        "A través de nuestrasasesorías estratégicas teayudamos a ordenar ideas,detectar oportunidades ydefinir un camino claropara crecer con intención.",
+        "Escribinos ahora yconversemos sobre tuproyecto.",
+        "contáctanos"
+      ]
+    },
+    {
+      "key": "contacto",
+      "text": [
+        "HAGAMOSCRECER TUSREDES",
+        "Más visibilidad, másclientes, más ventas.",
+        "AGENDÁ UNAVIDEOLLAMADAGRATUITA",
+        "+54 9 2944 12-6756",
+        "@marketingbyclic"
+      ]
+    }
+  ]
+}

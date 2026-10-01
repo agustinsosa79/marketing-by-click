@@ -1,0 +1,212 @@
+[
+  {
+    "file": "media/icono-instagram.png",
+    "source": "https://marketingbyclic.com/_assets/media/097e0f354fb79099107543bd31426230.png",
+    "section": "hero",
+    "kind": "img",
+    "size": "798x800"
+  },
+  {
+    "file": "media/icono-whatsapp.png",
+    "source": "https://marketingbyclic.com/_assets/media/39d77ee3195529fc84b69d113c1553c3.png",
+    "section": "hero",
+    "kind": "img",
+    "size": "795x799"
+  },
+  {
+    "file": "media/logo-marketing-by-clic-blanco.png",
+    "source": "https://marketingbyclic.com/_assets/media/18414dc884ee304e88b4c42720209db3.png",
+    "section": "hero",
+    "kind": "img",
+    "size": "799x222"
+  },
+  {
+    "file": "media/founder-ian-mobile.jpg",
+    "source": "https://marketingbyclic.com/_assets/media/f04af65dcdca990252690e9e09a06d2b.jpg",
+    "section": "founder",
+    "kind": "img",
+    "size": "600x800"
+  },
+  {
+    "file": "media/nuestro-trabajo-videollamada-mobile.jpg",
+    "source": "https://marketingbyclic.com/_assets/media/64ff2c57c9a000579385d745eafe5c22.jpg",
+    "section": "portfolio",
+    "kind": "img",
+    "size": "450x800"
+  },
+  {
+    "file": "media/servicio-meta-ads.png",
+    "source": "https://marketingbyclic.com/_assets/media/daa29d086e5e59b117af764c6be2ad9e.png",
+    "section": "servicio",
+    "kind": "img",
+    "size": "799x772"
+  },
+  {
+    "file": "media/servicio-contenido.png",
+    "source": "https://marketingbyclic.com/_assets/media/229320d9fac0c0098532beeaa092bba8.png",
+    "section": "servicio",
+    "kind": "img",
+    "size": "762x799"
+  },
+  {
+    "file": "media/servicio-estrategia.png",
+    "source": "https://marketingbyclic.com/_assets/media/d16d99de02d1c1509519d05a79804628.png",
+    "section": "servicio",
+    "kind": "img",
+    "size": "800x768"
+  },
+  {
+    "file": "media/paso-reunion-inicial.png",
+    "source": "https://marketingbyclic.com/_assets/media/f23fcb2516526234321b0a4e35e27e3f.png",
+    "section": "tiempos",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/paso-investigacion-estrategia.png",
+    "source": "https://marketingbyclic.com/_assets/media/98c839896161a118ee226d40948ed1cf.png",
+    "section": "tiempos",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/paso-propuesta.png",
+    "source": "https://marketingbyclic.com/_assets/media/1a9089c2fd7f9566dd981a33d473d04f.png",
+    "section": "tiempos",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/paso-planificacion-desarrollo.png",
+    "source": "https://marketingbyclic.com/_assets/media/1fc7506331870f4f592aee19a39304a0.png",
+    "section": "tiempos",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/paso-produccion-contenidos.png",
+    "source": "https://marketingbyclic.com/_assets/media/bdd3473d3c42e0a87a2cefbda1ff4e7e.png",
+    "section": "tiempos",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/paso-aprobacion-piezas.png",
+    "source": "https://marketingbyclic.com/_assets/media/6cee040e2a2e79b5efaf33b7bf616122.png",
+    "section": "tiempos",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/paso-publicacion.png",
+    "source": "https://marketingbyclic.com/_assets/media/88ca0e22fd7f621ee9daa6d0fe81abda.png",
+    "section": "tiempos",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/planes-cinta-mas-elegido.png",
+    "source": "https://marketingbyclic.com/_assets/media/d199e497928369c6aebd59676f620ad8.png",
+    "section": "planes",
+    "kind": "img",
+    "size": "800x757"
+  },
+  {
+    "file": "media/branding-duende-logo-completo.png",
+    "source": "https://marketingbyclic.com/_assets/media/1b2dd9e2e383d2d4de96e29580ca2ec2.png",
+    "section": "branding",
+    "kind": "img",
+    "size": "800x651"
+  },
+  {
+    "file": "media/branding-duende-version-reducida.png",
+    "source": "https://marketingbyclic.com/_assets/media/96352fb2334203d24e3170a958e35407.png",
+    "section": "branding",
+    "kind": "img",
+    "size": "800x651"
+  },
+  {
+    "file": "media/branding-duende-mockup-remeras.png",
+    "source": "https://marketingbyclic.com/_assets/media/c1497a892347b311d888ca8fba28bed3.png",
+    "section": "branding",
+    "kind": "img",
+    "size": "800x800"
+  },
+  {
+    "file": "media/logo-marketing-by-clic-claro.png",
+    "source": "https://marketingbyclic.com/_assets/media/5753974cb017fd05b913f7a36d6118c7.png",
+    "section": "contacto",
+    "kind": "img",
+    "size": "799x226"
+  },
+  {
+    "file": "media/icono-instagram-claro.png",
+    "source": "https://marketingbyclic.com/_assets/media/a6a99001fafe7bcc70a6662f5109f1e6.png",
+    "section": "contacto",
+    "kind": "img",
+    "size": "798x799"
+  },
+  {
+    "file": "media/icono-whatsapp-claro.png",
+    "source": "https://marketingbyclic.com/_assets/media/12116ecb7d51997b242acdbd40709b31.png",
+    "section": "contacto",
+    "kind": "img",
+    "size": "795x799"
+  },
+  {
+    "file": "media/video-hero-ian.mp4",
+    "source": "https://marketingbyclic.com/_assets/video/5925d07b533fe973be5d071516a02b47.mp4",
+    "section": "hero",
+    "kind": "video"
+  },
+  {
+    "file": "media/favicon-32.png",
+    "source": "https://marketingbyclic.com/_assets/images/bee7a471099c06dbfa73eb658eb95bf2.png",
+    "section": "head",
+    "kind": "icon"
+  },
+  {
+    "file": "media/favicon-192.png",
+    "source": "https://marketingbyclic.com/_assets/images/0ec71abdd2082453417001166e56fd56.png",
+    "section": "head",
+    "kind": "icon"
+  },
+  {
+    "file": "media/apple-touch-icon-180.png",
+    "source": "https://marketingbyclic.com/_assets/images/2f75b1f4275ef47a8166917d0e55fdd0.png",
+    "section": "head",
+    "kind": "icon"
+  },
+  {
+    "file": "media/founder-ian.jpg",
+    "source": "https://marketingbyclic.com/_assets/media/f880556fac5435ca235868f82eedb105.jpg",
+    "section": "founder",
+    "kind": "img",
+    "size": "1200x1600"
+  },
+  {
+    "file": "media/nuestro-trabajo-videollamada.jpg",
+    "source": "https://marketingbyclic.com/_assets/media/70ca564218c5bfbfb17973b2af7604cd.jpg",
+    "section": "portfolio",
+    "kind": "img",
+    "size": "900x1600"
+  },
+  {
+    "file": "media/video-hero-ian-poster.jpg",
+    "source": "https://marketingbyclic.com/_assets/video/e4f4db702e742ea2dcc76ab327b2e859.jpg",
+    "section": "extra",
+    "kind": "video"
+  },
+  {
+    "file": "media/ui-canva-sprite-descartar.png",
+    "source": "https://marketingbyclic.com/_assets/media/f0a7e57372ccdc5093c644a7544f69f7.png",
+    "section": "extra",
+    "kind": "img"
+  },
+  {
+    "file": "media/cronograma-flecha.png",
+    "source": "https://marketingbyclic.com/_assets/media/c13af0ad0c639fc9bcb2565b74271588.png",
+    "section": "extra",
+    "kind": "img"
+  }
+]

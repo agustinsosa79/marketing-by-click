@@ -1,0 +1,196 @@
+{
+  "note": "Los items del menú de Canva apuntan todos a \"/\" y hacen scroll por JS a la sección; `target` indica a qué sección van.",
+  "menu": [
+    {
+      "label": "NOSOTROS",
+      "target": "nosotros"
+    },
+    {
+      "label": "FOUNDER",
+      "target": "founder"
+    },
+    {
+      "label": "PORTFOLIO",
+      "target": "portfolio"
+    },
+    {
+      "label": "SERVICIO",
+      "target": "servicio"
+    },
+    {
+      "label": "TIEMPOS",
+      "target": "tiempos"
+    },
+    {
+      "label": "PLANES",
+      "target": "planes"
+    },
+    {
+      "label": "BRANDING",
+      "target": "branding"
+    },
+    {
+      "label": "ASESORÍA 1:1",
+      "target": "asesoria"
+    },
+    {
+      "label": "CONTÁCTANOS",
+      "target": "contacto"
+    }
+  ],
+  "internal": [
+    {
+      "href": "https://marketingbyclic.com/",
+      "section": "nav",
+      "labels": [
+        "Marketing by Clic",
+        "NOSOTROS",
+        "FOUNDER",
+        "PORTFOLIO",
+        "SERVICIO",
+        "TIEMPOS",
+        "PLANES",
+        "BRANDING",
+        "ASESORÍA 1:1",
+        "CONTÁCTANOS"
+      ],
+      "hasIcon": false,
+      "viewports": [
+        "desktop"
+      ],
+      "type": "internal"
+    }
+  ],
+  "social": [
+    {
+      "href": "https://www.instagram.com/marketingbyclic/",
+      "section": "hero",
+      "labels": [],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "social"
+    },
+    {
+      "href": "https://www.instagram.com/ianmarketer?igsh=MTA4a2lqZnM5OWd4bQ%3D%3D&utm_source=qr",
+      "section": "founder",
+      "labels": [
+        "@ianmarketer",
+        "Seguime para aprender sobre negocios digitales",
+        "Seguime para aprender sobrenegocios digitales"
+      ],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "social"
+    },
+    {
+      "href": "https://www.instagram.com/marketingbyclic/",
+      "section": "contacto",
+      "labels": [],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "social"
+    },
+    {
+      "href": "https://www.instagram.com/ianmarketer?igsh=MTA4a2lqZnM5OWd4bQ%3D%3D&utm_source=qr",
+      "section": "contacto",
+      "labels": [
+        "@marketingbyclic"
+      ],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "social"
+    }
+  ],
+  "whatsapp": [
+    {
+      "href": "http://wa.me/5492944126756",
+      "section": "hero",
+      "labels": [],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "whatsapp"
+    },
+    {
+      "href": "https://wa.me/message/2SGQE2CNFXEDF1",
+      "section": "portfolio",
+      "labels": [],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "whatsapp"
+    },
+    {
+      "href": "https://wa.me/message/2SGQE2CNFXEDF1",
+      "section": "branding",
+      "labels": [
+        "Solicitá tu manual de marca personalizado.",
+        "Solicitá tu manual demarca personalizado."
+      ],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "whatsapp"
+    },
+    {
+      "href": "https://wa.me/message/2SGQE2CNFXEDF1",
+      "section": "asesoria",
+      "labels": [
+        "contáctanos"
+      ],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "whatsapp"
+    },
+    {
+      "href": "https://wa.me/message/2SGQE2CNFXEDF1",
+      "section": "contacto",
+      "labels": [
+        "AGENDÁ UNAVIDEOLLAMADA GRATUITA",
+        "HAGAMOS CRECER TUS REDES",
+        "AGENDÁ UNAVIDEOLLAMADAGRATUITA",
+        "HAGAMOSCRECER TUSREDES"
+      ],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "whatsapp"
+    },
+    {
+      "href": "http://wa.me/5492944126756",
+      "section": "contacto",
+      "labels": [
+        "+54 9 2944 12-6756"
+      ],
+      "hasIcon": false,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "type": "whatsapp"
+    }
+  ]
+}

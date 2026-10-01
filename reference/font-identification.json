@@ -1,0 +1,137 @@
+{
+ "YAFdtQi73Xs_0 (400)": {
+  "weight": 400,
+  "width": 5,
+  "vendor": "ULA ",
+  "top": [
+   {
+    "font": "Montserrat",
+    "iou": 0.84,
+    "widthRatio": 0.999
+   },
+   {
+    "font": "Sora",
+    "iou": 0.345,
+    "widthRatio": 1.015
+   },
+   {
+    "font": "Poppins",
+    "iou": 0.266,
+    "widthRatio": 1.006
+   },
+   {
+    "font": "Lexend",
+    "iou": 0.239,
+    "widthRatio": 0.99
+   }
+  ]
+ },
+ "YAFdtQi73Xs_0 (700)": {
+  "weight": 700,
+  "width": 5,
+  "vendor": "ULA ",
+  "top": [
+   {
+    "font": "Montserrat",
+    "iou": 0.937,
+    "widthRatio": 1
+   },
+   {
+    "font": "Poppins",
+    "iou": 0.447,
+    "widthRatio": 0.98
+   },
+   {
+    "font": "Lexend",
+    "iou": 0.39,
+    "widthRatio": 0.993
+   },
+   {
+    "font": "Sora",
+    "iou": 0.372,
+    "widthRatio": 0.983
+   }
+  ]
+ },
+ "YAFdJn5d8s0_0 (400)": {
+  "weight": 400,
+  "width": 5,
+  "vendor": "UKWN",
+  "top": [
+   {
+    "font": "Archivo",
+    "iou": 0.489,
+    "widthRatio": 0.998
+   },
+   {
+    "font": "Nunito Sans",
+    "iou": 0.45,
+    "widthRatio": 1.009
+   },
+   {
+    "font": "Arimo",
+    "iou": 0.336,
+    "widthRatio": 1.022
+   },
+   {
+    "font": "Outfit",
+    "iou": 0.311,
+    "widthRatio": 0.961
+   }
+  ]
+ },
+ "YAFdJn5d8s0_0 (700)": {
+  "weight": 700,
+  "width": 5,
+  "vendor": "UKWN",
+  "top": [
+   {
+    "font": "Instrument Sans",
+    "iou": 0.538,
+    "widthRatio": 0.974
+   },
+   {
+    "font": "Archivo",
+    "iou": 0.447,
+    "widthRatio": 1.012
+   },
+   {
+    "font": "Onest",
+    "iou": 0.417,
+    "widthRatio": 0.997
+   },
+   {
+    "font": "Libre Franklin",
+    "iou": 0.414,
+    "widthRatio": 1.005
+   }
+  ]
+ },
+ "YAEnXHTFXhg_0": {
+  "weight": 700,
+  "width": 7,
+  "vendor": "TpTp",
+  "top": [
+   {
+    "font": "Montserrat",
+    "iou": 0.387,
+    "widthRatio": 0.952
+   },
+   {
+    "font": "Poppins",
+    "iou": 0.382,
+    "widthRatio": 0.934
+   },
+   {
+    "font": "Lexend",
+    "iou": 0.37,
+    "widthRatio": 0.946
+   },
+   {
+    "font": "Outfit",
+    "iou": 0.363,
+    "widthRatio": 0.829
+   }
+  ]
+ }
+}

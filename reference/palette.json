@@ -1,0 +1,135 @@
+{
+  "sectionBackgrounds": [
+    {
+      "key": "hero",
+      "background": "#223a8d"
+    },
+    {
+      "key": "nosotros",
+      "background": "#223a8d"
+    },
+    {
+      "key": "founder",
+      "background": "#e3e8ff"
+    },
+    {
+      "key": "portfolio",
+      "background": "#223a8d"
+    },
+    {
+      "key": "servicio",
+      "background": "#223a8d"
+    },
+    {
+      "key": "tiempos",
+      "background": "#223a8d"
+    },
+    {
+      "key": "planes",
+      "background": "#98acd9"
+    },
+    {
+      "key": "branding",
+      "background": "#4667af"
+    },
+    {
+      "key": "asesoria",
+      "background": "#e3e8ff"
+    },
+    {
+      "key": "contacto",
+      "background": "#223a8d"
+    }
+  ],
+  "color": [
+    {
+      "value": "#ffffff",
+      "count": 2677
+    },
+    {
+      "value": "#1a4292",
+      "count": 1147
+    },
+    {
+      "value": "#e3e8ff",
+      "count": 206
+    },
+    {
+      "value": "#4667af",
+      "count": 61
+    },
+    {
+      "value": "#42b8fd",
+      "count": 33
+    },
+    {
+      "value": "#fefefd",
+      "count": 25
+    },
+    {
+      "value": "#1800ad",
+      "count": 24
+    }
+  ],
+  "backgroundColor": [
+    {
+      "value": "#ffffff",
+      "count": 23
+    },
+    {
+      "value": "#223a8d",
+      "count": 14
+    },
+    {
+      "value": "#e3e8ff",
+      "count": 8
+    },
+    {
+      "value": "#ffffff @0.4",
+      "count": 3
+    },
+    {
+      "value": "#93bcd5",
+      "count": 3
+    },
+    {
+      "value": "#98acd9",
+      "count": 3
+    },
+    {
+      "value": "#4667af",
+      "count": 3
+    },
+    {
+      "value": "#131620 @0.6",
+      "count": 2
+    },
+    {
+      "value": "#0f1015",
+      "count": 1
+    },
+    {
+      "value": "#42b8fd",
+      "count": 1
+    },
+    {
+      "value": "#004aad",
+      "count": 1
+    },
+    {
+      "value": "#1e84f0",
+      "count": 1
+    }
+  ],
+  "borderColor": [],
+  "svgFill": [
+    {
+      "value": "#ffffff",
+      "count": 3
+    },
+    {
+      "value": "#ffffff @0.898",
+      "count": 2
+    }
+  ]
+}
