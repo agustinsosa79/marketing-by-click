@@ -88,6 +88,9 @@ export function setupReveals(scope: Element | Document = document) {
       SplitText.create(el, {
         type: type === 'chars' ? 'lines,chars' : type,
         mask: type === 'chars' ? 'lines' : type,
+        // las máscaras heredan la clase + "-mask": .split-line-mask / .split-word-mask tienen aire para tildes (index.css)
+        linesClass: 'split-line',
+        wordsClass: 'split-word',
         // títulos: aria-label (permitido en headings). Párrafos: sin ARIA, el texto partido por líneas/palabras
         // se sigue leyendo bien y aria-label sobre <p> no está permitido.
         aria: /^H[1-6]$/.test(el.tagName) ? 'auto' : 'none',

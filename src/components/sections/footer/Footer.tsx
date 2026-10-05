@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { brand, contact, footer, nav } from '../../../data/content'
+import { brand, contact, footer, servicios } from '../../../data/content'
 import { fitText, useFitText } from '../../../hooks/useFitText'
 import { useLenis } from '../../../hooks/useLenis'
 import { useReducedMotion } from '../../../hooks/useReducedMotion'
@@ -9,9 +9,8 @@ import { deferSetup } from '../../../lib/schedule'
 import { Icon } from '../../ui/Icon'
 
 /**
- * Footer con revelado tipo telón: queda sticky debajo de <main> (z-0) y aparece cuando la última sección
- * sube; su contenido acompaña con parallax. El wordmark "MARKETING BY CLIC" entra letra por letra.
- * En mobile va en el flujo normal (puede ser más alto que la pantalla).
+ * Footer mínimo con revelado tipo telón: queda sticky debajo de <main> (desktop) y aparece cuando
+ * la última sección sube. El wordmark "MARKETING BY CLIC" entra letra por letra.
  */
 export function Footer() {
   const ref = useRef<HTMLElement>(null)
@@ -26,105 +25,98 @@ export function Footer() {
     (_, contextSafe) =>
       deferSetup(
         contextSafe!(() => {
-      const el = ref.current!
-      // Un elemento sticky se mide mal como trigger: todo se dispara con el final de <main>
-      const main = el.previousElementSibling as HTMLElement
-      const lines = el.querySelectorAll('[data-footer-line]')
-      const cols = el.querySelectorAll('[data-footer-col]')
-      const once = { trigger: main, start: 'bottom 75%', once: true }
+          const el = ref.current!
+          // Un elemento sticky se mide mal como trigger: todo se dispara con el final de <main>
+          const main = el.previousElementSibling as HTMLElement
+          const once = { trigger: main, start: 'bottom 80%', once: true }
+          const row = el.querySelector('[data-footer-row]')
 
-      if (reduced) {
-        gsap.fromTo([...lines, ...cols, wordmark.current], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, scrollTrigger: once })
-        return
-      }
+          if (reduced) {
+            gsap.fromTo([row, wordmark.current], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, scrollTrigger: once })
+            return
+          }
 
-      // Parallax del contenido mientras el telón se abre (solo desktop, donde el footer es sticky)
-      const mm = gsap.matchMedia()
-      mm.add('(min-width: 768px)', () => {
-        gsap.fromTo(inner.current, { yPercent: -30 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: main, start: 'bottom bottom', end: () => `+=${el.offsetHeight}`, scrub: true, invalidateOnRefresh: true } })
-      })
+          const mm = gsap.matchMedia()
+          mm.add('(min-width: 768px)', () => {
+            gsap.fromTo(
+              inner.current,
+              { yPercent: -35 },
+              { yPercent: 0, ease: 'none', scrollTrigger: { trigger: main, start: 'bottom bottom', end: () => `+=${el.offsetHeight}`, scrub: true, invalidateOnRefresh: true } },
+            )
+          })
+          gsap.fromTo(row, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'reveal', scrollTrigger: once })
 
-      gsap.fromTo(lines, { yPercent: 110 }, { yPercent: 0, duration: 1.2, stagger: 0.08, ease: 'reveal', scrollTrigger: once })
-      gsap.fromTo(cols, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.1, ease: 'reveal', delay: 0.2, scrollTrigger: once })
-
-      let alive = true
-      const animate = contextSafe!(() => {
-        if (!alive || !wordmark.current) return
-        const { chars } = SplitText.create(wordmark.current, { type: 'lines,chars', mask: 'lines', aria: 'none' })
-        fitText(wordmark.current, 1)
-        gsap.fromTo(chars, { yPercent: 110 }, { yPercent: 0, duration: 1.3, stagger: 0.035, ease: 'reveal', delay: 0.3, scrollTrigger: { ...once, start: 'bottom 60%' } })
-      })
-      fontsReady().then(animate)
-      return () => {
-        alive = false
-        mm.revert()
-      }
+          let alive = true
+          const animate = contextSafe!(() => {
+            if (!alive || !wordmark.current) return
+            const { chars } = SplitText.create(wordmark.current, { type: 'lines,chars', mask: 'lines', linesClass: 'split-line', aria: 'none' })
+            fitText(wordmark.current, 1)
+            gsap.fromTo(chars, { yPercent: 110 }, { yPercent: 0, duration: 1.3, stagger: 0.035, ease: 'reveal', delay: 0.2, scrollTrigger: { ...once, start: 'bottom 70%' } })
+          })
+          fontsReady().then(animate)
+          return () => {
+            alive = false
+            mm.revert()
+          }
         }),
       ),
     { scope: ref, dependencies: [reduced] },
   )
 
+  const links = [
+    { ...contact.whatsapp, icon: 'whatsapp' as const },
+    { ...contact.instagram, icon: 'instagram' as const },
+    { ...contact.founderInstagram, icon: 'instagram' as const },
+  ]
+
   return (
-    <footer ref={ref} className="relative z-0 overflow-hidden bg-brand-night text-brand-paper md:sticky md:bottom-0">
-      <div ref={inner} className="px-5 pt-20 pb-6 md:px-10 md:pt-28">
-        <div className="grid gap-12 md:grid-cols-12 md:gap-6">
-          <div className="md:col-span-5">
-            {footer.lines.map((line) => (
-              <p key={line} className="overflow-hidden pb-descender font-accent text-4xl md:text-6xl">
-                <span data-footer-line className="block">
-                  {line}
-                </span>
-              </p>
-            ))}
-          </div>
+    <footer ref={ref} className="relative z-0 overflow-hidden bg-brand-night text-white md:sticky md:bottom-0">
+      <div ref={inner} className="px-5 pt-14 pb-6 md:px-10 md:pt-20">
+        <p className="sr-only">{brand.name}</p>
+        <p ref={wordmark} aria-hidden="true" className="font-wordmark leading-none whitespace-nowrap">
+          <span data-fit-line className="inline-block">
+            {brand.wordmark.join(' ')}
+          </span>
+        </p>
 
-          <nav data-footer-col aria-label={footer.navTitle} className="md:col-span-3 md:col-start-7">
-            <h2 className="text-label font-semibold text-brand-sky">{footer.navTitle}</h2>
-            <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-2 md:grid-cols-1">
-              {nav.items.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      const target = document.getElementById(item.id)
-                      if (target) scrollTo(target, { duration: 1.6 })
-                    }}
-                    className="link-underline text-lg font-bold"
-                  >
-                    {item.label}
-                  </a>
-                </li>
+        <div data-footer-row className="mt-8 flex flex-col gap-6 border-t border-white/10 pt-6 text-sm md:mt-12">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <nav aria-label={footer.navAria} className="flex flex-wrap items-center gap-x-6 gap-y-2 font-semibold text-brand-haze">
+              {servicios.items.map((s) => (
+                <a key={s.slug} href={`/servicios/${s.slug}`} className="link-underline transition-colors duration-300 hover:text-white">
+                  {s.name}
+                </a>
               ))}
-            </ul>
-          </nav>
-
-          <div data-footer-col className="md:col-span-3">
-            <h2 className="text-label font-semibold text-brand-sky">{footer.contactTitle}</h2>
-            <ul className="mt-5 flex flex-col gap-3">
-              {[
-                { href: contact.whatsapp.href, label: contact.whatsapp.label, icon: 'whatsapp' as const },
-                { href: contact.instagram.href, label: contact.instagram.label, icon: 'instagram' as const },
-                { href: contact.founderInstagram.href, label: contact.founderInstagram.label, icon: 'instagram' as const },
-              ].map((l) => (
+              <a href={footer.blog.href} className="link-underline transition-colors duration-300 hover:text-white">
+                {footer.blog.label}
+              </a>
+            </nav>
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 font-semibold text-brand-haze">
+              {links.map((l) => (
                 <li key={l.href}>
-                  <a href={l.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 text-lg font-bold">
-                    <Icon name={l.icon} className="size-5 transition-transform duration-500 ease-expo group-hover:-rotate-12 group-hover:scale-115" />
+                  <a href={l.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 transition-colors duration-300 hover:text-white">
+                    <Icon name={l.icon} className="size-4 transition-transform duration-500 ease-expo group-hover:-rotate-12" />
                     <span className="link-underline">{l.label}</span>
                   </a>
                 </li>
               ))}
             </ul>
           </div>
+          <div className="flex flex-col gap-4 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-bold">{footer.line}</p>
+            <div className="flex items-center justify-between gap-6 text-brand-haze">
+              <span>{footer.copyright}</span>
+              <button type="button" onClick={() => scrollTo(0, { duration: 2.2 })} className="group flex items-center gap-2 font-semibold whitespace-nowrap transition-colors duration-300 hover:text-white">
+                <span className="link-underline">{footer.backToTop}</span>
+                <span className="grid size-8 place-items-center rounded-full bg-white/10 transition duration-500 ease-expo group-hover:-translate-y-1 group-hover:bg-brand-signal">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-none stroke-current stroke-2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 19V5M6 11l6-6 6 6" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-
-        <p className="sr-only">{brand.name}</p>
-        <p ref={wordmark} aria-hidden="true" className="mt-16 font-display leading-none whitespace-nowrap md:mt-24">
-          <span data-fit-line className="inline-block">
-            {brand.wordmark.join(' ')}
-          </span>
-        </p>
-
       </div>
     </footer>
   )

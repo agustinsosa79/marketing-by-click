@@ -15,23 +15,22 @@ html.lenis.lenis-stopped {
 }
 
 /* ------------------------------------------------------------------
-   Tokens de marca: extraídos de marketingbyclic.com (docs/brand-analysis.md)
+   Paleta "Azul total" (paso 1 aprobado): una sola familia de azules con el matiz del azul Clic.
    ------------------------------------------------------------------ */
 @theme {
-  --color-brand-night: #0c1640; /* derivado de deep: menú, secciones oscuras */
-  --color-brand-deep: #223a8d; /* azul Clic */
-  --color-brand-primary: #004aad; /* cobalto */
-  --color-brand-sky: #42b8fd; /* celeste medido: acentos, CTA, progreso */
-  --color-brand-electric: #1e84f0;
-  --color-brand-mid: #4667af;
-  --color-brand-soft: #98acd9;
-  --color-brand-powder: #93bcd5;
-  --color-brand-paper: #e3e8ff;
-  --color-brand-mist: #f3f5ff; /* superficie de cards sobre paper */
-  --color-brand-ink: #1a4292;
-  --color-brand-gold: #a8944d;
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
 
-  /* Escala tipográfica (fluida) */
+  --color-brand-night: #0b1435; /* Azul noche: secciones oscuras, texto principal */
+  --color-brand-navy: #16224f; /* superficie de tarjetas sobre noche */
+  --color-brand-deep: #223a8d; /* Azul Clic: protagonista, títulos, logo */
+  --color-brand-signal: #3d5ef5; /* Azul señal: botones, hover, foco, progreso */
+  --color-brand-haze: #c9d3f5; /* Bruma: bordes y texto secundario sobre oscuro */
+  --color-brand-paper: #f4f6fc; /* Nube: fondo claro */
+
+  /* Escala tipográfica (fluida). Interlineado ≥ 1 en títulos: tildes y colas nunca se cortan. */
   --text-label: 0.8125rem;
   --text-label--line-height: 1.4;
   /* Wordmark del preloader (medido con Montserrat Black): "MARKETING" al 88% del ancho en dos líneas,
@@ -40,40 +39,45 @@ html.lenis.lenis-stopped {
   --text-wordmark--line-height: 1;
   --text-wordmark-wide: 9.353vw;
   --text-wordmark-wide--line-height: 1;
-  --text-hero: clamp(3rem, min(9.6vw, 17vh), 12.5rem);
-  --text-hero--line-height: 0.84;
-  --text-mega: clamp(6rem, 27vw, 32rem);
-  --text-mega--line-height: 0.78;
-  --text-giant: clamp(2.5rem, 11vw, 12rem);
-  --text-giant--line-height: 0.86;
-  --text-huge: clamp(2.5rem, 7vw, 7.5rem);
-  --text-huge--line-height: 0.9;
-  --text-index: clamp(1.875rem, 6.2vw, 7.25rem);
-  --text-index--line-height: 0.92;
-  --text-big: clamp(2rem, 4.4vw, 4.75rem);
-  --text-big--line-height: 0.95;
-  --text-statement: clamp(1.75rem, 4.1vw, 4.5rem);
-  --text-statement--line-height: 1.1;
-  --text-lead: clamp(1.375rem, 2.3vw, 2.5rem);
-  --text-lead--line-height: 1.18;
-  --text-menu: clamp(2.75rem, min(10.5vh, 13vw), 9rem);
-  --text-menu--line-height: 0.92;
+  --text-hero: clamp(2.6rem, min(6.4vw, 11.5vh), 8rem);
+  --text-hero--line-height: 1;
+  --text-title: clamp(1.9rem, min(4.6vw, 8.5vh), 5.25rem);
+  --text-title--line-height: 1.02;
+  --text-big: clamp(1.6rem, min(2.8vw, 5vh), 3rem);
+  --text-big--line-height: 1.08;
+  --text-lead: clamp(1.15rem, min(1.6vw, 2.8vh), 1.6rem);
+  --text-lead--line-height: 1.35;
+  --text-price: clamp(2.6rem, min(4.4vw, 8vh), 4.5rem);
+  --text-price--line-height: 1;
+  --text-menu: clamp(2.4rem, min(8.5vh, 9vw), 6.5rem);
+  --text-menu--line-height: 1.05;
 
-  /* Profundidad: sombras suaves en el azul de la marca + brillo celeste para lo accionable */
-  --shadow-soft: 0 1.5rem 3rem -1.25rem rgb(12 22 64 / 0.28);
-  --shadow-lift: 0 2.5rem 4.5rem -1.5rem rgb(12 22 64 / 0.42);
-  --shadow-glow: 0 1.5rem 4rem -1rem rgb(66 184 253 / 0.55);
+  /* Profundidad: sombras neutras (negro con poca opacidad), nunca teñidas de azul */
+  --shadow-soft: 0 0.0625rem 0.125rem rgb(0 0 0 / 0.05), 0 0.5rem 1.5rem -0.75rem rgb(0 0 0 / 0.12);
+  --shadow-lift: 0 0.125rem 0.25rem rgb(0 0 0 / 0.06), 0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.22);
 
   /* Medidas que no están en la escala */
   --spacing-hero: 200svh;
+  --spacing-card: min(44svh, 30rem); /* alto de tarjetas de servicio en desktop: entran en una pantalla */
+  --spacing-gallery: min(62svh, 40rem); /* galería del caso de éxito en desktop */
+  --spacing-panel: min(64svh, 40rem); /* panel del servicio activo en desktop */
   --spacing-hair: 0.0625rem;
-  --spacing-descender: 0.14em; /* aire para descendentes dentro de las máscaras de línea */
-  --spacing-italic-overhang: 0.12em; /* la itálica de Instrument Serif sobresale de su caja */
-  --spacing-pill: 0.78em; /* píldoras de imagen dentro de una frase */
-  --spacing-pill-wide: 1.9em;
+  --spacing-descender: 0.16em; /* aire para tildes y descendentes dentro de las máscaras de línea */
+  --spacing-descender-pull: -0.16em;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-hop: cubic-bezier(0.71, 0, 0.13, 1);
+
+  --aspect-wide: 21 / 9;
+
+  /* Entrada de la cabecera de las páginas sin preloader (blog): pinta con el HTML, sin esperar al JS */
+  --animate-intro: intro 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @keyframes intro {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
 
   /* Entrada del wordmark por CSS (antes del JS); GSAP la toma desde donde esté (usePreloaderTimeline) */
   --animate-rise: rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -87,21 +91,29 @@ html.lenis.lenis-stopped {
 }
 
 /* Montserrat Black alojada localmente (subset latin, 18 KB) y precargada en index.html:
-   es la del wordmark del preloader y de todos los títulos, así no espera la cadena CSS → fuente de Google. */
+   es la del wordmark del preloader, así no espera la cadena CSS → fuente de Google. */
 @font-face {
   font-family: 'Montserrat Display';
   font-style: normal;
   font-weight: 900;
-  font-display: block; /* precargada: llega enseguida y así el wordmark no salta de una fuente a otra */
+  font-display: block;
   src: url('/fonts/montserrat-900-latin.woff2') format('woff2');
 }
 
-/* Clases propias en la capa components: las utilidades de Tailwind pueden sobrescribirlas */
 @layer components {
   /* ------------------------------------------------------------------
-     Tipografías (cargadas con <link> en index.html)
+     Tipografía: una sola familia (Montserrat), sin cursivas. El contraste sale del peso y del color.
      ------------------------------------------------------------------ */
+  /* Títulos: ExtraBold en mayúscula inicial */
   .font-display {
+    font-family: 'Montserrat', 'Montserrat Display', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  /* Wordmark (preloader y footer): Black en mayúsculas, como el logo */
+  .font-wordmark {
     font-family: 'Montserrat Display', 'Montserrat', ui-sans-serif, system-ui, sans-serif;
     font-weight: 900;
     text-transform: uppercase;
@@ -112,31 +124,24 @@ html.lenis.lenis-stopped {
     font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
   }
 
-  /* Acento editorial: Instrument Serif itálica */
-  .font-accent {
-    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    text-transform: none;
-  }
-
-  /* Serif recta (menú) */
-  .font-editorial {
-    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-  }
-
-  /* Etiquetas y UI chica: la misma Montserrat de la marca, semibold, sin tracking forzado */
+  /* Etiquetas: Bold en versalitas con un poco de aire */
   .font-label {
     font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.005em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   .animation-delay-word {
     animation-delay: 0.12s;
+  }
+
+  /* Máscaras de SplitText (lib/motion.ts): aire arriba y abajo para tildes y descendentes,
+     compensado con margen negativo para no mover el layout */
+  .split-line-mask,
+  .split-word-mask {
+    padding-block: var(--spacing-descender);
+    margin-block: var(--spacing-descender-pull);
   }
 
   /* ------------------------------------------------------------------
@@ -164,6 +169,153 @@ html.lenis.lenis-stopped {
     mask-image: url('/media/isotipo.webp');
   }
 
+  /* Foto de las tarjetas de servicio: ventana arriba que al hover se abre a toda la tarjeta (clip-path, sin layout) */
+  .card-photo {
+    clip-path: inset(0.75rem 0.75rem 50% 0.75rem round 1rem);
+    transition: clip-path 0.8s var(--ease-expo);
+  }
+  .group:hover .card-photo,
+  .group:focus-visible .card-photo {
+    clip-path: inset(0 0 0 0 round 1.5rem);
+  }
+
+  /* ------------------------------------------------------------------
+     Cuerpo de las notas del blog (HTML generado desde Markdown)
+     ------------------------------------------------------------------ */
+  .prose {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--color-brand-night);
+  }
+  .prose > * + * {
+    margin-top: 1.25em;
+  }
+  .prose p,
+  .prose li {
+    text-wrap: pretty;
+  }
+  .prose h2,
+  .prose h3 {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-brand-deep);
+    text-wrap: balance;
+    scroll-margin-top: 7rem;
+  }
+  .prose h2 {
+    margin-top: 2.25em;
+    font-size: var(--text-big);
+    line-height: 1.1;
+  }
+  .prose h3 {
+    margin-top: 1.75em;
+    font-size: 1.375rem;
+    line-height: 1.25;
+  }
+  .prose h2 + *,
+  .prose h3 + * {
+    margin-top: 0.75em;
+  }
+  .prose a {
+    color: var(--color-brand-signal);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+  }
+  .prose strong {
+    font-weight: 700;
+    color: var(--color-brand-deep);
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 1.4em;
+  }
+  .prose ul {
+    list-style: disc;
+  }
+  .prose ol {
+    list-style: decimal;
+  }
+  .prose li + li {
+    margin-top: 0.5em;
+  }
+  .prose li::marker {
+    color: var(--color-brand-signal);
+    font-weight: 700;
+  }
+  .prose blockquote {
+    margin-block: 2em;
+    border-left: 0.25rem solid var(--color-brand-signal);
+    padding: 0.25em 0 0.25em 1.25em;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--color-brand-deep);
+  }
+  .prose figure {
+    margin-block: 2em;
+  }
+  .prose figure img {
+    width: 100%;
+    border-radius: 1.5rem;
+    background: var(--color-white);
+  }
+  .prose figcaption {
+    margin-top: 0.75em;
+    font-size: 0.875rem;
+    color: var(--color-brand-deep);
+    opacity: 0.7;
+  }
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+  .prose th {
+    text-align: left;
+    font-weight: 700;
+    color: var(--color-brand-deep);
+    border-bottom: 0.125rem solid var(--color-brand-deep);
+  }
+  .prose th,
+  .prose td {
+    padding: 0.75em 1em 0.75em 0;
+    border-bottom: 0.0625rem solid var(--color-brand-haze);
+  }
+  .prose hr {
+    margin-block: 2.5em;
+    border-color: var(--color-brand-haze);
+  }
+  .prose code {
+    border-radius: 0.375rem;
+    background: var(--color-white);
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+  }
+
+  /* Acordeón (preguntas frecuentes): el panel se abre con grid-template-rows, sin medir alturas en JS */
+  .accordion-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.55s var(--ease-expo);
+  }
+  .accordion-panel > * {
+    overflow: hidden;
+  }
+  [data-open] > .accordion-panel {
+    grid-template-rows: 1fr;
+  }
+
+  /* Carrusel sin barra de scroll (planes en mobile) */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* ------------------------------------------------------------------
      Link con subrayado que se dibuja de izquierda a derecha (y se va hacia la derecha)
      ------------------------------------------------------------------ */
@@ -176,14 +328,14 @@ html.lenis.lenis-stopped {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -0.12em;
-    height: 0.08em;
+    bottom: -0.15em;
+    height: 0.09em;
     min-height: 0.0625rem;
     border-radius: 1em;
     background: currentColor;
     transform: scaleX(0);
     transform-origin: right center;
-    transition: transform 0.6s var(--ease-expo);
+    transition: transform 0.55s var(--ease-expo);
   }
   .link-underline:hover::after,
   .link-underline:focus-visible::after,
@@ -193,9 +345,6 @@ html.lenis.lenis-stopped {
   }
 }
 
-/* ------------------------------------------------------------------
-   Base
-   ------------------------------------------------------------------ */
 @layer base {
   html {
     background-color: var(--color-brand-paper);
@@ -206,16 +355,16 @@ html.lenis.lenis-stopped {
 
   body {
     font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
-    color: var(--color-brand-deep);
-  }
-
-  ::selection {
-    background-color: var(--color-brand-sky);
     color: var(--color-brand-night);
   }
 
+  ::selection {
+    background-color: var(--color-brand-signal);
+    color: var(--color-white);
+  }
+
   :focus-visible {
-    outline: 0.125rem solid var(--color-brand-sky);
+    outline: 0.125rem solid var(--color-brand-signal);
     outline-offset: 0.25rem;
   }
 
@@ -225,12 +374,19 @@ html.lenis.lenis-stopped {
     cursor: none !important;
   }
 
-  /* Versión reducida solo a pedido (?motion=reduce): no depende del sistema operativo.
-     0s y no 0.01ms: con 0.01ms todo cambio de estilo es una transición y las mediciones por JS leen el valor viejo */
+  /* Versión reducida solo a pedido (?motion=reduce): no depende del sistema operativo. */
   html[data-motion='reduce'] *,
   html[data-motion='reduce'] *::before,
   html[data-motion='reduce'] *::after {
     transition-duration: 0s !important;
+  }
+  html[data-motion='reduce'] .animate-intro {
+    animation: none;
+  }
+
+  /* Llegada desde otra página del sitio: el inicio entra sin el preloader completo (lib/visit.ts) */
+  html[data-from-site] [data-preloader] {
+    display: none;
   }
 }
 
@@ -238,4 +394,18 @@ html.lenis.lenis-stopped {
    Sin capa y con más especificidad para ganarle al <style> crítico. */
 html #root {
   visibility: visible;
+}
+
+/* Escalonado de la entrada de cabeceras (animate-intro). Sin capa: el shorthand de la utilidad no lo pisa. */
+.intro-delay-1 {
+  animation-delay: 0.08s;
+}
+.intro-delay-2 {
+  animation-delay: 0.16s;
+}
+.intro-delay-3 {
+  animation-delay: 0.24s;
+}
+.intro-delay-4 {
+  animation-delay: 0.34s;
 }

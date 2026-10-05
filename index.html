@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Marketing by Clic | Marketing digital</title>
-    <meta name="description" content="Marketing digital. Estrategias online que generan resultados. Convertimos tus redes en una herramienta de crecimiento." />
-    <meta name="theme-color" content="#223a8d" />
+    <title>Marketing by Clic | Agencia de marketing digital en la Patagonia</title>
+    <meta name="description" content="Estrategia, contenido y Meta Ads para convertir tus redes en un sistema de ventas. Agencia nacida en la Patagonia. Escribinos por WhatsApp." />
+    <meta name="theme-color" content="#0b1435" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="/media/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/media/favicon-192.png" />
@@ -14,12 +14,31 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
     <meta property="og:site_name" content="Marketing by Clic" />
-    <meta property="og:title" content="Marketing by Clic | Marketing digital" />
-    <meta property="og:description" content="Estrategias online que generan resultados. Convertimos tus redes en una herramienta de crecimiento." />
+    <meta property="og:title" content="Marketing by Clic | Agencia de marketing digital en la Patagonia" />
+    <meta property="og:description" content="Estrategia, contenido y Meta Ads para convertir tus redes en un sistema de ventas." />
     <meta property="og:url" content="https://marketingbyclic.com/" />
-    <meta property="og:image" content="https://marketingbyclic.com/media/hero-poster.webp" />
+    <meta property="og:image" content="https://marketingbyclic.com/media/founder-ian.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://marketingbyclic.com/" />
+    <link rel="alternate" type="application/rss+xml" title="Blog de Marketing by Clic" href="/blog/rss.xml" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Marketing by Clic",
+        "description": "Agencia de marketing digital: estrategia, contenido, Meta Ads y branding para convertir tus redes en un sistema de ventas.",
+        "url": "https://marketingbyclic.com/",
+        "logo": "https://marketingbyclic.com/media/logo.webp",
+        "image": "https://marketingbyclic.com/media/founder-ian.webp",
+        "telephone": "+5492944126756",
+        "areaServed": { "@type": "Place", "name": "Patagonia, Argentina" },
+        "founder": { "@type": "Person", "name": "Ian" },
+        "sameAs": ["https://www.instagram.com/marketingbyclic/", "https://www.instagram.com/ianmarketer"],
+        "knowsAbout": ["Marketing digital", "Meta Ads", "Branding", "Contenido para redes sociales"],
+        "priceRange": "USD 115 - 155"
+      }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,20 +49,28 @@
       id="google-fonts"
       rel="stylesheet"
       disabled
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@400;500;600;700;800;900&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" />
     </noscript>
     <link rel="preload" as="font" href="/fonts/montserrat-900-latin.woff2" type="font/woff2" crossorigin />
     <!-- CSS crítico: el primer paint ya es el fondo del preloader y la app no se ve sin estilos -->
     <style>
-      html { background: #e3e8ff; }
+      html { background: #f4f6fc; }
       body { margin: 0; }
       #root { visibility: hidden; }
+      html[data-from-site] [data-preloader] { display: none; }
     </style>
+    <!-- Llegada al inicio desde otra página del sitio (no recarga): entrada corta, sin preloader (src/lib/visit.ts) -->
+    <script>
+      try {
+        var r = document.referrer && new URL(document.referrer), n = performance.getEntriesByType('navigation')[0]
+        if (r && r.origin === location.origin && r.pathname !== location.pathname && (!n || n.type === 'navigate')) document.documentElement.setAttribute('data-from-site', '')
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -2,36 +2,18 @@ import type { RefObject } from 'react'
 import { useLenis } from '../../hooks/useLenis'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { fontReady } from '../../lib/fonts'
-import { releaseDeferred } from '../../lib/schedule'
 import { gsap, useGSAP } from '../../lib/gsap'
+import { releaseDeferred } from '../../lib/schedule'
+import { cameFromSite } from '../../lib/visit'
 import type { PreloaderRefs } from './Preloader'
 
 interface Options {
   scope: RefObject<HTMLElement | null>
   refs: PreloaderRefs
-  video: RefObject<HTMLDivElement | null>
-  overlay: RefObject<HTMLDivElement | null>
   onComplete: () => void
 }
 
-const inset = (t: number, r: number, b: number, l: number) => `inset(${t}% ${r}% ${b}% ${l}%)`
-
-/**
- * Geometría medida en reference/preloader-ref.mp4 (1920×912), en % del viewport.
- * Ver reference/preloader-measurements.json.
- */
-const GEOMETRY = {
-  // captionCenter: centro vertical final de la frase (desktop medido: 89.6%; mobile, justo debajo del video)
-  // El ancho del wordmark (96% / 88%) lo resuelve el CSS: tokens text-wordmark-wide / text-wordmark.
-  desktop: { x: 16.1, top: 17.1, bottom: 16.9, captionCenter: 0.896 },
-  mobile: { x: 6, top: 30, bottom: 30, captionCenter: 0.78 },
-}
-/** Fracción inferior de la ÚLTIMA línea del wordmark que queda tapada por el video (medido: 41.5%). */
-const TITLE_COVERED = 0.415
-/** Cuánto sube la frase al entrar: viene desde el borde inferior, sin fade. */
-const CAPTION_TRAVEL = 0.11
-/** Duración de la entrada de letras, antes del t=0 de la referencia. */
-const INTRO = 0.9
+const circle = (r: number, x: number, y: number) => `circle(${r}px at ${x}px ${y}px)`
 
 /**
  * El wordmark entra con una animación CSS (pinta antes del JS, ver Preloader.tsx).
@@ -48,18 +30,17 @@ function takeOverIntro(inners: HTMLElement[]) {
 }
 
 /**
- * Timeline única del preloader → hero. Labels:
- *   intro  → letras entran con máscara (antes del t=0 de la referencia)
- *   ref    → t=0 de la referencia (todo lo demás se mide desde acá)
- *   line   → ref+0.27  tajo de video de 1px que crece desde el centro
- *   open   → ref+0.40  apertura vertical simétrica + el título sube (curva "aperture", medida)
- *   hold   → ref+1.45  el freno: todo quieto, solo el video
- *   expand → ref+2.2   pantalla completa con "hop"
- *   handoff→ ref+3.1   navbar + hero (las dos copias del titular en sincronía), lenis.start()
- *
- * Debug: ?debug=preloader expone window.__preloaderTl y la deja en pausa (scripts/compare-preloader.mjs).
+ * Preloader "by Clic": un clic que termina en contacto. Labels de la timeline:
+ *   intro    → termina la entrada del wordmark (empezó con CSS)
+ *   enter    → el cursor cruza la pantalla en arco hasta "CLIC"
+ *   hover    → "CLIC" se subraya como un link
+ *   click    → el cursor se hunde, salen dos ondas y se abre el círculo azul Clic desde la punta
+ *   message  → dentro del azul, la frase de la marca
+ *   collapse → el círculo se cierra sobre el botón "Hablemos por WhatsApp" del hero
+ *   handoff  → navbar + titular palabra por palabra + foto, lenis.start()
+ * Debug: ?debug=preloader deja la timeline en pausa en window.__preloaderTl.
  */
-export function usePreloaderTimeline({ scope, refs, video, overlay, onComplete }: Options) {
+export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
   const { start } = useLenis()
   const reduced = useReducedMotion()
 
@@ -70,149 +51,146 @@ export function usePreloaderTimeline({ scope, refs, video, overlay, onComplete }
       const navShell = document.querySelector<HTMLElement>('[data-navbar]')
       const stage = refs.stage.current!
       const title = refs.title.current!
-      const isotipo = refs.isotipo.current!
-      const tagline = refs.tagline.current!
-      const caption = refs.caption.current!
-      const videoWrap = video.current!
-      const videoInner = videoWrap.querySelector('video')
-      // Hero: dos copias del titular (front/back) + capa interactiva
-      const heroCopies = gsap.utils.toArray<HTMLElement>('[data-hero-copy]', scope.current)
+      const clic = refs.clic.current!
+      const cursor = refs.cursor.current!
+      const ripple = refs.ripple.current!
+      const fill = refs.fill.current!
+      const inners = [...title.querySelectorAll<HTMLElement>('[data-preloader-inner]')]
+      const mark = stage.querySelector('[data-preloader-mark]')
+      const line = clic.querySelector('[data-clic-line]')
+      const rings = ripple.querySelectorAll('[data-ring]')
+      const captionInner = refs.caption.current!.querySelector('[data-caption-inner]')
+      const heroMedia = scope.current!.querySelector<HTMLElement>('[data-hero-media]')
+      const heroCta = scope.current!.querySelector<HTMLElement>('[data-hero-cta]')
       const heroLines = gsap.utils.toArray<HTMLElement>('[data-hero-line]', scope.current)
-      const heroRules = gsap.utils.toArray<HTMLElement>('[data-hero-rule]', scope.current)
       const heroItems = gsap.utils.toArray<HTMLElement>('[data-hero-item]', scope.current)
       const debug = new URLSearchParams(location.search).get('debug') === 'preloader'
 
-      // Estado inicial sincrónico (antes del primer paint): nada del hero/nav visible, video cerrado.
-      gsap.set(videoWrap, { clipPath: inset(50, 50, 50, 50) })
-      gsap.set(videoInner, { scale: 1.08 })
-      gsap.set(overlay.current, { autoAlpha: 0 })
+      // Estado inicial sincrónico (antes del primer paint): nada del hero/nav visible
       gsap.set(navShell, { autoAlpha: 0 })
       gsap.set(navBlocks, { autoAlpha: 0, yPercent: -120 })
       gsap.set(heroLines, { yPercent: 115 })
-      gsap.set(heroRules, { scaleX: 0 })
       gsap.set(heroItems, { autoAlpha: 0 })
-
-      // El video empieza a bajar recién cuando arranca el preloader (no compite con JS y fuentes)
-      const startVideo = () => {
-        if (!videoInner) return
-        videoInner.preload = 'auto'
-        videoInner.play().catch(() => {})
-      }
+      gsap.set(rings, { xPercent: -50, yPercent: -50, scale: 0 })
+      // la punta del puntero (3, 2 en un viewBox de 24) queda en el punto exacto
+      gsap.set(cursor.querySelector('[data-cursor-svg]'), { xPercent: -12.5, yPercent: -8.33 })
 
       const finish = () => {
-        gsap.set(videoWrap, { clearProps: 'clipPath' })
         document.documentElement.dataset.ready = ''
         start()
         onComplete()
       }
 
-      // --- Versión reducida (solo con ?motion=reduce): mismo relato, solo fades
+      const revealHero = (tl: gsap.core.Timeline, at: string | number) => {
+        const later = typeof at === 'string' ? `${at}+=0.2` : at + 0.2
+        tl.to(navShell, { autoAlpha: 1, duration: 0.6 }, at)
+          .to(navBlocks, { autoAlpha: 1, yPercent: 0, duration: 1, stagger: 0.07 }, at)
+          .to(heroLines, { yPercent: 0, duration: 1.15, stagger: 0.045, ease: 'reveal' }, at)
+          .fromTo(heroItems, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.06, ease: 'reveal' }, later)
+        if (heroMedia) {
+          tl.fromTo(heroMedia, { clipPath: 'inset(100% 0% 0% 0% round 2rem)' }, { clipPath: 'inset(0% 0% 0% 0% round 2rem)', duration: 1.2, ease: 'hop' }, at).fromTo(
+            heroMedia.querySelector('img'),
+            { scale: 1.2 },
+            { scale: 1, duration: 1.6, ease: 'reveal' },
+            at,
+          )
+        }
+      }
+
+      // --- Llegada desde otra página del sitio (ej. del blog a /#planes): sin preloader, entrada corta del hero
+      const buildQuick = contextSafe!(() => {
+        const tl = gsap.timeline({ defaults: { ease: 'reveal' }, onComplete: finish })
+        tl.call(start)
+        revealHero(tl, 0)
+        releaseDeferred()
+      })
+
+      // --- Versión reducida (?motion=reduce): mismo relato, solo fades
       const buildReduced = contextSafe!(() => {
-        takeOverIntro([...title.querySelectorAll<HTMLElement>('[data-preloader-inner]')])
+        takeOverIntro(inners)
         gsap.set(navBlocks, { yPercent: 0 })
-        gsap.set(videoInner, { scale: 1 })
+        gsap.set(heroLines, { yPercent: 0 })
         gsap
           .timeline({ defaults: { ease: 'power1.inOut' }, onComplete: finish })
-          .to(title.querySelectorAll('[data-preloader-inner]'), { opacity: 1, y: 0, duration: 0.6 })
-          .fromTo(tagline, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7 }, '-=0.4')
+          .to(inners, { opacity: 1, y: 0, duration: 0.6 })
           .to({}, { duration: 1 })
-          .set(videoWrap, { clipPath: inset(0, 0, 0, 0) })
-          .to(stage, { autoAlpha: 0, duration: 0.9 })
-          .fromTo(overlay.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9 }, '<')
+          .to(stage, { autoAlpha: 0, duration: 0.8 })
           .call(start)
-          .set([...heroLines, ...heroRules], { yPercent: 0, scaleX: 1 })
-          .fromTo(navShell, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7 }, '-=0.3')
-          .fromTo([...navBlocks, ...heroItems], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7, stagger: 0.04 }, '-=0.3')
+          .fromTo([navShell, ...navBlocks, ...heroItems], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7, stagger: 0.03 }, '-=0.2')
         releaseDeferred()
       })
 
       const build = contextSafe!(() => {
+        takeOverIntro(inners)
         const vw = window.innerWidth
         const vh = window.innerHeight
-        const g = vw < 768 ? GEOMETRY.mobile : GEOMETRY.desktop
 
-        // Palabras enteras con fade + subida (sin máscara ni split: el wordmark es el LCP y tiene que pintar entero)
-        const inners = [...title.querySelectorAll<HTMLElement>('[data-preloader-inner]')]
-        takeOverIntro(inners)
-        startVideo()
-        const taglineLines = tagline.querySelectorAll('[data-tagline-line]')
+        // Punto del clic: sobre "CLIC", un poco a la derecha del centro (donde un usuario cliquearía)
+        const c = clic.getBoundingClientRect()
+        const x = c.left + c.width * 0.58
+        const y = c.top + c.height * 0.55
+        // Radio que cubre toda la pantalla desde ese punto
+        const R = Math.hypot(Math.max(x, vw - x), Math.max(y, vh - y)) + 8
+        // Centro del CTA del hero: ahí se cierra el círculo
+        const cta = heroCta?.getBoundingClientRect()
+        const cx = cta ? cta.left + cta.width / 2 : vw / 2
+        const cy = cta ? cta.top + cta.height / 2 : vh / 2
 
-        // El título sube hasta que el video le tapa el 41.5% de abajo de la última línea
-        // (en mobile el wordmark va en dos líneas: la de arriba queda entera a la vista)
-        const words = title.querySelectorAll<HTMLElement>('[data-preloader-word]')
-        const last = words[words.length - 1].getBoundingClientRect()
-        const rectTopPx = (g.top / 100) * vh
-        const titleShift = rectTopPx + last.height * TITLE_COVERED - last.bottom
-
-        // La frase termina centrada en g.captionCenter
-        const c = caption.getBoundingClientRect()
-        const captionY = g.captionCenter * vh - (c.top + c.height / 2)
-
-        const lineY = 49.95 // tajo de ~1px
-        const rect = inset(g.top, g.x, g.bottom, g.x)
+        gsap.set(ripple, { x, y })
+        gsap.set(fill, { clipPath: circle(0, x, y) })
+        gsap.set(captionInner, { yPercent: 110 })
 
         const tl = gsap.timeline({ defaults: { ease: 'reveal' }, onComplete: finish })
 
         tl.addLabel('intro', 0)
-          .set(tagline, { visibility: 'visible' }, 'intro')
-          // termina la entrada que empezó el CSS (si ya terminó, no hace nada visible)
-          .to(inners, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12 }, 'intro')
-          .from(taglineLines, { yPercent: 110, duration: 0.7, stagger: 0.08 }, 'intro+=0.35')
+          .to(inners, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }, 'intro')
+          .to(mark, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 'intro+=0.3')
 
-          // t=0 de la referencia
-          .addLabel('ref', INTRO)
+          // El cursor entra desde abajo a la derecha: x e y con curvas distintas = trayectoria en arco
+          .addLabel('enter', 'intro+=0.5')
+          .set(cursor, { autoAlpha: 1, x: vw * 0.94, y: vh * 1.08, rotate: 14 }, 'enter')
+          .to(cursor, { x, duration: 1.1, ease: 'power3.inOut' }, 'enter')
+          .to(cursor, { y, duration: 1.1, ease: 'power2.inOut' }, 'enter')
+          .to(cursor, { rotate: 0, duration: 1.1, ease: 'power2.out' }, 'enter')
 
-          // La línea: tajo finísimo que va por delante del título y crece desde el centro
-          .addLabel('line', `ref+=0.27`)
-          .fromTo(videoWrap, { clipPath: inset(lineY, 50, lineY, 50) }, { clipPath: inset(lineY, g.x, lineY, g.x), duration: 0.13, ease: 'power2.out' }, 'line')
+          // Hover: "CLIC" se subraya como un link
+          .addLabel('hover', 'enter+=0.95')
+          .to(line, { scaleX: 1, duration: 0.45, ease: 'power3.out' }, 'hover')
 
-          // Apertura vertical simétrica + título e isotipo suben juntos (el isotipo queda tapado por el video)
-          .addLabel('open', 'ref+=0.40')
-          .fromTo(videoWrap, { clipPath: inset(lineY, g.x, lineY, g.x) }, { clipPath: rect, duration: 1.05, ease: 'aperture', immediateRender: false }, 'open')
-          .to([title, isotipo], { y: titleShift, duration: 1.05, ease: 'aperture' }, 'open')
-          // en desktop el video ya lo tapa; en mobile (video más bajo) se desvanece al llegar al borde
-          .to(isotipo, { autoAlpha: 0, duration: 0.3, ease: 'power1.in' }, 'open+=0.45')
+          // Clic: el cursor se hunde y rebota, dos ondas y el círculo azul se abre desde la punta
+          .addLabel('click', 'hover+=0.4')
+          .to(cursor, { scale: 0.78, duration: 0.11, ease: 'power2.in' }, 'click')
+          .to(cursor, { scale: 1, duration: 0.55, ease: 'elastic.out(1, 0.45)' }, 'click+=0.11')
+          .to(rings, { scale: 3.2, autoAlpha: 0, duration: 0.85, stagger: 0.12, ease: 'power2.out' }, 'click+=0.08')
+          .to(fill, { clipPath: circle(R, x, y), duration: 1.15, ease: 'hop' }, 'click+=0.14')
+          .to(cursor, { autoAlpha: 0, scale: 0.6, duration: 0.35, ease: 'power2.in' }, 'click+=0.55')
 
-          // Frase debajo del video: sube y aparece
-          .set(caption, { visibility: 'visible' }, 'ref+=1.1')
-          .fromTo(caption, { y: captionY + CAPTION_TRAVEL * vh }, { y: captionY, duration: 0.36, ease: 'power3.out' }, 'ref+=1.1')
+          // Mensaje dentro del azul
+          .addLabel('message', 'click+=0.85')
+          .to(captionInner, { yPercent: 0, duration: 0.9 }, 'message')
+          .set(stage, { autoAlpha: 0 }, 'message+=0.4')
 
-          // El freno
-          .addLabel('hold', 'ref+=1.45')
-
-          // Expansión automática a pantalla completa
-          .addLabel('expand', 'ref+=2.2')
-          .fromTo(videoWrap, { clipPath: rect }, { clipPath: inset(0, 0, 0, 0), duration: 1.2, ease: 'hop', immediateRender: false }, 'expand')
-          .fromTo(videoInner, { scale: 1.08 }, { scale: 1, duration: 1.2, ease: 'hop', immediateRender: false }, 'expand')
-          .to(inners, { yPercent: -40, autoAlpha: 0, duration: 0.75, stagger: 0.06, ease: 'power3.inOut' }, 'expand')
-          .to([caption, tagline], { autoAlpha: 0, duration: 0.4, ease: 'power1.out' }, 'expand')
-          .to(overlay.current, { autoAlpha: 1, duration: 0.9, ease: 'power2.inOut' }, 'expand+=0.5')
-          .set(stage, { autoAlpha: 0 }, 'expand+=1.2')
-
-          // Handoff: el mismo video queda de fondo; entran navbar y hero
-          .addLabel('handoff', 'ref+=3.1')
+          // El círculo se cierra sobre el CTA del hero mientras entra el inicio
+          .addLabel('collapse', 'message+=1.25')
+          .to(captionInner, { yPercent: -110, duration: 0.5, ease: 'power3.in' }, 'collapse-=0.3')
+          .to(fill, { clipPath: circle(0, cx, cy), duration: 1.05, ease: 'power3.inOut' }, 'collapse')
+          .addLabel('handoff', 'collapse+=0.15')
           .call(start, undefined, 'handoff')
-          .to(navShell, { autoAlpha: 1, duration: 0.7 }, 'handoff')
-          .to(navBlocks, { autoAlpha: 1, yPercent: 0, duration: 1, stagger: 0.1 }, 'handoff')
-
-        // Cada copia anima igual y en el mismo instante: el titular claro y el azul quedan alineados
-        heroCopies.forEach((copy) => {
-          const lines = [...copy.querySelectorAll<HTMLElement>('[data-hero-line]')].sort((a, b) => Number(a.dataset.heroLine) - Number(b.dataset.heroLine))
-          tl.to(lines, { yPercent: 0, duration: 1.2, stagger: 0.08 }, 'handoff+=0.05')
-            .to(copy.querySelectorAll('[data-hero-rule]'), { scaleX: 1, duration: 1.4, ease: 'expo.inOut' }, 'handoff+=0.1')
-            .fromTo(copy.querySelectorAll('[data-hero-item]'), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.06 }, 'handoff+=0.35')
-        })
-        const uiItems = heroItems.filter((el) => !el.closest('[data-hero-copy]'))
-        tl.fromTo(uiItems, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.08 }, 'handoff+=0.55')
+        revealHero(tl, 'handoff')
 
         if (debug || import.meta.env.DEV) (window as unknown as { __preloaderTl: gsap.core.Timeline }).__preloaderTl = tl
         if (debug) tl.pause()
         releaseDeferred()
       })
 
-      // Medir y partir el texto con las fuentes ya cargadas (guarda para el doble montaje de StrictMode)
+      // Medir con la fuente del wordmark ya cargada (guarda para el doble montaje de StrictMode)
       let alive = true
-      fontReady('900 1em "Montserrat Display"', { googleSheet: false }).then(() => alive && (reduced ? buildReduced() : build()))
+      fontReady('900 1em "Montserrat Display"', { googleSheet: false }).then(() => {
+        if (!alive) return
+        if (cameFromSite()) buildQuick()
+        else if (reduced) buildReduced()
+        else build()
+      })
       return () => {
         alive = false
       }

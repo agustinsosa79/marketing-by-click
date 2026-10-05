@@ -1,19 +1,29 @@
-export type PageBg = 'paper' | 'night' | 'deep' | 'primary' | 'sky'
+export type PageBg = 'paper' | 'night' | 'deep'
 
-/** Fondo de página por sección (se interpola con el scroll en una sola capa: hooks/usePageColors.ts). */
-export const PAGE_COLORS: Record<PageBg, string> = {
-  paper: '#e3e8ff',
-  night: '#0c1640',
-  deep: '#223a8d',
-  primary: '#004aad',
-  sky: '#42b8fd',
+/** Fondo de cada sección. */
+export const SECTION_BG: Record<PageBg, string> = {
+  paper: 'bg-brand-paper',
+  night: 'bg-brand-night',
+  deep: 'bg-brand-deep',
 }
 
 /** Color de texto fijo de cada sección (contraste AA sobre su fondo). */
 export const SECTION_TEXT: Record<PageBg, string> = {
-  paper: 'text-brand-deep',
-  night: 'text-brand-paper',
-  deep: 'text-brand-paper',
-  primary: 'text-white',
-  sky: 'text-brand-night',
+  paper: 'text-brand-night',
+  night: 'text-white',
+  deep: 'text-white',
+}
+
+/** Énfasis de los títulos: solo color, nunca cursiva. Sobre azul Clic el señal no contrasta: va bruma. */
+export const EMPHASIS: Record<PageBg, string> = {
+  paper: 'text-brand-signal',
+  night: 'text-brand-signal',
+  deep: 'text-brand-haze',
+}
+
+/** Texto secundario de cada fondo. */
+export const MUTED: Record<PageBg, string> = {
+  paper: 'text-brand-night/70',
+  night: 'text-brand-haze',
+  deep: 'text-brand-haze',
 }

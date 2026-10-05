@@ -34,11 +34,9 @@ export function fontsReady(timeout = 4000): Promise<void> {
     .then(() =>
       Promise.all([
         document.fonts.load('900 1em "Montserrat Display"'),
-        document.fonts.load('900 1em Montserrat'),
-        document.fonts.load('400 1em Montserrat'),
-        document.fonts.load('600 1em Montserrat'),
-        document.fonts.load('italic 400 1em "Instrument Serif"'),
-        document.fonts.load('400 1em "Instrument Serif"'),
+        document.fonts.load('800 1em Montserrat'),
+        document.fonts.load('700 1em Montserrat'),
+        document.fonts.load('500 1em Montserrat'),
       ]),
     )
     .then(() => document.fonts.ready)

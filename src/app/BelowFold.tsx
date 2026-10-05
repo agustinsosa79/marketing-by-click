@@ -1,32 +1,33 @@
-import { Casos } from '../components/sections/casos/Casos'
-import { CtaFinal } from '../components/sections/cta/CtaFinal'
+import { Caso } from '../components/sections/caso/Caso'
+import { Contacto } from '../components/sections/contacto/Contacto'
+import { Diagnostico } from '../components/sections/diagnostico/Diagnostico'
+import { Faq } from '../components/sections/faq/Faq'
 import { Footer } from '../components/sections/footer/Footer'
-import { Founder } from '../components/sections/founder/Founder'
-import { Historia } from '../components/sections/historia/Historia'
-import { Manifiesto } from '../components/sections/manifiesto/Manifiesto'
+import { Nosotros } from '../components/sections/nosotros/Nosotros'
 import { Planes } from '../components/sections/planes/Planes'
 import { Proceso } from '../components/sections/proceso/Proceso'
 import { Servicios } from '../components/sections/servicios/Servicios'
-import { usePageColors } from '../hooks/usePageColors'
+import { useSectionTransitions } from '../hooks/useSectionTransitions'
 
 /**
  * Todo lo que está debajo del hero, en un chunk aparte (React.lazy): el primer render es solo
  * hero + navbar, así el preloader arranca antes. Mientras corre el preloader nadie puede scrollear,
  * así que estas secciones llegan a tiempo sin que se note.
+ * Orden: primero qué hacemos y la prueba, después cómo, cuánto y quiénes.
  */
 export function BelowFoldSections() {
-  usePageColors()
+  useSectionTransitions()
 
   return (
     <>
-      <Manifiesto />
-      <Founder />
-      <Historia />
       <Servicios />
+      <Caso />
       <Proceso />
+      <Diagnostico />
       <Planes />
-      <Casos />
-      <CtaFinal />
+      <Faq />
+      <Nosotros />
+      <Contacto />
     </>
   )
 }
