@@ -1,0 +1,47 @@
+# Panel del blog (Decap CMS) → https://marketingbyclic.com/admin
+# Cada nota se guarda como content/blog/<slug>.md en el repo; el sitio se vuelve a publicar solo con cada cambio.
+#
+# PENDIENTE: el inicio de sesión depende del hosting (ver docs/blog.md).
+#  - Netlify: cambiar "backend" por  name: git-gateway  y activar Identity + Git Gateway.
+#  - Otro hosting (Vercel, Cloudflare, etc.): mantener github y completar base_url con un servidor OAuth.
+backend:
+  name: github
+  repo: agustinsosa79/marketing-by-click
+  branch: master
+  # base_url: https://<servidor-oauth>
+
+# Probar el panel en local sin login: `npx decap-server` + local_backend
+local_backend: true
+
+locale: es
+site_url: https://marketingbyclic.com
+display_url: https://marketingbyclic.com
+logo_url: /media/logo.webp
+
+media_folder: public/media/blog
+public_folder: /media/blog
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Nota
+    description: Notas del blog. Se publican ordenadas por fecha (la más nueva queda destacada).
+    folder: content/blog
+    create: true
+    slug: '{{slug}}'
+    preview_path: blog/{{slug}}
+    sortable_fields: [date, title, category]
+    summary: '{{title}} · {{category}} · {{date}}'
+    fields:
+      - { label: Título, name: title, widget: string, hint: 'Lo que se lee en Google. Ideal: menos de 60 caracteres.' }
+      - { label: Resumen, name: description, widget: text, hint: 'Aparece en Google y en las tarjetas. De 120 a 155 caracteres.' }
+      - { label: Fecha, name: date, widget: datetime, format: 'YYYY-MM-DD', date_format: 'DD/MM/YYYY', time_format: false }
+      - label: Categoría
+        name: category
+        widget: select
+        options: [Estrategia, Contenido, Meta Ads, Branding]
+      - { label: Portada, name: cover, widget: image, hint: 'Horizontal (16:9), mínimo 1200 px de ancho.' }
+      - { label: Descripción de la portada, name: coverAlt, widget: string, hint: 'Qué se ve en la imagen (para Google y lectores de pantalla).' }
+      - { label: Autor, name: author, widget: string, default: Ian }
+      - { label: Borrador, name: draft, widget: boolean, default: false, hint: 'Activado: la nota no se publica.' }
+      - { label: Texto, name: body, widget: markdown, hint: 'Usá "Título 2" para los subtítulos: arman el índice de la nota.' }

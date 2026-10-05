@@ -1,159 +1,159 @@
-import { useEffect, useRef, useState } from 'react'
-import { founder, hero, sections } from '../../../data/content'
+import { Fragment, useRef, useState } from 'react'
+import { hero, nav, nosotros, sections, servicios } from '../../../data/content'
 import { useLenis } from '../../../hooks/useLenis'
-import { useReducedMotion } from '../../../hooks/useReducedMotion'
 import { playFounderVideo } from '../../../lib/events'
-import { gsap, ScrollTrigger, useGSAP } from '../../../lib/gsap'
+import { splitHeadline } from '../../../lib/headline'
 import { Preloader, type PreloaderRefs } from '../../preloader/Preloader'
 import { usePreloaderTimeline } from '../../preloader/usePreloaderTimeline'
 import { Button } from '../../ui/Button'
-import { HeroCopy } from './HeroCopy'
+import { Icon, ServiceIcon } from '../../ui/Icon'
 
-/** Tarjeta final del video, en % del viewport (top, right, bottom, left). */
-const CARD = {
-  desktop: [15, 2.2, 41, 58],
-  mobile: [37, 5, 37, 5],
-}
-
-// la tarjeta final tiene las esquinas redondeadas (mismo formato en ambos extremos para que interpole)
-const inset = ([t, r, b, l]: number[], round = 0) => `inset(${t}% ${r}% ${b}% ${l}% round ${round}rem)`
+// Palabras del titular con su parte destacada
+const [before, emphasis, after] = splitHeadline(hero.title)
+const WORDS = [
+  ...before.split(' ').filter(Boolean).map((word) => ({ word, em: false })),
+  ...emphasis.split(' ').filter(Boolean).map((word) => ({ word, em: true })),
+  ...after.split(' ').filter(Boolean).map((word) => ({ word, em: false })),
+]
 
 /**
- * Hero (200svh con contenido sticky):
- *  - después del preloader el video ocupa toda la pantalla con el titular encima
- *  - con el scroll el video se recorta en una tarjeta: adentro el titular queda claro, afuera azul sobre papel
+ * Hero en una pantalla, sin animación de scroll:
+ *  - izquierda: kicker, titular (palabra por palabra, cada una con su máscara), bajada, CTA y los cuatro servicios
+ *  - derecha: foto real de Ian en la Patagonia, nítida y sin overlay, con el acceso a su video
+ * El preloader vive acá: su imagen sube como un telón y deja ver el hero.
  */
 export function Hero() {
   const scope = useRef<HTMLElement>(null)
   const refs: PreloaderRefs = {
     stage: useRef(null),
     title: useRef(null),
-    isotipo: useRef(null),
-    tagline: useRef(null),
     caption: useRef(null),
+    clic: useRef(null),
+    cursor: useRef(null),
+    ripple: useRef(null),
+    fill: useRef(null),
   }
-  const video = useRef<HTMLDivElement>(null)
-  const videoEl = useRef<HTMLVideoElement>(null)
-  const overlay = useRef<HTMLDivElement>(null)
   const [preloaderDone, setPreloaderDone] = useState(false)
-  const reduced = useReducedMotion()
   const { scrollTo } = useLenis()
 
-  usePreloaderTimeline({ scope, refs, video, overlay, onComplete: () => setPreloaderDone(true) })
-
-  // Con la versión reducida el video queda en pausa (se ve el poster). En la completa lo arranca el preloader.
-  useEffect(() => {
-    if (reduced) videoEl.current?.pause()
-  }, [reduced])
-
-  // Indicador de scroll: un segmento que baja en loop
-  useGSAP(
-    () => {
-      if (reduced) return
-      const loop = gsap.fromTo('[data-scroll-line]', { y: 0, autoAlpha: 1 }, { y: 10, autoAlpha: 0, duration: 1.4, ease: 'power2.in', repeat: -1 })
-      // solo mientras el hero está en pantalla
-      ScrollTrigger.create({ trigger: scope.current, start: 'top bottom', end: 'bottom top', onToggle: (self) => (self.isActive ? loop.play() : loop.pause()) })
+  usePreloaderTimeline({
+    scope,
+    refs,
+    onComplete: () => {
+      setPreloaderDone(true)
+      // llegada con ancla (ej. /#planes desde el blog): baja a la sección cuando ya está montada
+      const id = decodeURIComponent(location.hash.slice(1))
+      if (!id) return
+      window.setTimeout(() => {
+        const target = document.getElementById(id)
+        if (target) scrollTo(target, { duration: 1.4 })
+      }, 500)
     },
-    { scope, dependencies: [reduced] },
-  )
+  })
 
-  // Video → tarjeta con el scroll (recién cuando terminó el preloader: antes el recorte es suyo)
-  useGSAP(
-    () => {
-      if (!preloaderDone) return
-      const card = () => (window.innerWidth < 768 ? CARD.mobile : CARD.desktop)
-      const lines = gsap.utils.toArray<HTMLElement>('[data-hero-copy] [data-hero-title]', scope.current)
-
-      if (reduced) {
-        gsap.set(video.current, { clipPath: inset([0, 0, 0, 0]) })
-        return
-      }
-
-      // el video del hero solo se decodifica mientras se ve
-      const v = videoEl.current
-      ScrollTrigger.create({
-        trigger: scope.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        onToggle: (self) => (self.isActive ? v?.play().catch(() => {}) : v?.pause()),
-      })
-
-      const tl = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true },
-      })
-      tl.fromTo(video.current, { clipPath: inset([0, 0, 0, 0]) }, { clipPath: () => inset(card(), 1.75), duration: 0.8, ease: 'power2.inOut' }, 0.12)
-        .fromTo(videoEl.current, { scale: 1 }, { scale: 1.18, duration: 0.92 }, 0.08)
-        .fromTo(overlay.current, { opacity: 1 }, { opacity: 0.45, duration: 0.8 }, 0.12)
-        .fromTo(lines, { yPercent: 0 }, { yPercent: -6, duration: 1 }, 0)
-    },
-    { scope, dependencies: [preloaderDone, reduced] },
-  )
+  const openIan = () => {
+    playFounderVideo()
+    const target = document.getElementById(sections.nosotros)
+    if (target) scrollTo(target, { duration: 1.6 })
+  }
 
   return (
-    <section id={sections.hero} ref={scope} data-bg="paper" className="relative isolate h-hero">
-      <div className="sticky top-0 h-svh overflow-hidden bg-transparent">
-        {/* z-0: copia sobre el papel (la semántica: h1) */}
-        <div className="absolute inset-0 z-0">
-          <HeroCopy variant="back" />
-        </div>
+    <section id={sections.hero} ref={scope} data-bg="paper" className="relative isolate bg-brand-paper">
+      <div className="flex min-h-svh flex-col gap-5 px-5 pt-20 pb-5 md:px-10 md:pt-28 md:pb-8 lg:grid lg:h-svh lg:grid-cols-12 lg:gap-10">
+        {/* Texto */}
+        <div className="flex flex-col lg:col-span-7">
+          <p data-hero-item className="flex items-center gap-3 font-label text-label text-brand-deep">
+            <span aria-hidden="true" className="block h-0.5 w-6 rounded-full bg-brand-signal" />
+            {hero.kicker}
+          </p>
 
-        {/* z-10 / z-30: preloader (vive acá para usar el mismo video) */}
-        {!preloaderDone && <Preloader refs={refs} />}
+          <h1 className="mt-5 font-display text-hero text-brand-deep md:mt-8 lg:mt-auto">
+            {WORDS.map(({ word, em }, i) => (
+              <Fragment key={i}>
+                {/* espacio fuera de la máscara: el titular corta línea donde le corresponde */}
+                {i > 0 && ' '}
+                <span className="inline-block overflow-hidden pb-descender mb-descender-pull align-top">
+                  <span data-hero-line={i} className={`inline-block ${em ? 'text-brand-signal' : ''}`}>
+                    {word}
+                  </span>
+                </span>
+              </Fragment>
+            ))}
+          </h1>
 
-        {/* z-20: el video del preloader queda de fondo: nunca se desmonta */}
-        {/* Arranca cerrado (inline: el HTML prerenderizado no debe mostrar el video antes de tiempo). El recorte lo maneja GSAP. */}
-        <div ref={video} className="absolute inset-0 z-20 bg-brand-night" style={{ clipPath: 'inset(50% 50% 50% 50%)' }}>
-          <video
-            ref={videoEl}
-            className="size-full object-cover"
-            poster={hero.video.poster}
-            muted
-            loop
-            playsInline
-            preload="none"
-            aria-hidden="true"
-          >
-            <source src={hero.video.src} type="video/mp4" />
-          </video>
-          <div ref={overlay} className="absolute inset-0 bg-brand-night/30">
-            <div className="absolute inset-0 bg-brand-night/45" />
+          <p data-hero-item className="mt-4 text-lead font-medium text-brand-night/75 md:mt-6 lg:w-4/5">
+            {hero.subtitle}
+          </p>
+
+          <div data-hero-item data-hero-cta className="mt-5 md:mt-8">
+            <Button href={hero.cta.href} label={hero.cta.label} icon="whatsapp" variant="signal" size="lg" cursor={nav.ctaCursor} className="w-full sm:w-auto" />
           </div>
-          <HeroCopy variant="front" />
+
+          {/* Qué hacemos, de un vistazo: lleva a Servicios */}
+          <ul data-hero-item className="mt-6 hidden flex-wrap gap-2 border-t border-brand-deep/10 pt-5 md:flex lg:mt-10">
+            {servicios.items.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={`#${sections.servicios}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    const target = document.getElementById(sections.servicios)
+                    if (target) scrollTo(target, { duration: 1.4 })
+                  }}
+                  className="group flex items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 text-sm font-bold text-brand-deep shadow-soft ring-1 ring-brand-deep/10 transition duration-500 ease-expo hover:-translate-y-0.5 hover:bg-brand-deep hover:text-white"
+                >
+                  <span className="grid size-7 place-items-center rounded-full bg-brand-signal/10 text-brand-signal transition-colors duration-500 group-hover:bg-white/15 group-hover:text-white">
+                    <ServiceIcon name={item.icon} className="size-4" />
+                  </span>
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {/* z-40: capa interactiva (no se duplica) */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-5 z-40 flex h-14 items-center justify-end gap-4 px-5 md:bottom-6 md:gap-6 md:px-10">
+        {/* Foto de Ian */}
+        <figure data-hero-media className="relative min-h-64 flex-1 overflow-hidden rounded-4xl bg-brand-night shadow-lift lg:col-span-5 lg:h-full">
+          <img
+            src={hero.image.src}
+            srcSet={hero.image.srcSet}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            alt={hero.image.alt}
+            width={hero.image.width}
+            height={hero.image.height}
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover object-center"
+          />
+
+          <figcaption data-hero-item className="absolute top-4 left-4 flex items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 text-sm font-bold text-brand-night shadow-soft md:top-5 md:left-5">
+            <a href={nosotros.instagram.href} target="_blank" rel="noopener noreferrer" aria-label={nosotros.instagram.label} className="grid size-7 place-items-center rounded-full bg-brand-signal text-white transition-transform duration-500 ease-expo hover:-rotate-12">
+              <Icon name="instagram" className="size-3.5" />
+            </a>
+            {hero.founderTag}
+          </figcaption>
+
           <button
             type="button"
             data-hero-item
-            data-cursor={founder.player.cursorPlay}
-            onClick={() => {
-              playFounderVideo()
-              const target = document.getElementById(sections.founder)
-              if (target) scrollTo(target, { offset: -80, duration: 1.6 })
-            }}
-            className="group pointer-events-auto invisible hidden items-center gap-3 rounded-sm bg-white py-1.5 pr-5 pl-1.5 text-left text-brand-night transition-transform duration-300 ease-expo hover:-translate-y-1 active:scale-97 md:flex"
+            data-cursor={nosotros.player.cursorPlay}
+            onClick={openIan}
+            className="group absolute right-4 bottom-4 left-4 flex items-center gap-3 rounded-full bg-white p-1.5 pr-5 text-left text-brand-night shadow-lift transition-transform duration-500 ease-expo hover:-translate-y-1 active:scale-97 md:right-auto md:bottom-5 md:left-5"
           >
-            <span className="relative block size-11 overflow-hidden rounded-full">
-              <img src={founder.video.poster} alt="" width={832} height={464} loading="lazy" decoding="async" className="size-full object-cover transition-transform duration-700 ease-expo group-hover:scale-115" />
-              <span aria-hidden="true" className="absolute inset-0 grid place-items-center bg-brand-night/30 text-brand-paper">
-                <svg viewBox="0 0 24 24" className="size-4 fill-current">
-                  <path d="M7 4v16l13-8z" />
-                </svg>
-              </span>
+            <span className="relative grid size-11 shrink-0 place-items-center rounded-full bg-brand-signal text-white transition-transform duration-500 ease-expo group-hover:scale-110">
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 translate-x-px fill-current">
+                <path d="M7 4v16l13-8z" />
+              </svg>
             </span>
-            <span className="text-label leading-tight">
+            <span className="text-sm leading-tight">
               <span className="block font-bold">{hero.ianTeaser.label}</span>
-              <span className="block font-medium opacity-70">{hero.ianTeaser.hint}</span>
+              <span className="block font-medium text-brand-night/60">{hero.ianTeaser.hint}</span>
             </span>
           </button>
-
-          <div data-hero-item className="pointer-events-auto invisible">
-            <Button href={hero.cta.href} label={hero.cta.label} icon="whatsapp" variant="sky" magnetic cursor="Escribinos" />
-          </div>
-        </div>
+        </figure>
       </div>
+
+      {!preloaderDone && <Preloader refs={refs} />}
     </section>
   )
 }

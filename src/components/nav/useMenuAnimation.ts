@@ -51,13 +51,14 @@ export function useMenuAnimation({ open, panel, page, toggle, target }: Options)
         const g = geometry()
         gsap.set(pageEl, { transformOrigin: g.origin, clipPath: g.clip(0), willChange: 'transform' })
         gsap.set(panelEl, { autoAlpha: 1 })
-        const focusFirst = () => panelEl.querySelector<HTMLElement>('[data-menu-item] a')?.focus({ preventScroll: true })
+        // foco en Cerrar (no en el primer link: si no, arranca resaltado como si tuviera hover)
+        const focusFirst = () => panelEl.querySelector<HTMLElement>('button')?.focus({ preventScroll: true })
 
         if (reduced) {
           tl.current = gsap
             .timeline({ onComplete: focusFirst })
             .to(pageEl, { autoAlpha: 0, duration: 0.35, ease: 'power1.out' })
-            .fromTo([...items, ...secondary], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, stagger: 0.03, ease: 'power1.out' })
+            .fromTo([...items, ...secondary], { autoAlpha: 0, filter: 'blur(0px)' }, { autoAlpha: 1, duration: 0.4, stagger: 0.03, ease: 'power1.out' })
           return
         }
 
@@ -71,7 +72,8 @@ export function useMenuAnimation({ open, panel, page, toggle, target }: Options)
             { autoAlpha: 1, filter: 'blur(0px)', scale: 1, duration: 1.1, stagger: 0.07, ease: 'expo.out' },
             '-=0.55',
           )
-          .fromTo(secondary, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'expo.out' }, '<0.4')
+          // filter explícito: el cierre los deja desenfocados y si no se limpia acá, el contacto reaparece borroso
+          .fromTo(secondary, { autoAlpha: 0, y: 16, filter: 'blur(12px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 0.8, stagger: 0.06, ease: 'expo.out' }, '<0.4')
         return
       }
 
@@ -92,6 +94,7 @@ export function useMenuAnimation({ open, panel, page, toggle, target }: Options)
       const finish = () => {
         gsap.set(pageEl, { clearProps: 'transform,transformOrigin,clipPath,opacity,visibility,willChange' })
         gsap.set(panelEl, { autoAlpha: 0 })
+        gsap.set([...items, ...secondary], { clearProps: 'filter' })
         start()
         toggle.current?.focus({ preventScroll: true })
       }

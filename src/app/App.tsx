@@ -1,25 +1,30 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState, type RefObject } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
+import { BlogIndex } from '../components/blog/BlogIndex'
+import { BlogPost } from '../components/blog/BlogPost'
+import { NotFound } from '../components/blog/NotFound'
 import { MenuOverlay } from '../components/nav/MenuOverlay'
 import { Navbar } from '../components/nav/Navbar'
 import { Hero } from '../components/sections/hero/Hero'
+import { ServicePage } from '../components/services/ServicePage'
 import { Cursor } from '../components/ui/Cursor'
-import { nav } from '../data/content'
+import { nav, servicios } from '../data/content'
 import { useHydrated } from '../hooks/useHydrated'
+import type { Post } from '../lib/blog'
 import { fontsReady } from '../lib/fonts'
 import { ScrollTrigger } from '../lib/gsap'
 import { LenisProvider } from './LenisProvider'
+import type { Route } from './routes'
 
 // Secciones de abajo del pliegue en un chunk aparte (ver BelowFold.tsx)
 const BelowFoldSections = lazy(() => import('./BelowFold').then((m) => ({ default: m.BelowFoldSections })))
 const BelowFoldFooter = lazy(() => import('./BelowFold').then((m) => ({ default: m.BelowFoldFooter })))
 
-function Page({ menuOpen, pageRef }: { menuOpen: boolean; pageRef: RefObject<HTMLDivElement | null> }) {
+function Home() {
   // Las secciones lazy son solo-cliente: el HTML prerenderizado trae hasta el hero
   const hydrated = useHydrated()
   return (
-    <div ref={pageRef} inert={menuOpen} className="relative z-10 overflow-x-clip bg-brand-paper">
+    <>
       <main id="contenido" className="relative isolate z-10">
-        <div data-page-bg aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-brand-paper" />
         <Hero />
         {hydrated && (
           <Suspense fallback={null}>
@@ -32,15 +37,31 @@ function Page({ menuOpen, pageRef }: { menuOpen: boolean; pageRef: RefObject<HTM
           <BelowFoldFooter />
         </Suspense>
       )}
+    </>
+  )
+}
+
+function Page({ menuOpen, pageRef, children }: { menuOpen: boolean; pageRef: RefObject<HTMLDivElement | null>; children: ReactNode }) {
+  return (
+    <div ref={pageRef} inert={menuOpen} className="relative z-10 overflow-x-clip bg-brand-paper">
+      {children}
     </div>
   )
 }
 
-export function App() {
+interface AppProps {
+  route: Route
+  /** Nota ya cargada (la página de una nota hidrata con su contenido, sin esperar). */
+  post?: Post | null
+}
+
+export function App({ route, post = null }: AppProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const pageRef = useRef<HTMLDivElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const closeMenu = useCallback(() => setMenuOpen(false), [])
+  const isHome = route.name === 'home'
+  const service = route.name === 'service' ? servicios.items.find((s) => s.slug === route.slug) : undefined
 
   // Recalcular posiciones cuando terminan de cargar fuentes e imágenes
   useEffect(() => {
@@ -50,6 +71,13 @@ export function App() {
     return () => window.removeEventListener('load', refresh)
   }, [])
 
+  let content: ReactNode
+  if (route.name === 'home') content = <Home />
+  else if (route.name === 'blog') content = <BlogIndex />
+  else if (route.name === 'post' && post) content = <BlogPost post={post} />
+  else if (route.name === 'service' && service) content = <ServicePage service={service} />
+  else content = <NotFound />
+
   return (
     <LenisProvider>
       <a
@@ -58,9 +86,11 @@ export function App() {
       >
         {nav.skipLink}
       </a>
-      <Navbar menuOpen={menuOpen} onToggle={() => setMenuOpen((o) => !o)} toggleRef={toggleRef} />
-      <MenuOverlay open={menuOpen} onClose={closeMenu} pageRef={pageRef} toggleRef={toggleRef} />
-      <Page menuOpen={menuOpen} pageRef={pageRef} />
+      <Navbar menuOpen={menuOpen} onToggle={() => setMenuOpen((o) => !o)} toggleRef={toggleRef} isHome={isHome} />
+      <MenuOverlay open={menuOpen} onClose={closeMenu} pageRef={pageRef} toggleRef={toggleRef} isHome={isHome} />
+      <Page menuOpen={menuOpen} pageRef={pageRef}>
+        {content}
+      </Page>
       <Cursor />
     </LenisProvider>
   )

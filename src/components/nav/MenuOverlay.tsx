@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type RefObject } from 'react'
 import { contact, nav } from '../../data/content'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { gsap, useGSAP } from '../../lib/gsap'
+import { Button } from '../ui/Button'
+import { Icon, Logo } from '../ui/Icon'
 import { MenuItem } from './MenuItem'
 import { useMenuAnimation } from './useMenuAnimation'
 
@@ -10,46 +10,14 @@ interface MenuOverlayProps {
   onClose: () => void
   pageRef: RefObject<HTMLDivElement | null>
   toggleRef: RefObject<HTMLButtonElement | null>
+  isHome: boolean
 }
 
 /**
- * Patrón de flechas tomado del isotipo (el cursor que apunta hacia arriba a la derecha),
- * en variación tonal sutil sobre brand-night. Deriva lento en diagonal.
+ * Menú a pantalla completa sobre azul noche: la página se achica como una tarjeta (useMenuAnimation)
+ * y los links pasan de desenfocados a nítidos. A la derecha, el contacto directo.
  */
-function ArrowPattern({ active }: { active: boolean }) {
-  const ref = useRef<SVGSVGElement>(null)
-  const drift = useRef<gsap.core.Tween | null>(null)
-  const reduced = useReducedMotion()
-
-  useGSAP(
-    () => {
-      if (reduced) return
-      drift.current = gsap.to(ref.current, { xPercent: 8, yPercent: -8, duration: 30, ease: 'none', repeat: -1, yoyo: true, paused: true })
-    },
-    { dependencies: [reduced] },
-  )
-
-  // solo se mueve con el menú abierto
-  useEffect(() => {
-    if (active) drift.current?.play()
-    else drift.current?.pause()
-  }, [active])
-
-  return (
-    <svg ref={ref} aria-hidden="true" className="pointer-events-none absolute -top-1/4 -left-1/4 h-3/2 w-3/2">
-      <defs>
-        <pattern id="menu-arrows" width="168" height="168" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
-          {/* flecha-cursor del isotipo: punta arriba a la derecha + cola en diagonal */}
-          <path d="M20 128 L84 64 M84 64 L84 104 M84 64 L44 64" className="fill-none stroke-brand-deep" strokeWidth="14" strokeLinecap="square" />
-          <path d="M104 40 L150 22 L132 68 L124 50 Z" className="fill-brand-ink" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#menu-arrows)" className="opacity-40" />
-    </svg>
-  )
-}
-
-export function MenuOverlay({ open, onClose, pageRef, toggleRef }: MenuOverlayProps) {
+export function MenuOverlay({ open, onClose, pageRef, toggleRef, isHome }: MenuOverlayProps) {
   const panel = useRef<HTMLDivElement>(null)
   const target = useRef<string | null>(null)
   const [hovered, setHovered] = useState<number | null>(null)
@@ -66,7 +34,7 @@ export function MenuOverlay({ open, onClose, pageRef, toggleRef }: MenuOverlayPr
         return
       }
       if (e.key !== 'Tab' || !panel.current) return
-      const focusables = [toggleRef.current, ...panel.current.querySelectorAll<HTMLElement>('a[href], button')].filter(Boolean) as HTMLElement[]
+      const focusables = [...panel.current.querySelectorAll<HTMLElement>('a[href], button')]
       const first = focusables[0]
       const last = focusables[focusables.length - 1]
       if (e.shiftKey && document.activeElement === first) {
@@ -79,7 +47,7 @@ export function MenuOverlay({ open, onClose, pageRef, toggleRef }: MenuOverlayPr
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, onClose, toggleRef])
+  }, [open, onClose])
 
   useEffect(() => {
     if (!open) setHovered(null)
@@ -93,52 +61,68 @@ export function MenuOverlay({ open, onClose, pageRef, toggleRef }: MenuOverlayPr
       aria-modal="true"
       aria-label={nav.menuAria}
       aria-hidden={!open}
-      className="invisible fixed inset-0 z-0 flex flex-col overflow-hidden bg-brand-night text-brand-paper"
+      className="invisible fixed inset-0 z-0 overflow-hidden bg-brand-night text-white"
     >
-      <ArrowPattern active={open} />
-      <nav aria-label={nav.menuAria} className="relative flex flex-1 flex-col items-center justify-center pt-20">
-        <p data-menu-secondary className="mb-6 text-label font-semibold uppercase text-brand-paper/70">
-          {nav.navigationLabel}
-        </p>
-        <ul className="flex flex-col items-center text-center" onMouseLeave={() => setHovered(null)}>
-          {nav.items.map((item, i) => (
-            <li key={item.id} data-menu-item>
-              <MenuItem
-                label={item.label}
-                id={item.id}
-                active={hovered === i}
-                dimmed={hovered !== null && hovered !== i}
-                onHover={() => setHovered(i)}
-                onSelect={() => {
-                  target.current = item.id
-                  onClose()
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-      </nav>
 
-      <div className="relative grid gap-5 border-t border-brand-paper/15 px-5 py-6 md:grid-cols-3 md:items-center md:px-10 md:py-8">
-        <p data-menu-secondary className="text-label font-semibold text-brand-sky">{nav.contactLabel}</p>
-        <ul data-menu-secondary className="flex flex-wrap gap-x-8 gap-y-2 text-label font-semibold md:justify-center">
-          {nav.secondary.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} target="_blank" rel="noopener noreferrer" className="link-underline">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <a
+      {/* la navbar se va al abrir: acá quedan la marca y el botón de cerrar */}
+      <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-5 pt-5 md:px-10 md:pt-7">
+        <Logo data-menu-secondary className="w-28 text-white md:w-32" />
+        <button
           data-menu-secondary
-          href={contact.whatsapp.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="link-underline justify-self-start text-label font-semibold text-brand-paper/80 md:justify-self-end"
+          type="button"
+          onClick={onClose}
+          aria-label={nav.closeAria}
+          className="group flex items-center gap-3 rounded-full bg-white/10 py-1.5 pr-1.5 pl-5 text-sm font-bold ring-1 ring-white/15 transition duration-300 ease-expo hover:bg-white hover:text-brand-night"
         >
-          {contact.whatsapp.label}
-        </a>
+          {nav.closeLabel}
+          <span className="grid size-9 place-items-center rounded-full bg-brand-signal text-white transition-transform duration-500 ease-expo group-hover:rotate-90">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-none stroke-current stroke-2" strokeLinecap="round">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div className="relative grid grid-cols-1 h-full grid-rows-1 gap-8 px-5 pt-24 pb-6 md:px-10 md:pt-28 md:pb-10 lg:grid-cols-12">
+        <nav aria-label={nav.menuAria} className="flex flex-col justify-center lg:col-span-8">
+          <ul className="flex flex-col" onMouseLeave={() => setHovered(null)}>
+            {nav.items.map((item, i) => (
+              <li key={item.id} data-menu-item>
+                <MenuItem
+                  label={item.label}
+                  href={item.href ?? (isHome ? `#${item.id}` : `/#${item.id}`)}
+                  inPage={isHome && !item.href}
+                  active={hovered === i}
+                  dimmed={hovered !== null && hovered !== i}
+                  onHover={() => setHovered(i)}
+                  onSelect={() => {
+                    target.current = item.id
+                    onClose()
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <aside className="flex flex-col justify-end gap-6 lg:col-span-4 lg:justify-center">
+          <p data-menu-secondary className="font-display text-big">
+            {nav.contactTitle}
+          </p>
+          <div data-menu-secondary>
+            <Button href={contact.whatsapp.href} label={contact.whatsapp.label} icon="whatsapp" variant="signal" cursor={nav.ctaCursor} />
+          </div>
+          <ul data-menu-secondary className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-brand-haze">
+            {[contact.instagram, contact.founderInstagram].map((link) => (
+              <li key={link.href}>
+                <a href={link.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 transition-colors duration-300 hover:text-white">
+                  <Icon name="instagram" className="size-4 transition-transform duration-500 ease-expo group-hover:-rotate-12" />
+                  <span className="link-underline">{link.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
       </div>
     </div>
   )

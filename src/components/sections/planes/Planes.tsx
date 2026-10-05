@@ -1,133 +1,137 @@
-import { useRef } from 'react'
-import { contact, planes, sections, type Plan } from '../../../data/content'
-import { useGSAP } from '../../../lib/gsap'
+import { useEffect, useRef, useState } from 'react'
+import { planes, sections, type Plan } from '../../../data/content'
+import { useReducedMotion } from '../../../hooks/useReducedMotion'
+import { gsap, useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
 import { deferSetup } from '../../../lib/schedule'
 import { Button } from '../../ui/Button'
-import { Odometer } from '../../ui/Odometer'
+import { Check } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
-import { Label, SectionTitle } from '../../ui/SectionTitle'
+import { Label, Title } from '../../ui/Title'
 
-// Contraste corregido: los tonos claros llevan texto night, nunca blanco (ver brand-analysis §1)
-const CARDS = [
-  { face: 'bg-brand-mist text-brand-night', check: 'bg-brand-paper text-brand-deep', button: 'night', muted: 'text-brand-night/60' },
-  {
-    face: 'bg-brand-sky text-brand-night',
-    check: 'bg-brand-paper text-brand-night',
-    button: 'night',
-    muted: 'text-brand-night/70',
-  },
-  { face: 'bg-brand-night text-brand-paper', check: 'bg-brand-deep text-brand-sky', button: 'sky', muted: 'text-brand-paper/70' },
-] as const
+/**
+ * Tarjeta de plan. El destacado va en azul Clic (el protagonista), los otros en blanco.
+ * Hover (desktop): sube un poco.
+ */
+function PlanCard({ plan }: { plan: Plan }) {
+  const featured = !!plan.featured
 
-function Check() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="size-3 fill-none stroke-current stroke-3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m5 12 5 5 9-10" />
-    </svg>
-  )
-}
+    <article
+      data-plan-card
+      className={`group relative isolate flex w-4/5 shrink-0 snap-center flex-col overflow-hidden rounded-4xl p-5 transition duration-500 ease-expo sm:w-3/5 md:p-7 lg:w-auto lg:hover:-translate-y-2 ${
+        featured ? 'bg-brand-deep text-white shadow-lift ring-1 ring-white/10' : 'bg-white text-brand-night shadow-soft ring-1 ring-brand-deep/10 lg:hover:shadow-lift'
+      }`}
+    >
+      <header className="flex items-center justify-between gap-4">
+        <h3 className={`font-label text-label ${featured ? 'text-brand-haze' : 'text-brand-deep'}`}>{plan.name}</h3>
+        {featured && <span className="rounded-full bg-brand-signal px-3 py-1 text-xs font-bold text-white">{planes.badge}</span>}
+      </header>
 
-function PlanCard({ plan, index }: { plan: Plan; index: number }) {
-  const c = CARDS[index]
-  return (
-    <article data-reveal="fade" data-reveal-delay={index * 0.1} className={`group relative w-full ${plan.featured ? 'lg:-translate-y-4' : ''}`}>
-      <div className={`sheen relative flex h-full flex-col overflow-hidden rounded-4xl p-6 transition-transform duration-500 ease-expo md:p-8 md:group-hover:-translate-y-2 ${c.face}`}>
-        <header className="relative z-2 flex items-center justify-between gap-4">
-          <h3 className="font-display text-big">{plan.name}</h3>
-          {plan.featured && (
-            <span className="text-label font-semibold uppercase text-brand-gold">
-              {planes.badge}
+      <p className="mt-4 flex items-end gap-2">
+        <span className={`font-display text-price ${featured ? '' : 'text-brand-deep'}`}>{plan.price}</span>
+        <span className={`pb-1.5 text-sm font-semibold ${featured ? 'text-brand-haze' : 'text-brand-night/60'}`}>
+          {planes.currency} {planes.period}
+        </span>
+      </p>
+      <p className={`mt-2 text-sm font-medium ${featured ? 'text-brand-haze' : 'text-brand-night/70'}`}>{plan.for}</p>
+
+      <ul className={`mt-4 flex flex-1 flex-col gap-2.5 border-t pt-4 md:mt-5 md:gap-3 md:pt-5 ${featured ? 'border-white/15' : 'border-brand-deep/10'}`}>
+        {plan.features.map((f) => (
+          <li key={f} className="flex items-start gap-3 text-sm leading-snug font-medium">
+            <span className={`mt-px grid size-5 shrink-0 place-items-center rounded-full ${featured ? 'bg-brand-signal text-white' : 'bg-brand-signal/10 text-brand-signal'}`}>
+              <Check className="size-3" />
             </span>
-          )}
-        </header>
+            {f}
+          </li>
+        ))}
+      </ul>
 
-        <p className="relative z-2 mt-6 flex items-end gap-3">
-          <span className="font-display text-giant tabular-nums">
-            <Odometer value={plan.price} />
-          </span>
-          <span className={`pb-2 text-label font-semibold ${c.muted}`}>
-            {planes.currency.toUpperCase()} {planes.period}
-          </span>
-        </p>
-
-        <ul className="relative z-2 mt-8 flex flex-1 flex-col gap-3.5">
-          {plan.features.map((f) => (
-            <li key={f} className="flex items-start gap-3 text-sm leading-snug font-medium md:text-base">
-              <span className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-full ${c.check}`}>
-                <Check />
-              </span>
-              {f}
-            </li>
-          ))}
-        </ul>
-
-        <Button href={planes.ctaHref} label={planes.cta} variant={c.button} icon="whatsapp" cursor="Escribinos" className="relative z-2 mt-8 w-full" />
-      </div>
+      <Button href={planes.ctaHref} label={planes.cta} variant={featured ? 'white' : 'night'} icon="whatsapp" cursor="Escribinos" className="mt-5 w-full md:mt-6" />
     </article>
   )
 }
 
+/** Planes: tres tarjetas (carrusel con snap en mobile) + una línea para lo que no entra en un plan. */
 export function Planes() {
   const ref = useRef<HTMLElement>(null)
+  const track = useRef<HTMLDivElement>(null)
+  const [current, setCurrent] = useState(1)
+  const reduced = useReducedMotion()
 
-  useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
+  useGSAP(
+    (_, contextSafe) =>
+      deferSetup(
+        contextSafe!(() => {
+          setupReveals(ref.current!)
+          const cards = gsap.utils.toArray<HTMLElement>('[data-plan-card]', ref.current)
+          const scrollTrigger = { trigger: track.current, start: 'top 85%', once: true }
+          if (reduced) {
+            gsap.fromTo(cards, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.05, scrollTrigger })
+            return
+          }
+          // las laterales llegan desde el centro, como si se abriera un abanico
+          gsap.fromTo(
+            cards,
+            { autoAlpha: 0, y: 80, rotate: (i) => (i - 1) * 3 },
+            { autoAlpha: 1, y: 0, rotate: 0, duration: 1.2, stagger: 0.08, ease: 'reveal', scrollTrigger },
+          )
+        }),
+      ),
+    { scope: ref, dependencies: [reduced] },
+  )
+
+  // Mobile: arranca centrado en el plan destacado y los puntos siguen al carrusel
+  useEffect(() => {
+    const el = track.current
+    if (!el || el.scrollWidth <= el.clientWidth) return
+    const cards = [...el.children] as HTMLElement[]
+    const featured = planes.plans.findIndex((p) => p.featured)
+    const card = cards[featured]
+    el.scrollLeft = card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2
+    const onScroll = () => {
+      const center = el.scrollLeft + el.clientWidth / 2
+      let best = 0
+      cards.forEach((c, i) => {
+        if (Math.abs(c.offsetLeft + c.offsetWidth / 2 - center) < Math.abs(cards[best].offsetLeft + cards[best].offsetWidth / 2 - center)) best = i
+      })
+      setCurrent(best)
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <Section id={sections.planes} ref={ref} bg="paper" className="overflow-hidden py-28 md:py-40">
-      <div className="px-5 md:px-10">
+    <Section id={sections.planes} ref={ref} bg="paper" className="flex min-h-svh flex-col justify-center overflow-hidden pt-20 pb-8 md:pt-28 md:pb-14">
+      <div className="flex flex-col gap-4 px-5 md:px-10">
         <Label>{planes.eyebrow}</Label>
-        <SectionTitle text={planes.title} className="mt-6 font-display text-giant md:w-5/6" />
+        <Title title={planes.title} tone="paper" className="text-brand-deep" />
       </div>
 
-      {/* Mobile: tarjetas apiladas; desktop: grilla de tres columnas. */}
-      <div className="mt-14 flex flex-col gap-4 px-5 pt-6 md:mt-20 md:px-10 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-6">
-        {planes.plans.map((plan, i) => (
-          <PlanCard key={plan.name} plan={plan} index={i} />
+      <div
+        ref={track}
+        className="no-scrollbar mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 py-4 md:mt-8 md:gap-4 md:px-10 lg:grid lg:grid-cols-3 lg:items-stretch lg:overflow-visible"
+      >
+        {planes.plans.map((plan) => (
+          <PlanCard key={plan.name} plan={plan} />
         ))}
       </div>
-      <p data-reveal="fade" className="px-5 text-label font-medium text-brand-deep/70 md:px-10">
-        {planes.note}
-      </p>
 
-      <div className="mt-16 grid gap-6 px-5 md:mt-24 md:px-10 lg:grid-cols-12">
-        <article data-reveal="fade" className="group flex flex-col gap-6 bg-brand-mist p-6 transition-transform duration-500 ease-expo md:p-10 md:hover:-translate-y-1 lg:col-span-7">
-          <header className="flex flex-wrap items-start justify-between gap-6">
-            <h3 className="font-display text-big">{planes.sesion.title}</h3>
-            <p className="text-right">
-              <span className="block font-display text-huge">{planes.sesion.price.split(' ')[0]}</span>
-              <span className="text-label font-semibold text-brand-deep/70">
-                {planes.sesion.price.split(' ')[1]} · {planes.sesion.availability}
-              </span>
-            </p>
-          </header>
-          <div className="grid gap-4 md:grid-cols-2 md:gap-6">
-            {planes.sesion.text.map((t) => (
-              <p key={t} className="text-sm leading-relaxed text-brand-deep/85 md:text-base">
-                {t}
-              </p>
-            ))}
-          </div>
-        </article>
-
-        <article data-reveal="fade" data-reveal-delay="0.1" className="group relative flex flex-col gap-6 bg-brand-night p-6 text-brand-paper transition-transform duration-500 ease-expo md:p-10 md:hover:-translate-y-1 lg:col-span-5">
-          <h3 className="relative font-display text-big">{planes.adicionales.title}</h3>
-          <ul className="relative flex flex-wrap gap-2">
-            {planes.adicionales.items.map((item) => (
-              <li key={item} className="border-b border-white/20 py-2 text-label font-semibold transition-opacity duration-300 ease-expo md:hover:opacity-80">
-                {item}
-              </li>
-            ))}
-          </ul>
-          <p className="relative flex items-center gap-3 border-t border-white/20 pt-4">
-            <span className="text-label font-bold uppercase text-brand-sky">{planes.adicionales.nuevo.badge}</span>
-            <span className="font-semibold">{planes.adicionales.nuevo.label}</span>
-          </p>
-          <a href={contact.whatsappMessage} target="_blank" rel="noopener noreferrer" data-cursor="Escribinos" className="link-underline relative mt-auto self-start font-accent text-4xl text-brand-sky">
-            {planes.adicionales.cta}
-          </a>
-        </article>
+      <div aria-hidden="true" className="flex justify-center gap-2 lg:hidden">
+        {planes.plans.map((plan, i) => (
+          <span key={plan.name} className={`size-2 rounded-full transition duration-500 ease-expo ${i === current ? 'scale-125 bg-brand-signal' : 'bg-brand-deep/20'}`} />
+        ))}
       </div>
+
+      <p data-reveal="rise" className="mt-3 flex flex-col gap-1 px-5 text-xs md:text-sm text-brand-night/70 md:mt-6 md:flex-row md:items-center md:gap-6 md:px-10">
+        <span>{planes.note}</span>
+        <span>
+          {planes.extra.text}{' '}
+          <a href={planes.ctaHref} target="_blank" rel="noopener noreferrer" className="link-underline font-bold text-brand-signal">
+            {planes.extra.link}
+          </a>
+        </span>
+      </p>
     </Section>
   )
 }

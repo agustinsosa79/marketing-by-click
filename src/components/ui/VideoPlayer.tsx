@@ -198,7 +198,7 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
   return (
     <div ref={wrap} className="group/player relative">
       <div
-        className="relative overflow-hidden rounded-3xl bg-brand-night text-brand-paper shadow-lift ring-1 ring-brand-night/10 md:rounded-4xl"
+        className="relative overflow-hidden rounded-3xl bg-brand-night text-white shadow-lift ring-1 ring-white/10 md:rounded-4xl"
         tabIndex={0}
         role="group"
         aria-label={label}
@@ -223,30 +223,26 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
         <button
           type="button"
           onClick={toggle}
-          aria-label={mode === 'ended' ? labels.replay : labels.playAria}
           data-cursor={labels.cursorPlay}
-          className={`absolute inset-0 flex flex-col items-center justify-center gap-4 bg-brand-night/35 transition-opacity duration-500 ${showCta ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+          className={`absolute inset-0 flex flex-col items-center justify-center gap-4 bg-linear-to-t from-brand-night/70 to-brand-night/10 transition-opacity duration-500 ${showCta ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
         >
-          <span className={`relative grid size-18 place-items-center rounded-full bg-brand-sky text-brand-night transition-transform duration-500 ease-expo group-hover/player:scale-110 md:size-24 ${showCta ? 'play-ring' : ''}`}>
+          <span className="relative grid size-18 place-items-center rounded-full bg-brand-signal text-white transition-transform duration-500 ease-expo group-hover/player:scale-110 md:size-24">
+            {showCta && !reduced && <span aria-hidden="true" className="absolute inset-0 animate-ping rounded-full bg-brand-signal/40" />}
             <svg viewBox="0 0 24 24" aria-hidden="true" className="relative size-7 translate-x-0.5 fill-current md:size-9">
               {mode === 'ended' ? <path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z" /> : <path d="M7 4v16l13-8z" />}
             </svg>
           </span>
-          <span className="text-sm font-semibold">
+          <span className="flex items-center gap-2 text-sm font-bold md:text-base">
             {ctaText}
-            {mode === 'preview' && (
-              <>
-                <span className="opacity-80">{labels.hint}</span>
-              </>
-            )}
+            {mode === 'preview' && <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-semibold backdrop-blur-sm">{labels.hint}</span>}
           </span>
         </button>
 
         {/* Controles */}
         <div
-          className={`absolute inset-x-0 bottom-0 flex items-center gap-3 bg-brand-night px-3 py-2 transition-opacity duration-500 md:gap-4 md:px-4 md:py-3 ${mode === 'preview' ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+          className={`absolute inset-x-0 bottom-0 flex items-center gap-3 bg-brand-night/85 px-3 py-2 backdrop-blur-md transition-opacity duration-500 md:gap-4 md:px-4 md:py-3 ${mode === 'preview' ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
         >
-          <button type="button" onClick={toggle} aria-label={mode === 'playing' ? labels.pauseAria : labels.playAria} className="grid size-11 place-items-center bg-brand-deep transition-transform duration-300 ease-expo hover:scale-110 active:scale-95">
+          <button type="button" onClick={toggle} aria-label={mode === 'playing' ? labels.pauseAria : labels.playAria} className="grid size-10 place-items-center rounded-full bg-white/10 transition duration-300 ease-expo hover:scale-110 hover:bg-brand-signal active:scale-95">
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-current">
               {mode === 'playing' ? <path d="M6 4h4v16H6zM14 4h4v16h-4z" /> : <path d="M7 4v16l13-8z" />}
             </svg>
@@ -265,7 +261,7 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
             className="group/seek relative flex h-6 flex-1 cursor-pointer items-center"
           >
             <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/20 transition-transform duration-300 group-hover/seek:scale-y-150">
-              <div ref={fill} className="absolute inset-0 origin-left scale-x-0 rounded-full bg-brand-sky" />
+              <div ref={fill} className="absolute inset-0 origin-left scale-x-0 rounded-full bg-brand-signal" />
             </div>
           </div>
 
@@ -273,7 +269,7 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
             {fmt(time.current)} / {fmt(time.duration)}
           </span>
 
-          <button type="button" onClick={toggleMute} aria-label={muted ? labels.unmuteAria : labels.muteAria} className="grid size-11 place-items-center bg-brand-deep transition-transform duration-300 ease-expo hover:scale-110 active:scale-95">
+          <button type="button" onClick={toggleMute} aria-label={muted ? labels.unmuteAria : labels.muteAria} className="grid size-10 place-items-center rounded-full bg-white/10 transition duration-300 ease-expo hover:scale-110 hover:bg-brand-signal active:scale-95">
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-none stroke-current stroke-2">
               <path d="M4 9h4l5-4v14l-5-4H4z" className="fill-current" />
               {muted ? <path d="M17 9l5 6M22 9l-5 6" /> : <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />}
