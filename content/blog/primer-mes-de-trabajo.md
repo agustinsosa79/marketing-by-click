@@ -2,6 +2,7 @@
 title: Qué pasa en tu primer mes trabajando con nosotros
 description: Semana por semana, cómo es el primer mes con Marketing by Clic, del diagnóstico de tu marca a la publicación del contenido.
 date: 2026-10-04
+updated: 2026-10-07
 category: Estrategia
 cover: /media/blog/primer-mes-videollamada.webp
 coverAlt: Ian en una videollamada con un cliente desde su computadora
@@ -9,7 +10,11 @@ author: Ian
 draft: false
 ---
 
-<!-- TODO copy: nota inicial armada con el cronograma real del sitio. Revisar con el cliente antes de publicar. -->
+- Un punto
+
+1. Primer paso
+
+> Una frase para destacar<!-- TODO copy: nota inicial armada con el cronograma real del sitio. Revisar con el cliente antes de publicar. -->
 
 Cuando empezás a trabajar con una agencia, lo normal es preguntarse qué va a pasar y cuándo. En esta nota te contamos, semana por semana, cómo es el primer mes con nosotros.
 
