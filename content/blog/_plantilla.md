@@ -1,6 +1,6 @@
 ---
 # Plantilla para escribir una nota a mano (el guion bajo hace que no se publique).
-# Desde el panel /admin no hace falta: el formulario completa todo esto.
+# Desde el panel no hace falta: el formulario completa todo esto.
 title: Título de la nota (lo que se lee en Google)
 description: Resumen de 1 o 2 oraciones, de 120 a 155 caracteres. Es el texto que aparece en Google.
 date: 2026-01-31

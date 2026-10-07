@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-brand-night: #0b1435;
+  --color-brand-navy: #16224f;
+  --color-brand-deep: #223a8d;
+  --color-brand-signal: #3d5ef5;
+  --color-brand-haze: #c9d3f5;
+  --color-brand-paper: #f4f6fc;
+  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --shadow-soft: 0 0.0625rem 0.125rem rgb(0 0 0 / 0.05), 0 0.5rem 1.5rem -0.75rem rgb(0 0 0 / 0.12);
+  --shadow-lift: 0 0.125rem 0.25rem rgb(0 0 0 / 0.06), 0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.22);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-brand-paper);
+    color: var(--color-brand-night);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 0.125rem solid var(--color-brand-signal);
+    outline-offset: 0.125rem;
+  }
+  ::selection {
+    background: var(--color-brand-signal);
+    color: white;
+  }
+}
+
+@layer components {
+  /* Logo como máscara: toma el color del texto (igual que en el sitio) */
+  .logo {
+    display: block;
+    aspect-ratio: 640 / 178;
+    background: currentColor;
+    mask: url('/logo.webp') no-repeat center / contain;
+  }
+
+  /* Vista previa de la nota: mismos estilos que el cuerpo de las notas en el sitio */
+  .prose {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .prose > * + * {
+    margin-top: 1.2em;
+  }
+  .prose h2,
+  .prose h3 {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-brand-deep);
+    line-height: 1.15;
+  }
+  .prose h2 {
+    margin-top: 2em;
+    font-size: 1.75rem;
+  }
+  .prose h3 {
+    margin-top: 1.6em;
+    font-size: 1.3rem;
+  }
+  .prose h2 + *,
+  .prose h3 + * {
+    margin-top: 0.6em;
+  }
+  .prose a {
+    color: var(--color-brand-signal);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .prose strong {
+    font-weight: 700;
+    color: var(--color-brand-deep);
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 1.4em;
+  }
+  .prose ul {
+    list-style: disc;
+  }
+  .prose ol {
+    list-style: decimal;
+  }
+  .prose li::marker {
+    color: var(--color-brand-signal);
+  }
+  .prose blockquote {
+    border-left: 0.25rem solid var(--color-brand-signal);
+    padding-left: 1em;
+    font-weight: 800;
+    font-size: 1.3rem;
+    line-height: 1.3;
+    color: var(--color-brand-deep);
+  }
+  .prose img {
+    width: 100%;
+    border-radius: 1rem;
+  }
+  .prose figcaption {
+    margin-top: 0.5em;
+    font-size: 0.85rem;
+    color: var(--color-brand-deep);
+    opacity: 0.7;
+  }
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  .prose th,
+  .prose td {
+    text-align: left;
+    padding: 0.6em 0.8em 0.6em 0;
+    border-bottom: 1px solid var(--color-brand-haze);
+  }
+}

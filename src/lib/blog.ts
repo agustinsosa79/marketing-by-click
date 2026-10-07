@@ -1,5 +1,5 @@
 /**
- * Blog: las notas son archivos Markdown en content/blog (los crea el cliente desde /admin, Decap CMS).
+ * Blog: las notas son archivos Markdown en content/blog (los crea el cliente desde el panel, ver panel/README.md).
  * - Listados: solo los datos de cada nota (glob ?meta, entra en el bundle principal, pesa poco).
  * - Página de la nota: su HTML se carga aparte (un chunk por nota) y antes de hidratar (main.tsx).
  * Los archivos que empiezan con "_" (plantillas) y las notas con draft: true no se publican.
