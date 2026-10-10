@@ -1,0 +1,55 @@
+{
+  "slug": "hostel-el-duende-errante",
+  "brand": "Hostel El Duende Errante",
+  "title": "Una identidad completa, del logo a las remeras.",
+  "summary": "Logo, versión reducida y aplicaciones: un manual de marca para que su comunicación sea coherente y reconocible.",
+  "sector": "Hostel",
+  "location": "",
+  "year": "",
+  "services": [
+    "Branding"
+  ],
+  "cover": {
+    "src": "/media/proyectos/hostel-el-duende-errante-remeras.webp",
+    "alt": "Remeras blancas y negras con el logo del Hostel El Duende Errante",
+    "width": 800,
+    "height": 800
+  },
+  "challenge": "Un logo solo no alcanza. El hostel necesitaba una identidad: un sistema de piezas que funcionen juntas, en cualquier tamaño y en cualquier soporte.",
+  "process": [
+    {
+      "title": "Logo completo",
+      "text": "La versión principal, con el personaje y el nombre del hostel.",
+      "image": {
+        "src": "/media/proyectos/hostel-el-duende-errante-logo.webp",
+        "alt": "Logo completo del Hostel El Duende Errante",
+        "width": 800,
+        "height": 651
+      }
+    },
+    {
+      "title": "Versión reducida",
+      "text": "El personaje solo, para los espacios chicos: perfiles de redes, sellos o detalles.",
+      "image": {
+        "src": "/media/proyectos/hostel-el-duende-errante-version-reducida.webp",
+        "alt": "Versión reducida del logo del Hostel El Duende Errante",
+        "width": 800,
+        "height": 651
+      }
+    },
+    {
+      "title": "Aplicaciones",
+      "text": "La identidad aplicada en productos reales, como remeras blancas y negras.",
+      "image": {
+        "src": "/media/proyectos/hostel-el-duende-errante-remeras.webp",
+        "alt": "Remeras blancas y negras con el logo del Hostel El Duende Errante",
+        "width": 800,
+        "height": 800
+      }
+    }
+  ],
+  "result": "Un manual de marca que define cómo se usa cada pieza, para que la comunicación del hostel sea coherente y reconocible, la haga quien la haga.",
+  "gallery": [],
+  "order": 1,
+  "draft": false
+}

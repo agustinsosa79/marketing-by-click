@@ -2,6 +2,8 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNod
 import { BlogIndex } from '../components/blog/BlogIndex'
 import { BlogPost } from '../components/blog/BlogPost'
 import { NotFound } from '../components/blog/NotFound'
+import { ProjectPage } from '../components/projects/ProjectPage'
+import { ProjectsIndex } from '../components/projects/ProjectsIndex'
 import { MenuOverlay } from '../components/nav/MenuOverlay'
 import { Navbar } from '../components/nav/Navbar'
 import { Hero } from '../components/sections/hero/Hero'
@@ -10,6 +12,7 @@ import { Cursor } from '../components/ui/Cursor'
 import { nav, servicios } from '../data/content'
 import { useHydrated } from '../hooks/useHydrated'
 import type { Post } from '../lib/blog'
+import { findProject } from '../lib/projects'
 import { fontsReady } from '../lib/fonts'
 import { ScrollTrigger } from '../lib/gsap'
 import { LenisProvider } from './LenisProvider'
@@ -24,7 +27,7 @@ function Home() {
   const hydrated = useHydrated()
   return (
     <>
-      <main id="contenido" className="relative isolate z-10">
+      <main id="contenido" className="relative isolate z-10 bg-brand-paper">
         <Hero />
         {hydrated && (
           <Suspense fallback={null}>
@@ -62,6 +65,7 @@ export function App({ route, post = null }: AppProps) {
   const closeMenu = useCallback(() => setMenuOpen(false), [])
   const isHome = route.name === 'home'
   const service = route.name === 'service' ? servicios.items.find((s) => s.slug === route.slug) : undefined
+  const project = route.name === 'project' ? findProject(route.slug) : null
 
   // Recalcular posiciones cuando terminan de cargar fuentes e imágenes
   useEffect(() => {
@@ -76,6 +80,8 @@ export function App({ route, post = null }: AppProps) {
   else if (route.name === 'blog') content = <BlogIndex />
   else if (route.name === 'post' && post) content = <BlogPost post={post} />
   else if (route.name === 'service' && service) content = <ServicePage service={service} />
+  else if (route.name === 'projects') content = <ProjectsIndex />
+  else if (route.name === 'project' && project) content = <ProjectPage project={project} />
   else content = <NotFound />
 
   return (

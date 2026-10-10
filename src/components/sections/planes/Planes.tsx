@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { planes, sections, type Plan } from '../../../data/content'
+import { planes, sections, type Plan, type PlanTone } from '../../../data/content'
+import { useLenis } from '../../../hooks/useLenis'
 import { useReducedMotion } from '../../../hooks/useReducedMotion'
 import { gsap, useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
@@ -10,36 +11,77 @@ import { Section } from '../../ui/Section'
 import { Label, Title } from '../../ui/Title'
 
 /**
- * Tarjeta de plan. El destacado va en azul Clic (el protagonista), los otros en blanco.
+ * Colores de cada tarjeta, todos de la misma familia de azules:
+ *   light  → Inicial: blanco, el punto de partida
+ *   signal → Plus (más elegido): azul señal, el más vivo de la paleta
+ *   night  → Premium: azul noche, el más sobrio
+ * Contraste AA en todos los textos (sobre azul señal el texto secundario va en blanco: la bruma no alcanza).
+ */
+const TONES: Record<PlanTone, { card: string; label: string; price: string; muted: string; rule: string; check: string; button: 'night' | 'white' | 'onSignal' }> = {
+  light: {
+    card: 'bg-white text-brand-night shadow-soft ring-1 ring-brand-deep/10 lg:hover:shadow-lift',
+    label: 'text-brand-deep',
+    price: 'text-brand-deep',
+    muted: 'text-brand-night/70',
+    rule: 'border-brand-deep/10',
+    check: 'bg-brand-signal/10 text-brand-signal',
+    button: 'night',
+  },
+  signal: {
+    card: 'bg-brand-signal text-white shadow-lift',
+    label: 'text-white',
+    price: 'text-white',
+    muted: 'text-white',
+    rule: 'border-white/25',
+    check: 'bg-white text-brand-signal',
+    button: 'onSignal',
+  },
+  night: {
+    card: 'bg-brand-night text-white shadow-soft ring-1 ring-white/10 lg:hover:shadow-lift',
+    label: 'text-brand-haze',
+    price: 'text-white',
+    muted: 'text-brand-haze',
+    rule: 'border-white/15',
+    check: 'bg-brand-signal text-white',
+    button: 'white',
+  },
+}
+
+/**
+ * Tarjeta de plan. El destacado es un poco más grande que los otros dos (más alto y más ancho en desktop,
+ * más ancho en el carrusel del celular) y lleva la etiqueta "Más elegido".
  * Hover (desktop): sube un poco.
  */
 function PlanCard({ plan }: { plan: Plan }) {
   const featured = !!plan.featured
+  const t = TONES[plan.tone]
 
   return (
     <article
       data-plan-card
-      className={`group relative isolate flex w-4/5 shrink-0 snap-center flex-col overflow-hidden rounded-4xl p-5 transition duration-500 ease-expo sm:w-3/5 md:p-7 lg:w-auto lg:hover:-translate-y-2 ${
-        featured ? 'bg-brand-deep text-white shadow-lift ring-1 ring-white/10' : 'bg-white text-brand-night shadow-soft ring-1 ring-brand-deep/10 lg:hover:shadow-lift'
+      className={`group relative isolate flex shrink-0 snap-center flex-col overflow-hidden rounded-4xl transition duration-500 ease-expo lg:w-auto lg:hover:-translate-y-2 ${t.card} ${
+        featured
+          ? 'z-10 w-5/6 p-6 ring-8 ring-brand-signal/15 sm:w-3/5 md:p-9 lg:col-span-5 lg:w-auto lg:py-12 short:py-7'
+          : 'w-3/4 p-5 sm:w-1/2 md:p-7 lg:col-span-4 short:p-5'
       }`}
     >
       <header className="flex items-center justify-between gap-4">
-        <h3 className={`font-label text-label ${featured ? 'text-brand-haze' : 'text-brand-deep'}`}>{plan.name}</h3>
-        {featured && <span className="rounded-full bg-brand-signal px-3 py-1 text-xs font-bold text-white">{planes.badge}</span>}
+        <h3 className={`font-label text-label ${t.label}`}>{plan.name}</h3>
+        {featured && <span className="rounded-full bg-white px-3.5 py-1.5 text-sm font-bold text-brand-signal shadow-soft">★ {planes.badge}</span>}
       </header>
 
       <p className="mt-4 flex items-end gap-2">
-        <span className={`font-display text-price ${featured ? '' : 'text-brand-deep'}`}>{plan.price}</span>
-        <span className={`pb-1.5 text-sm font-semibold ${featured ? 'text-brand-haze' : 'text-brand-night/60'}`}>
+        <span className={`font-display ${featured ? 'text-price-xl' : 'text-price'} ${t.price}`}>{plan.price}</span>
+        <span className={`pb-1.5 text-sm font-semibold ${t.muted}`}>
           {planes.currency} {planes.period}
         </span>
       </p>
-      <p className={`mt-2 text-sm font-medium ${featured ? 'text-brand-haze' : 'text-brand-night/70'}`}>{plan.for}</p>
+      <p className={`mt-2 font-medium ${featured ? 'text-base md:text-lg' : 'text-sm'} ${t.muted}`}>{plan.for}</p>
 
-      <ul className={`mt-4 flex flex-1 flex-col gap-2.5 border-t pt-4 md:mt-5 md:gap-3 md:pt-5 ${featured ? 'border-white/15' : 'border-brand-deep/10'}`}>
+      <ul className={`mt-4 flex flex-1 flex-col gap-2.5 border-t pt-4 md:mt-5 md:gap-3 md:pt-5 short:mt-3 short:gap-2 short:pt-3 ${t.rule}`}>
         {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-3 text-sm leading-snug font-medium">
-            <span className={`mt-px grid size-5 shrink-0 place-items-center rounded-full ${featured ? 'bg-brand-signal text-white' : 'bg-brand-signal/10 text-brand-signal'}`}>
+          <li key={f} className={`flex items-start gap-3 leading-snug font-medium ${featured ? 'text-sm md:text-base' : 'text-sm'}`}>
+            <span className={`mt-px grid size-5 shrink-0 place-items-center rounded-full ${t.check}`}>
               <Check className="size-3" />
             </span>
             {f}
@@ -47,7 +89,7 @@ function PlanCard({ plan }: { plan: Plan }) {
         ))}
       </ul>
 
-      <Button href={planes.ctaHref} label={planes.cta} variant={featured ? 'white' : 'night'} icon="whatsapp" cursor="Escribinos" className="mt-5 w-full md:mt-6" />
+      <Button href={planes.ctaHref} label={planes.cta} variant={t.button} icon="whatsapp" cursor="Escribinos" className="mt-5 w-full md:mt-6 short:mt-4" />
     </article>
   )
 }
@@ -58,6 +100,7 @@ export function Planes() {
   const track = useRef<HTMLDivElement>(null)
   const [current, setCurrent] = useState(1)
   const reduced = useReducedMotion()
+  const { scrollTo } = useLenis()
 
   useGSAP(
     (_, contextSafe) =>
@@ -102,7 +145,7 @@ export function Planes() {
   }, [])
 
   return (
-    <Section id={sections.planes} ref={ref} bg="paper" className="flex min-h-svh flex-col justify-center overflow-hidden pt-20 pb-8 md:pt-28 md:pb-14">
+    <Section id={sections.planes} ref={ref} bg="paper" className="flex min-h-svh flex-col justify-center overflow-hidden pt-20 pb-8 md:pt-28 md:pb-14 short:pt-20 short:pb-8">
       <div className="flex flex-col gap-4 px-5 md:px-10">
         <Label>{planes.eyebrow}</Label>
         <Title title={planes.title} tone="paper" className="text-brand-deep" />
@@ -110,7 +153,7 @@ export function Planes() {
 
       <div
         ref={track}
-        className="no-scrollbar mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 py-4 md:mt-8 md:gap-4 md:px-10 lg:grid lg:grid-cols-3 lg:items-stretch lg:overflow-visible"
+        className="no-scrollbar mt-3 flex snap-x snap-mandatory items-center gap-3 overflow-x-auto px-5 py-6 md:mt-8 md:gap-4 md:px-10 lg:grid lg:grid-cols-13 lg:gap-6 lg:overflow-visible lg:py-6 short:mt-3 short:py-4"
       >
         {planes.plans.map((plan) => (
           <PlanCard key={plan.name} plan={plan} />
@@ -125,10 +168,22 @@ export function Planes() {
 
       <p data-reveal="rise" className="mt-3 flex flex-col gap-1 px-5 text-xs md:text-sm text-brand-night/70 md:mt-6 md:flex-row md:items-center md:gap-6 md:px-10">
         <span>{planes.note}</span>
-        <span>
-          {planes.extra.text}{' '}
-          <a href={planes.ctaHref} target="_blank" rel="noopener noreferrer" className="link-underline font-bold text-brand-signal">
-            {planes.extra.link}
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          {planes.extra.text}
+          <a
+            href={`#${planes.extra.id}`}
+            onClick={(event) => {
+              const target = document.getElementById(planes.extra.id)
+              if (!target) return
+              event.preventDefault()
+              scrollTo(target, { duration: 1.4 })
+            }}
+            className="group inline-flex items-center gap-1.5 font-bold text-brand-signal"
+          >
+            <span className="link-underline">{planes.extra.link}</span>
+            <span aria-hidden="true" className="transition-transform duration-500 ease-expo group-hover:translate-y-0.5">
+              ↓
+            </span>
           </a>
         </span>
       </p>

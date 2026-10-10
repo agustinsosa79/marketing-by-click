@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { CATEGORIES, postUrl, type PostSummary } from '../../shared/blog'
 import { api, ApiError, mediaSrc } from '../api'
-import { go } from '../App'
+import { go } from '../lib/nav'
 import { Badge, Button, ConfirmDialog, Spinner, inputClass, type ToastData } from '../components/ui'
 
 const dateFormat = new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
@@ -59,7 +59,7 @@ export function PostList({ notify }: { notify: (t: ToastData) => void }) {
             </p>
           )}
         </div>
-        <Button onClick={() => go('#/nueva')} className="py-3">
+        <Button onClick={() => go('#/blog/nueva')} className="py-3">
           <span aria-hidden="true" className="text-lg leading-none">+</span> Nueva nota
         </Button>
       </div>
@@ -100,7 +100,7 @@ export function PostList({ notify }: { notify: (t: ToastData) => void }) {
         <div className="rounded-3xl bg-white p-10 text-center ring-1 ring-brand-deep/10">
           <p className="font-bold text-brand-deep">{posts.length === 0 ? 'Todavía no hay notas.' : 'Ninguna nota coincide con la búsqueda.'}</p>
           {posts.length === 0 && (
-            <Button onClick={() => go('#/nueva')} className="mt-4">
+            <Button onClick={() => go('#/blog/nueva')} className="mt-4">
               Escribir la primera
             </Button>
           )}
@@ -110,7 +110,7 @@ export function PostList({ notify }: { notify: (t: ToastData) => void }) {
       <ul className="flex flex-col gap-3">
         {visible.map((p) => (
           <li key={p.slug} className="flex flex-col gap-4 rounded-2xl bg-white p-3 shadow-soft ring-1 ring-brand-deep/10 sm:flex-row sm:items-center sm:pr-5">
-            <a href={`#/editar/${p.slug}`} className="block aspect-video w-full shrink-0 overflow-hidden rounded-xl bg-brand-paper sm:w-40">
+            <a href={`#/blog/editar/${p.slug}`} className="block aspect-video w-full shrink-0 overflow-hidden rounded-xl bg-brand-paper sm:w-40">
               {p.cover ? <img src={mediaSrc(p.cover)} alt="" loading="lazy" className="size-full object-cover" /> : <span className="grid size-full place-items-center text-xs font-semibold text-brand-night/40">Sin portada</span>}
             </a>
             <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-1 sm:px-0">
@@ -122,13 +122,13 @@ export function PostList({ notify }: { notify: (t: ToastData) => void }) {
                   {p.updated ? ` · editada ${formatDate(p.updated)}` : ''}
                 </span>
               </div>
-              <a href={`#/editar/${p.slug}`} className="truncate text-lg font-extrabold tracking-tight text-brand-deep hover:text-brand-signal">
+              <a href={`#/blog/editar/${p.slug}`} className="truncate text-lg font-extrabold tracking-tight text-brand-deep hover:text-brand-signal">
                 {p.title || '(sin título)'}
               </a>
               <p className="line-clamp-1 text-sm text-brand-night/60">{p.description}</p>
             </div>
             <div className="flex shrink-0 gap-2 px-1 pb-1 sm:px-0 sm:pb-0">
-              <Button variant="secondary" onClick={() => go(`#/editar/${p.slug}`)}>
+              <Button variant="secondary" onClick={() => go(`#/blog/editar/${p.slug}`)}>
                 Editar
               </Button>
               {!p.draft && (

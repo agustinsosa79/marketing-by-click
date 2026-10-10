@@ -36,6 +36,26 @@ export function ServiceIcon({ name, className = '' }: { name: Service['icon']; c
   )
 }
 
+/** Íconos de los servicios fuera de los planes (mismo trazo que los de servicios). */
+const EXTRA_PATHS: Record<'web' | 'camera' | 'custom', string[]> = {
+  // ventana de navegador
+  web: ['M3.5 6.5A1.5 1.5 0 0 1 5 5h14a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5z', 'M3.5 9h17', 'M6.5 7h.01', 'M9 7h.01'],
+  // cámara
+  camera: ['M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z', 'M12 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'],
+  // pieza de rompecabezas: lo que no entra en un plan
+  custom: ['M9 4h3a2 2 0 1 1 4 0h0v4h0a2 2 0 1 1 0 4h0v4h-4a2 2 0 1 0-4 0H4v-4a2 2 0 1 0 0-4V4z'],
+}
+
+export function ExtraIcon({ name, className = '' }: { name: keyof typeof EXTRA_PATHS; className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={`fill-none stroke-current stroke-2 ${className}`} strokeLinecap="round" strokeLinejoin="round">
+      {EXTRA_PATHS[name].map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
+  )
+}
+
 export function Check({ className = '' }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={`fill-none stroke-current stroke-3 ${className}`} strokeLinecap="round" strokeLinejoin="round">

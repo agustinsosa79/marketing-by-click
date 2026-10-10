@@ -1,10 +1,11 @@
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { MEDIA_DIR, POSTS_DIR } from '../shared/blog.js'
+import { FAQ_FILE, PRICES_FILE, PROJECTS_DIR, PROJECTS_MEDIA_DIR } from '../shared/site.js'
 import { UserError } from './http.js'
 
 /**
- * Dónde se guardan las notas.
+ * Dónde se guarda lo que edita el panel (notas, proyectos, precios y preguntas).
  *  - Producción (GitHub): cada guardado es UN commit en el repo del sitio. Vercel detecta el commit
  *    y vuelve a publicar la web (1-2 minutos). No hay base de datos: el repo es la base de datos.
  *  - Desarrollo (PANEL_STORAGE=local): escribe directo en la carpeta del sitio, para probar sin tocar GitHub.
@@ -24,11 +25,21 @@ export interface Storage {
   commit(changes: FileChange[], message: string): Promise<void>
 }
 
-/** Solo se puede tocar content/blog/*.md y public/media/blog/*.webp|jpg|png. Nada más del repo. */
+/**
+ * Lista cerrada de lo que el panel puede tocar en el repo. Nada más:
+ *   content/blog/*.md · public/media/blog/*.webp|jpg|png
+ *   content/proyectos/*.json · public/media/proyectos/*.webp
+ *   content/precios.json · content/faq.json
+ */
 export function assertAllowedPath(file: string) {
+  const inDir = (dir: string, re: RegExp) => file.startsWith(`${dir}/`) && re.test(file.slice(dir.length + 1))
   const ok =
-    (file.startsWith(`${POSTS_DIR}/`) && /^[a-z0-9_-]+\.md$/.test(file.slice(POSTS_DIR.length + 1))) ||
-    (file.startsWith(`${MEDIA_DIR}/`) && /^[a-z0-9-]+\.(webp|jpe?g|png)$/.test(file.slice(MEDIA_DIR.length + 1)))
+    inDir(POSTS_DIR, /^[a-z0-9_-]+\.md$/) ||
+    inDir(MEDIA_DIR, /^[a-z0-9-]+\.(webp|jpe?g|png)$/) ||
+    inDir(PROJECTS_DIR, /^[a-z0-9-]+\.json$/) ||
+    inDir(PROJECTS_MEDIA_DIR, /^[a-z0-9-]+\.webp$/) ||
+    file === PRICES_FILE ||
+    file === FAQ_FILE
   if (!ok || file.includes('..')) throw new UserError('Ruta no permitida.', 403)
 }
 

@@ -2,7 +2,6 @@ import { parse as parseYaml, stringify as stringifyYaml } from 'yaml'
 import {
   CATEGORIES,
   DATE_RE,
-  IMAGE_NAME_RE,
   LIMITS,
   MEDIA_DIR,
   MEDIA_URL,
@@ -14,6 +13,7 @@ import {
   type PostSummary,
 } from '../shared/blog.js'
 import { UserError } from './http.js'
+import { validateImages } from './images.js'
 import { getStorage, type FileChange } from './storage.js'
 
 /**
@@ -102,21 +102,6 @@ function validate(raw: PostInput): PostInput {
     if (!post.body.trim()) throw new UserError('Para publicar, escribí el texto de la nota.')
   }
   return post
-}
-
-/** Imágenes nuevas: nombre seguro, WebP real (no otro archivo renombrado) y tamaño acotado. */
-function validateImages(images: NewImage[]) {
-  if (!Array.isArray(images)) throw new UserError('Imágenes inválidas.')
-  let total = 0
-  for (const img of images) {
-    if (!IMAGE_NAME_RE.test(img.name)) throw new UserError('Nombre de imagen inválido.')
-    const bytes = Buffer.from(String(img.base64), 'base64')
-    total += bytes.length
-    const isWebp = bytes.subarray(0, 4).toString('ascii') === 'RIFF' && bytes.subarray(8, 12).toString('ascii') === 'WEBP'
-    if (!isWebp) throw new UserError('Las imágenes tienen que ser WebP (el panel las convierte solo).')
-    if (bytes.length > LIMITS.image) throw new UserError('Una imagen es demasiado pesada.')
-  }
-  if (total > LIMITS.imagesTotal) throw new UserError('Las imágenes nuevas pesan demasiado juntas. Guardá de a poco.')
 }
 
 const referencedImages = (post: Pick<PostInput, 'cover' | 'body'>) => new Set([...`${post.cover}\n${post.body}`.matchAll(MEDIA_REF)].map((m) => m[1]))

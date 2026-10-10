@@ -26,8 +26,8 @@ export function Login({ onLogin }: { onLogin: () => void }) {
     <div className="grid min-h-svh place-items-center bg-brand-night px-4 py-10">
       <form onSubmit={submit} className="w-full max-w-sm rounded-3xl bg-white p-7 shadow-lift sm:p-8">
         <span role="img" aria-label="Marketing by Clic" className="logo h-8 text-brand-deep" />
-        <h1 className="mt-8 text-2xl font-extrabold tracking-tight text-brand-deep">Panel del blog</h1>
-        <p className="mt-1 text-sm text-brand-night/60">Ingresá con la contraseña del panel.</p>
+        <h1 className="mt-8 text-2xl font-extrabold tracking-tight text-brand-deep">Panel de la web</h1>
+        <p className="mt-1 text-sm text-brand-night/60">Blog, proyectos, precios y preguntas frecuentes.</p>
 
         <label htmlFor="password" className="mt-6 block text-sm font-bold text-brand-deep">
           Contraseña

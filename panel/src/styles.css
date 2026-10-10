@@ -30,6 +30,28 @@
 }
 
 @layer components {
+  /* Títulos como en el sitio: Montserrat ExtraBold, tracking cerrado (vistas previas) */
+  .font-display {
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+  .font-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+  }
+
+  /* Tabs con scroll horizontal sin barra (navegación del panel en el celular) */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Logo como máscara: toma el color del texto (igual que en el sitio) */
   .logo {
     display: block;

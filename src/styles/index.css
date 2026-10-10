@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @import 'lenis/dist/lenis.css';
 
+/* Notebooks con poca altura (1366×768, 1280×800): las secciones más altas se compactan para entrar en una pantalla */
+@custom-variant short (@media (min-width: 64rem) and (max-height: 52rem));
+
 /* Lenis: CSS oficial + ajustes. Sin scroll-behavior: smooth en ningún lado (pelea con Lenis). */
 html.lenis,
 html.lenis body {
@@ -49,6 +52,9 @@ html.lenis.lenis-stopped {
   --text-lead--line-height: 1.35;
   --text-price: clamp(2.6rem, min(4.4vw, 8vh), 4.5rem);
   --text-price--line-height: 1;
+  /* precio del plan destacado: un escalón más grande que el resto */
+  --text-price-xl: clamp(3.2rem, min(5.8vw, 10vh), 6rem);
+  --text-price-xl--line-height: 1;
   --text-menu: clamp(2.4rem, min(8.5vh, 9vw), 6.5rem);
   --text-menu--line-height: 1.05;
 

@@ -2,8 +2,9 @@ import { StrictMode } from 'react'
 import { renderToString } from 'react-dom/server'
 import { App } from './app/App'
 import { normalizePath, resolveRoute } from './app/routes'
-import { blog, brand, contact, faq, seo, servicePage, servicios } from './data/content'
+import { blog, brand, contact, faq, proyectos, seo, servicePage, servicios } from './data/content'
 import { findPost, posts, postUrl, type Post } from './lib/blog'
+import { findProject, projects, projectUrl } from './lib/projects'
 import { SITE_URL } from './lib/site'
 
 /**
@@ -16,9 +17,17 @@ import { SITE_URL } from './lib/site'
 const fullPosts = import.meta.glob<Post>('/content/blog/[!_]*.md', { eager: true })
 const getPost = (slug: string) => Object.entries(fullPosts).find(([path]) => path.endsWith(`/${slug}.md`))?.[1] ?? null
 
-/** Rutas a generar: inicio, blog, cada nota publicada y la 404. */
+/** Rutas a generar: inicio, servicios, proyectos, blog, cada nota publicada y la 404. */
 export function routes() {
-  return ['/', ...servicios.items.map((s) => serviceUrl(s.slug)), '/blog', ...posts.map((p) => postUrl(p.slug)), '/404']
+  return [
+    '/',
+    ...servicios.items.map((s) => serviceUrl(s.slug)),
+    '/proyectos',
+    ...projects.map((p) => projectUrl(p.slug)),
+    '/blog',
+    ...posts.map((p) => postUrl(p.slug)),
+    '/404',
+  ]
 }
 
 export function render(url: string) {
@@ -149,6 +158,63 @@ export function head(url: string): Head {
     }
   }
 
+  if (route.name === 'projects') {
+    return {
+      title: proyectos.page.seo.title,
+      description: proyectos.page.seo.description,
+      canonical: abs('/proyectos'),
+      image: abs(projects[0]?.cover.src ?? '/media/founder-ian.webp'),
+      type: 'website',
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: proyectos.page.seo.title,
+          description: proyectos.page.seo.description,
+          url: abs('/proyectos'),
+          publisher,
+          hasPart: projects.map((p) => ({ '@type': 'CreativeWork', name: p.brand, headline: p.title || p.brand, url: abs(projectUrl(p.slug)), image: abs(p.cover.src) })),
+        },
+        breadcrumbs([
+          { name: blog.breadcrumbHome, url: '/' },
+          { name: proyectos.detail.breadcrumb, url: '/proyectos' },
+        ]),
+      ],
+    }
+  }
+
+  if (route.name === 'project') {
+    const project = findProject(route.slug)
+    if (project) {
+      const url = abs(projectUrl(project.slug))
+      return {
+        title: `${project.brand} | Proyectos de ${brand.name}`,
+        description: project.summary || project.title,
+        canonical: url,
+        image: abs(project.cover.src),
+        type: 'article',
+        jsonLd: [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            name: project.brand,
+            headline: project.title || project.brand,
+            description: project.summary,
+            image: [project.cover, ...project.process.flatMap((s) => (s.image ? [s.image] : [])), ...project.gallery].map((i) => abs(i.src)),
+            keywords: project.services.join(', '),
+            creator: publisher,
+            url,
+          },
+          breadcrumbs([
+            { name: blog.breadcrumbHome, url: '/' },
+            { name: proyectos.detail.breadcrumb, url: '/proyectos' },
+            { name: project.brand, url: projectUrl(project.slug) },
+          ]),
+        ],
+      }
+    }
+  }
+
   if (route.name === 'home') {
     return {
       title: seo.title,
@@ -182,6 +248,8 @@ export function feeds() {
   const urls = [
     { loc: abs('/'), lastmod: posts[0]?.date },
     ...servicios.items.map((s) => ({ loc: abs(serviceUrl(s.slug)), lastmod: undefined })),
+    { loc: abs('/proyectos'), lastmod: undefined },
+    ...projects.map((p) => ({ loc: abs(projectUrl(p.slug)), lastmod: undefined })),
     { loc: abs('/blog'), lastmod: posts[0]?.date },
     ...posts.map((p) => ({ loc: abs(postUrl(p.slug)), lastmod: p.updated ?? p.date })),
   ]

@@ -24,7 +24,7 @@ await p.evaluate(() => window.__lenis.scrollTo(window.innerHeight, { immediate: 
 await p.waitForTimeout(1200)
 await p.screenshot({ path: `${out}/${prefix}-fit-01-hero-card.png` })
 
-const ids = ['servicios', 'caso', 'proceso', 'diagnostico', 'planes', 'preguntas', 'nosotros', 'contacto']
+const ids = ['servicios', 'proyectos', 'proceso', 'diagnostico', 'planes', 'asesoria', 'preguntas', 'nosotros', 'contacto']
 for (const [i, id] of ids.entries()) {
   await p.evaluate((id) => window.__lenis.scrollTo(document.getElementById(id), { immediate: true }), id)
   await p.waitForTimeout(400)

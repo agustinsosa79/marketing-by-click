@@ -14,9 +14,45 @@ interface NavbarProps {
   isHome: boolean
 }
 
+/** Link a una sección del inicio: ahí scrollea con Lenis; desde otra página lleva a /#sección. */
+function SectionLink({ id, label, short, isHome }: { id: string; label: string; short?: string; isHome: boolean }) {
+  const [hover, setHover] = useState(false)
+  const { scrollTo } = useLenis()
+  return (
+    <a
+      data-nav-block
+      href={isHome ? `#${id}` : `/#${id}`}
+      onClick={(event) => {
+        if (!isHome) return
+        event.preventDefault()
+        const target = document.getElementById(id)
+        if (target) scrollTo(target, { duration: 1.6 })
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setHover(true)}
+      onBlur={() => setHover(false)}
+      className="invisible relative flex h-10 items-center rounded-full px-2.5 text-sm font-bold whitespace-nowrap text-white transition-colors duration-300 hover:bg-white/10 sm:px-3.5 md:h-11 md:px-5"
+    >
+      {short ? (
+        <>
+          <span className="sm:hidden">
+            <RollText text={short} active={hover} />
+          </span>
+          <span className="hidden sm:inline">
+            <RollText text={label} active={hover} />
+          </span>
+        </>
+      ) : (
+        <RollText text={label} active={hover} />
+      )}
+    </a>
+  )
+}
+
 /**
  * Navbar: cápsula compacta centrada arriba, siempre visible. Solo lo esencial:
- * logo · Planes · Hablemos (WhatsApp) · menú. Las secciones viven en el menú a pantalla completa.
+ * logo · Planes · Asesoría 1:1 · Hablemos (WhatsApp) · menú. Las secciones viven en el menú a pantalla completa.
  * Al abrir el menú la barra se va (el menú tiene su propio botón de cerrar).
  * Barra de progreso de lectura en el borde inferior de la cápsula.
  */
@@ -25,7 +61,6 @@ export function Navbar({ menuOpen, onToggle, toggleRef, isHome }: NavbarProps) {
   const pill = useRef<HTMLDivElement>(null)
   const progress = useRef<HTMLDivElement>(null)
   const first = useRef(true)
-  const [hoverPlans, setHoverPlans] = useState(false)
   const [hoverCta, setHoverCta] = useState(false)
   const { scrollTo } = useLenis()
   const reduced = useReducedMotion()
@@ -62,7 +97,7 @@ export function Navbar({ menuOpen, onToggle, toggleRef, isHome }: NavbarProps) {
     <header data-navbar ref={ref} inert={menuOpen} className="pointer-events-none invisible fixed inset-x-0 top-3 z-50 flex justify-center px-3 md:top-5">
       <div
         ref={pill}
-        className="pointer-events-auto relative flex items-center gap-1 overflow-hidden rounded-full bg-brand-night p-1.5 pl-4 text-white shadow-lift ring-1 ring-white/15 md:gap-1.5 md:pl-6"
+        className="pointer-events-auto relative flex items-center gap-0.5 overflow-hidden rounded-full bg-brand-night p-1.5 pl-3.5 text-white shadow-lift ring-1 ring-white/15 sm:gap-1 sm:pl-4 md:gap-1.5 md:pl-6"
       >
         <div aria-hidden="true" className="absolute inset-x-6 bottom-0 h-0.5 overflow-hidden rounded-full">
           <div ref={progress} className="h-full origin-left scale-x-0 bg-brand-signal" />
@@ -77,28 +112,13 @@ export function Navbar({ menuOpen, onToggle, toggleRef, isHome }: NavbarProps) {
             event.preventDefault()
             scrollTo(0, { duration: 1.8 })
           }}
-          className="invisible relative mr-1 shrink-0 text-white transition-transform duration-500 ease-expo hover:scale-105 md:mr-8"
+          className="invisible relative mr-0.5 shrink-0 text-white transition-transform duration-500 ease-expo hover:scale-105 sm:mr-1 md:mr-8"
         >
-          <Logo className="w-24 md:w-28" />
+          <Logo className="w-20 sm:w-24 md:w-28" />
         </a>
 
-        <a
-          data-nav-block
-          href={isHome ? `#${sections.planes}` : `/#${sections.planes}`}
-          onClick={(event) => {
-            if (!isHome) return
-            event.preventDefault()
-            const target = document.getElementById(sections.planes)
-            if (target) scrollTo(target, { duration: 1.6 })
-          }}
-          onMouseEnter={() => setHoverPlans(true)}
-          onMouseLeave={() => setHoverPlans(false)}
-          onFocus={() => setHoverPlans(true)}
-          onBlur={() => setHoverPlans(false)}
-          className="invisible relative flex h-10 items-center rounded-full px-3.5 text-sm font-bold text-white transition-colors duration-300 hover:bg-white/10 md:h-11 md:px-5"
-        >
-          <RollText text={nav.plansLabel} active={hoverPlans} />
-        </a>
+        <SectionLink id={sections.planes} label={nav.plansLabel} isHome={isHome} />
+        <SectionLink id={sections.asesoria} label={nav.asesoriaLabel} short={nav.asesoriaShort} isHome={isHome} />
 
         <a
           data-nav-block

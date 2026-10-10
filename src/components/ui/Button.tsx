@@ -4,13 +4,15 @@ import { gsap } from '../../lib/gsap'
 import { Icon } from './Icon'
 import { RollText } from './RollText'
 
-type Variant = 'signal' | 'night' | 'white'
+type Variant = 'signal' | 'night' | 'white' | 'onSignal'
 
 // cara · relleno que sube al hover · círculo del ícono
 const STYLES: Record<Variant, { face: string; fill: string; badge: string }> = {
   signal: { face: 'bg-brand-signal text-white', fill: 'bg-brand-night', badge: 'bg-white text-brand-signal' },
   night: { face: 'bg-brand-night text-white shadow-soft', fill: 'bg-brand-signal', badge: 'bg-brand-signal text-white' },
   white: { face: 'bg-white text-brand-night shadow-soft group-hover:text-white', fill: 'bg-brand-signal', badge: 'bg-brand-night text-white' },
+  // sobre fondo azul señal: el relleno del hover no puede ser del mismo azul
+  onSignal: { face: 'bg-white text-brand-night shadow-soft group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-signal text-white' },
 }
 
 interface ButtonProps {

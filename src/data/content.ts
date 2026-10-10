@@ -3,7 +3,12 @@
  * Fuente: textos reales de marketingbyclic.com (reference/content.json) y la bio de Instagram de la agencia.
  * - Redacción nueva sobre datos reales marcada con `// TODO copy` para revisión del cliente.
  * - Sin cursivas: el énfasis va con color (`emphasis` en los títulos).
+ * - Lo que el cliente edita desde el panel vive aparte, en content/: precios (precios.json),
+ *   preguntas frecuentes (faq.json), proyectos (proyectos/*.json) y notas del blog (blog/*.md).
  */
+
+import faqData from '../../content/faq.json'
+import preciosData from '../../content/precios.json'
 
 export interface Link {
   label: string
@@ -25,6 +30,19 @@ export interface Headline {
 
 const WHATSAPP = 'https://wa.me/5492944126756'
 const WHATSAPP_MESSAGE = 'https://wa.me/message/2SGQE2CNFXEDF1'
+/** WhatsApp con un mensaje ya escrito. */
+const whatsappWith = (text: string) => `${WHATSAPP}?text=${encodeURIComponent(text)}`
+
+/** Precios editables desde el panel (content/precios.json). Si falta alguno, queda el valor original. */
+const prices = {
+  currency: preciosData.currency || 'USD',
+  plans: { inicial: preciosData.plans?.inicial || '115', plus: preciosData.plans?.plus || '135', premium: preciosData.plans?.premium || '155' },
+  asesoria: { price: preciosData.asesoria?.price ?? '', detail: preciosData.asesoria?.detail ?? '' },
+  sesion: { price: preciosData.sesion?.price || '100', detail: preciosData.sesion?.detail ?? '' },
+}
+const minPlanPrice = Math.min(...Object.values(prices.plans).map(Number).filter(Number.isFinite))
+/** "2 horas · 100 USD" */
+const sesionPrice = [prices.sesion.detail, `${prices.sesion.price} ${prices.currency}`].filter(Boolean).join(' · ')
 
 export const contact = {
   whatsapp: { label: '+54 9 2944 12-6756', href: WHATSAPP },
@@ -55,7 +73,8 @@ export const sections = {
   servicios: 'servicios',
   proceso: 'proceso',
   planes: 'planes',
-  caso: 'caso',
+  asesoria: 'asesoria',
+  proyectos: 'proyectos',
   diagnostico: 'diagnostico',
   faq: 'preguntas',
   contacto: 'contacto',
@@ -70,16 +89,19 @@ export const nav = {
   homeLabel: 'Marketing by Clic, volver al inicio',
   items: [
     { label: 'Servicios', id: sections.servicios },
-    { label: 'Caso de éxito', id: sections.caso },
+    { label: 'Proyectos', id: sections.proyectos },
     { label: 'Cómo trabajamos', id: sections.proceso },
     { label: 'Planes', id: sections.planes },
+    { label: 'Asesoría 1:1', id: sections.asesoria },
     { label: 'Preguntas', id: sections.faq },
     { label: 'Nosotros', id: sections.nosotros },
     { label: 'Contacto', id: sections.contacto },
     { label: 'Blog', id: 'blog', href: '/blog' },
   ] as { label: string; id: string; href?: string }[],
-  // Botón secundario de la barra (el principal es "Hablemos" por WhatsApp)
+  // Links de la barra fija (el botón principal es "Hablemos" por WhatsApp). En el celular la asesoría va corta.
   plansLabel: 'Planes',
+  asesoriaLabel: 'Asesoría 1:1',
+  asesoriaShort: 'Asesoría',
   ctaLabel: 'Hablemos',
   ctaCursor: 'Escribinos',
   contactTitle: 'Escribinos', // TODO copy
@@ -185,11 +207,11 @@ export const servicios = {
         'De 2 canales en el plan Inicial a todas las redes que necesites en Premium',
         'Contenido adaptado a cada canal en los planes Plus y Premium',
         'Aprobación de las primeras piezas antes de publicar',
-        'Sesión de fotos y videos opcional: 2 horas, 100 USD',
+        `Sesión de fotos y videos opcional: ${sesionPrice}`,
       ],
       seo: {
         title: 'Contenido para redes sociales | Marketing by Clic',
-        description: 'Posteos, historias y reels que conectan con tu audiencia y mejoran tu visibilidad. Planes mensuales desde 115 USD. Escribinos por WhatsApp.',
+        description: `Posteos, historias y reels que conectan con tu audiencia y mejoran tu visibilidad. Planes mensuales desde ${minPlanPrice} ${prices.currency}. Escribinos por WhatsApp.`,
       },
       image: { src: '/media/servicio-contenido-duo.webp', alt: 'Manos escribiendo en un celular', width: 720, height: 404 },
     },
@@ -239,10 +261,12 @@ export const servicios = {
   cta: 'Consultar por WhatsApp',
   listAria: 'Elegí un servicio',
   extrasLabel: 'También',
+  // todos llevan a la sección de la asesoría, donde están los servicios fuera de los planes
   extras: [
-    { name: 'Asesoría 1:1', text: 'Ordenamos ideas y definimos tu próximo paso.' },
-    { name: 'Sesión de fotos y videos', text: '2 horas de contenido para tus redes · 100 USD' },
-  ],
+    { name: 'Asesoría 1:1', text: 'Ordenamos ideas y definimos tu próximo paso.', id: sections.asesoria },
+    { name: 'Sitio web', text: 'Tu web o tu tienda online.', id: sections.asesoria },
+    { name: 'Sesión de fotos y videos', text: `Contenido para tus redes · ${sesionPrice}`, id: sections.asesoria },
+  ] as { name: string; text: string; id?: string }[],
 }
 
 export const proceso = {
@@ -279,8 +303,13 @@ export const proceso = {
   ],
 }
 
+/** Color de cada tarjeta: los tres planes se distinguen de un vistazo, el destacado es el más vivo. */
+export type PlanTone = 'light' | 'signal' | 'night'
+
 export interface Plan {
+  id: keyof typeof prices.plans
   name: string
+  tone: PlanTone
   featured?: boolean
   price: string
   for: string
@@ -290,46 +319,142 @@ export interface Plan {
 export const planes = {
   eyebrow: 'Planes',
   title: { text: 'Hagamos crecer tus redes.', emphasis: 'crecer' } satisfies Headline,
-  currency: 'USD',
+  currency: prices.currency,
   period: 'por mes',
   badge: 'Más elegido',
   cta: 'Quiero este plan',
   ctaHref: WHATSAPP_MESSAGE,
   plans: [
     {
+      id: 'inicial',
       name: 'Inicial',
-      price: '115',
+      tone: 'light',
+      price: prices.plans.inicial,
       for: 'Para empezar con contenido constante.', // TODO copy
       features: ['Análisis básico', 'Contenido orgánico, sin anuncios', 'Hasta 2 canales', '6 posteos, 8 historias y 2 reels al mes'],
     },
     {
+      id: 'plus',
       name: 'Plus',
+      tone: 'signal',
       featured: true,
-      price: '135',
+      price: prices.plans.plus,
       for: 'Para sumar anuncios y vender más.', // TODO copy
       features: ['Análisis avanzado', 'Contenido + 2 campañas de Meta Ads*', 'Hasta 3 canales con contenido adaptado', '8 posteos, 12 historias y 4 reels al mes'],
     },
     {
+      id: 'premium',
       name: 'Premium',
-      price: '155',
+      tone: 'night',
+      price: prices.plans.premium,
       for: 'Para estar en todas las redes que necesites.', // TODO copy
       features: ['Análisis avanzado y llamadas 1:1 semanales', 'Hasta 5 campañas de Meta Ads simultáneas*', 'Todas las redes necesarias', '8 posteos, 12 historias y 8 reels al mes'],
     },
   ] satisfies Plan[],
   note: '*La inversión en publicidad se cotiza aparte.',
-  extra: { text: '¿Necesitás algo a medida, una web o una sesión de fotos?', link: 'Consultanos' }, // TODO copy
+  // lleva a la sección de abajo (asesoría + servicios fuera de los planes)
+  extra: { text: '¿Necesitás algo a medida, una web o una sesión de fotos?', link: 'Mirá las otras opciones', id: sections.asesoria }, // TODO copy
 }
 
-export const caso = {
-  eyebrow: 'Caso de éxito',
-  title: { text: 'Una identidad completa para Hostel El Duende Errante.', emphasis: 'El Duende Errante.' } satisfies Headline,
-  text: 'Logo, versión reducida y aplicaciones: un manual de marca para que su comunicación sea coherente y reconocible. Lo diseñamos con más de 10 años de experiencia en identidad visual.', // TODO copy
-  images: [
-    { caption: 'Logo completo', src: '/media/duende-logo-completo.webp', alt: 'Logo completo del Hostel El Duende Errante', width: 800, height: 651 },
-    { caption: 'Versión reducida', src: '/media/duende-version-reducida.webp', alt: 'Versión reducida del logo del Hostel El Duende Errante', width: 800, height: 651 },
-    { caption: 'Aplicaciones', src: '/media/duende-mockup.webp', alt: 'Remeras blancas y negras con el logo del Hostel El Duende Errante', width: 800, height: 800 },
-  ] satisfies (ImageAsset & { caption: string })[],
-  cta: { label: 'Quiero mi identidad de marca', href: WHATSAPP_MESSAGE },
+/**
+ * Asesoría 1:1: la alternativa para quien todavía no quiere un plan mensual. Va después de Planes
+ * y con menos peso visual (no compite con la oferta principal). Textos del sitio anterior:
+ * "Recibí una asesoría 1:1 100% personalizada" · "te ayudamos a ordenar ideas, detectar oportunidades
+ * y definir un camino claro para crecer con intención".
+ */
+export const asesoria = {
+  eyebrow: 'Asesoría 1:1',
+  kicker: '¿Todavía no buscás un plan mensual?', // TODO copy
+  title: { text: 'Una asesoría 1:1, 100% personalizada.', emphasis: '100% personalizada.' } satisfies Headline,
+  text: '¿Tu negocio tiene potencial para crecer, pero no tenés claro cuál es el siguiente paso? Lo vemos juntos, a la medida de tu marca.', // TODO copy
+  points: ['Ordenamos tus ideas', 'Detectamos oportunidades', 'Definimos un camino claro para crecer'],
+  price: prices.asesoria.price ? { value: prices.asesoria.price, currency: prices.currency, detail: prices.asesoria.detail } : null,
+  cta: { label: 'Quiero una asesoría', href: whatsappWith('Hola! Quiero una asesoría 1:1.') }, // TODO copy
+  // Foto real del sitio anterior: Ian en una videollamada
+  image: { src: '/media/videollamada.webp', alt: 'Ian en una videollamada, en la pantalla de una laptop', width: 900, height: 1600 } satisfies ImageAsset,
+}
+
+/**
+ * Además de los planes: lo que se hace por proyecto, no por mes. Va junto a la asesoría, después de Planes.
+ * Servicios reales del sitio anterior: "Sitio web / e-commerce", "Sesión de fotos & videos" y
+ * "Soluciones a medida: Planificamos estrategias creativas y prácticas para conectar con tus clientes."
+ */
+export const extras = {
+  eyebrow: 'También hacemos',
+  title: 'Proyectos fuera de los planes', // TODO copy
+  cta: 'Consultar',
+  items: [
+    {
+      icon: 'web',
+      name: 'Sitio web / e-commerce',
+      text: 'Tu web o tu tienda online, pensada para que te encuentren y te escriban.', // TODO copy
+      price: '',
+      href: whatsappWith('Hola! Quiero consultar por un sitio web.'),
+    },
+    {
+      icon: 'camera',
+      name: 'Sesión de fotos y videos',
+      text: 'Contenido propio para tus redes, hecho en una sola jornada.', // TODO copy
+      price: sesionPrice,
+      href: whatsappWith('Hola! Quiero consultar por una sesión de fotos y videos.'),
+    },
+    {
+      icon: 'custom',
+      name: 'Soluciones a medida',
+      text: 'Planificamos estrategias creativas y prácticas para conectar con tus clientes.',
+      price: '',
+      href: whatsappWith('Hola! Necesito algo a medida para mi marca.'),
+    },
+  ] as { icon: 'web' | 'camera' | 'custom'; name: string; text: string; price: string; href: string }[],
+}
+
+/**
+ * Proyectos: sección del inicio (los primeros del portfolio), /proyectos y /proyectos/<slug>.
+ * Los proyectos en sí los carga el cliente desde el panel (content/proyectos/*.json).
+ * Texto real del sitio anterior: "A lo largo de nuestra trayectoria, acompañamos a marcas, profesionales
+ * y emprendimientos de distintos rubros a construir, comunicar y hacer crecer sus proyectos."
+ */
+export const proyectos = {
+  eyebrow: 'Proyectos',
+  title: { text: 'Marcas que ya confiaron en nosotros.', emphasis: 'confiaron en nosotros.' } satisfies Headline, // TODO copy
+  text: 'Acompañamos a marcas, profesionales y emprendimientos de distintos rubros a construir, comunicar y hacer crecer sus proyectos.',
+  view: 'Ver el proyecto',
+  cursor: 'Ver',
+  all: 'Ver todos los proyectos',
+  // tarjeta que completa la grilla del inicio mientras haya menos de 3 proyectos
+  next: {
+    title: 'Tu marca puede ser la próxima.', // TODO copy
+    text: 'Contanos qué necesitás y armamos el proyecto juntos.', // TODO copy
+    cta: { label: 'Empezar mi proyecto', href: whatsappWith('Hola! Quiero empezar un proyecto con ustedes.') },
+  },
+  page: {
+    seo: {
+      title: 'Proyectos y casos de éxito | Marketing by Clic',
+      description: 'Marcas, profesionales y emprendimientos que acompañamos: identidad de marca, contenido, estrategia y Meta Ads. Conocé cada proyecto y cómo lo hicimos.',
+    },
+    title: { text: 'Proyectos que hablan por nosotros.', emphasis: 'hablan por nosotros.' } satisfies Headline, // TODO copy
+    all: 'Todos',
+    filterAria: 'Filtrar proyectos por servicio',
+    empty: 'Todavía no hay proyectos de este servicio.',
+  },
+  detail: {
+    breadcrumb: 'Proyectos',
+    services: 'Servicios',
+    sector: 'Rubro',
+    location: 'Ubicación',
+    year: 'Año',
+    challenge: 'El desafío',
+    process: 'Cómo lo hicimos',
+    result: 'El resultado',
+    gallery: 'Más piezas',
+    next: 'Siguiente proyecto',
+    back: 'Ver todos los proyectos',
+    cta: {
+      title: { text: '¿Querés algo así para tu marca?', emphasis: 'tu marca?' } satisfies Headline, // TODO copy
+      text: 'Contanos tu proyecto en una videollamada gratuita y vemos juntos por dónde empezar.', // TODO copy
+      button: { label: 'Agendá una videollamada', href: WHATSAPP_MESSAGE },
+    },
+  },
 }
 
 export const contacto = {
@@ -345,7 +470,8 @@ export const footer = {
   copyright: `© ${new Date().getFullYear()} Marketing by Clic`,
   backToTop: 'Volver arriba',
   blog: { label: 'Blog', href: '/blog' },
-  navAria: 'Servicios y blog',
+  proyectos: { label: 'Proyectos', href: '/proyectos' },
+  navAria: 'Servicios, proyectos y blog',
 }
 
 export const blog = {
@@ -428,38 +554,13 @@ export const diagnostico = {
   whatsapp: WHATSAPP,
 }
 
-/** Preguntas frecuentes (respuestas armadas con los datos reales del sitio). */
+/** Preguntas frecuentes: las preguntas y respuestas las edita el cliente desde el panel (content/faq.json). */
 export const faq = {
   eyebrow: 'Preguntas frecuentes',
   title: { text: 'Lo que siempre nos preguntan.', emphasis: 'nos preguntan.' } satisfies Headline, // TODO copy
   text: '¿Tenés otra duda? Escribinos y te respondemos.', // TODO copy
   cta: { label: 'Hacer una pregunta', href: WHATSAPP_MESSAGE },
-  items: [
-    {
-      q: '¿Cuánto tarda en arrancar?',
-      a: 'El primer mes se organiza en etapas: en las semanas 1 y 2 hacemos el diagnóstico y la estrategia; en las semanas 3 y 4 producimos el contenido, lo aprobás y lo publicamos.',
-    },
-    {
-      q: '¿La inversión en publicidad está incluida?',
-      a: 'No. Los planes Plus y Premium incluyen armar y llevar adelante las campañas de Meta Ads; la inversión en publicidad, lo que se le paga a Meta, se cotiza aparte.',
-    },
-    {
-      q: '¿Qué plan me conviene?',
-      a: 'Inicial es para empezar con contenido constante, sin anuncios. Plus suma 2 campañas de Meta Ads. Premium permite hasta 5 campañas simultáneas y llamadas 1:1 semanales. Si dudás, hacé el diagnóstico rápido.',
-    },
-    {
-      q: '¿Veo el contenido antes de que se publique?',
-      a: 'Sí. Antes de publicar te mostramos las primeras piezas para que las apruebes.',
-    },
-    {
-      q: '¿Hacen trabajos a medida?',
-      a: 'Sí: identidad de marca, asesorías 1:1 y sesiones de fotos y videos (2 horas, 100 USD). Contanos qué necesitás.',
-    },
-    {
-      q: '¿Cómo empezamos?',
-      a: 'Con una videollamada gratuita: nos contás tu proyecto y vemos juntos cuál es el próximo paso.',
-    },
-  ],
+  items: (faqData.items ?? []).filter((item) => item.q?.trim() && item.a?.trim()),
 }
 
 /** Páginas de servicio (/servicios/<slug>). */

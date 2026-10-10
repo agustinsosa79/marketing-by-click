@@ -1,5 +1,6 @@
 import { useRef, useState, type KeyboardEvent } from 'react'
 import { sections, servicios } from '../../../data/content'
+import { useLenis } from '../../../hooks/useLenis'
 import { useReducedMotion } from '../../../hooks/useReducedMotion'
 import { gsap, useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
@@ -22,6 +23,7 @@ export function Servicios() {
   const panel = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const reduced = useReducedMotion()
+  const { scrollTo } = useLenis()
   const first = useRef(true)
   const item = ITEMS[active]
 
@@ -88,14 +90,33 @@ export function Servicios() {
           {/* extras en una línea (el detalle está en las páginas de servicio y en preguntas frecuentes) */}
           <p data-reveal="rise" className="hidden items-center gap-x-3 border-t border-brand-deep/15 pt-4 text-sm lg:flex lg:flex-wrap">
             <span className="font-label text-label text-brand-deep">{servicios.extrasLabel}</span>
-            {servicios.extras.map((extra) => (
-              <span key={extra.name} className="flex items-center gap-1.5 font-bold text-brand-deep">
-                <span aria-hidden="true" className="text-brand-signal">
-                  +
+            {servicios.extras.map((extra) =>
+              extra.id ? (
+                <a
+                  key={extra.name}
+                  href={`#${extra.id}`}
+                  onClick={(event) => {
+                    const target = document.getElementById(extra.id!)
+                    if (!target) return
+                    event.preventDefault()
+                    scrollTo(target, { duration: 1.6 })
+                  }}
+                  className="group flex items-center gap-1.5 font-bold text-brand-deep"
+                >
+                  <span aria-hidden="true" className="text-brand-signal">
+                    +
+                  </span>
+                  <span className="link-underline">{extra.name}</span>
+                </a>
+              ) : (
+                <span key={extra.name} className="flex items-center gap-1.5 font-bold text-brand-deep">
+                  <span aria-hidden="true" className="text-brand-signal">
+                    +
+                  </span>
+                  {extra.name}
                 </span>
-                {extra.name}
-              </span>
-            ))}
+              ),
+            )}
           </p>
         </div>
 

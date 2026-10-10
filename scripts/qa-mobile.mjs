@@ -42,7 +42,7 @@ p.on('pageerror', (e) => errors.push(e.message))
 await p.goto(`${base}/?debug=1`, { waitUntil: 'load' })
 await p.waitForTimeout(7000)
 await audit(p, 'inicio')
-const ids = ['inicio', 'servicios', 'caso', 'proceso', 'diagnostico', 'planes', 'preguntas', 'nosotros', 'contacto']
+const ids = ['inicio', 'servicios', 'proyectos', 'proceso', 'diagnostico', 'planes', 'asesoria', 'preguntas', 'nosotros', 'contacto']
 for (const [i, id] of ids.entries()) {
   await p.evaluate((id) => window.__lenis.scrollTo(document.getElementById(id), { immediate: true }), id)
   await p.waitForTimeout(1800)

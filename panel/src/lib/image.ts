@@ -9,6 +9,9 @@ export interface PreparedImage {
   base64: string
   /** para mostrarla en el panel antes de guardar */
   url: string
+  /** medidas finales (el sitio las usa para reservar el lugar de la imagen mientras carga) */
+  width: number
+  height: number
 }
 
 const rand = () => Math.random().toString(36).slice(2, 8)
@@ -37,5 +40,5 @@ export async function prepareImage(file: File, baseName: string, maxWidth = 1600
     reader.readAsDataURL(blob)
   })
   const base = (baseName || 'imagen').slice(0, 50).replace(/-$/, '')
-  return { name: `${base}-${rand()}.webp`, base64: url.split(',')[1], url }
+  return { name: `${base}-${rand()}.webp`, base64: url.split(',')[1], url, width: canvas.width, height: canvas.height }
 }

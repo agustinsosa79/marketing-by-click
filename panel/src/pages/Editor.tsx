@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { CATEGORIES, LIMITS, MEDIA_URL, postUrl, slugify, today, type Category, type PostInput } from '../../shared/blog'
 import { api, ApiError, mediaSrc } from '../api'
-import { go } from '../App'
+import { go, unsaved } from '../lib/nav'
 import { CoverInput } from '../components/CoverInput'
 import { MarkdownEditor } from '../components/MarkdownEditor'
 import { SeoPanel } from '../components/SeoPanel'
@@ -42,8 +42,9 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
       .catch((e) => setLoadError(e instanceof ApiError ? e.message : 'No se pudo cargar la nota.'))
   }, [slug])
 
-  // Aviso si se cierra la pestaña con cambios sin guardar
+  // Aviso si se cierra la pestaña (o se cambia de sección) con cambios sin guardar
   useEffect(() => {
+    unsaved.current = dirty
     if (!dirty) return
     const warn = (e: BeforeUnloadEvent) => e.preventDefault()
     window.addEventListener('beforeunload', warn)
@@ -72,11 +73,12 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
     [pending],
   )
 
-  const coverPreview = useMemo(() => (post?.cover ? resolveImage(post.cover) : ''), [post?.cover, resolveImage])
+  const coverPreview = post?.cover ? resolveImage(post.cover) : ''
 
   const back = () => {
     if (dirty && !window.confirm('Hay cambios sin guardar. ¿Salir igual?')) return
-    go('#/')
+    unsaved.current = false
+    go('#/blog')
   }
 
   const save = async () => {
@@ -91,6 +93,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
         .map(({ name, base64 }) => ({ name, base64 }))
       const result = editing ? await api.update(post, images) : await api.create(post, images)
       setDirty(false)
+      unsaved.current = false
       notify({
         tone: 'ok',
         title: post.draft ? 'Borrador guardado' : editing ? 'Cambios guardados' : '¡Nota publicada!',
@@ -105,7 +108,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
           </>
         ),
       })
-      go('#/')
+      go('#/blog')
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'No se pudo guardar. Revisá tu conexión y probá de nuevo.')
     } finally {
@@ -117,7 +120,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
     return (
       <div className="rounded-3xl bg-white p-10 text-center ring-1 ring-brand-deep/10">
         <p className="font-bold text-brand-deep">{loadError}</p>
-        <Button variant="secondary" onClick={() => go('#/')} className="mt-4">
+        <Button variant="secondary" onClick={() => go('#/blog')} className="mt-4">
           Volver a las notas
         </Button>
       </div>

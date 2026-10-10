@@ -1,0 +1,16 @@
+{
+  "currency": "USD",
+  "plans": {
+    "inicial": "115",
+    "plus": "135",
+    "premium": "155"
+  },
+  "asesoria": {
+    "price": "",
+    "detail": ""
+  },
+  "sesion": {
+    "price": "100",
+    "detail": "2 horas"
+  }
+}

@@ -87,6 +87,9 @@ export function Footer() {
                   {s.name}
                 </a>
               ))}
+              <a href={footer.proyectos.href} className="link-underline transition-colors duration-300 hover:text-white">
+                {footer.proyectos.label}
+              </a>
               <a href={footer.blog.href} className="link-underline transition-colors duration-300 hover:text-white">
                 {footer.blog.label}
               </a>
