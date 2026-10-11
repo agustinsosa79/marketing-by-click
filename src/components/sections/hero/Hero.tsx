@@ -90,7 +90,7 @@ export function Hero() {
           </div>
 
           {/* Qué hacemos, de un vistazo: lleva a Servicios */}
-          <ul data-hero-item className="mt-6 hidden flex-wrap gap-2 border-t border-brand-deep/10 pt-5 md:flex lg:mt-10">
+          <ul data-hero-item className="mt-6 hidden flex-wrap gap-2 border-t border-brand-deep/10 pt-5 md:flex lg:mt-10 short:hidden">
             {servicios.items.map((item) => (
               <li key={item.name}>
                 <a

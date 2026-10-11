@@ -58,8 +58,8 @@ export const brand = {
 
 /** Title y description de index.html (se mantienen iguales a mano: el HTML se sirve antes que el JS). */
 export const seo = {
-  title: 'Marketing by Clic | Agencia de marketing digital en la Patagonia',
-  description: 'Estrategia, contenido y Meta Ads para convertir tus redes en un sistema de ventas. Agencia nacida en la Patagonia. Escribinos por WhatsApp.',
+  title: 'Agencia de marketing digital y redes sociales | Marketing by Clic',
+  description: 'Agencia de marketing digital: estrategia, contenido para redes sociales y anuncios en Instagram y Facebook para que tu marca venda más. Escribinos por WhatsApp.',
 }
 
 export const preloader = {
@@ -112,11 +112,13 @@ export const nav = {
 }
 
 export const hero = {
-  // Bio de Instagram: "Estudio de Marketing Estratégico"
-  kicker: 'Estudio de marketing estratégico en la Patagonia', // TODO copy
-  // Texto real: "convertir tus redes en un sistema de ventas"
-  title: { text: 'Tus redes, convertidas en un sistema de ventas.', emphasis: 'sistema de ventas.' } satisfies Headline,
-  subtitle: 'Estrategia, contenido y Meta Ads para marcas que quieren crecer.', // TODO copy
+  // A quién le habla (texto real del sitio anterior: "acompañamos a marcas, profesionales y emprendimientos").
+  // Sin ubicación: trabajan con marcas de distintos lugares.
+  kicker: 'Marketing para marcas, profesionales y emprendimientos', // TODO copy
+  // H1: lo que se busca en Google ("agencia de marketing digital", "agencia de redes sociales").
+  title: { text: 'Agencia de marketing digital y redes sociales.', emphasis: 'redes sociales.' } satisfies Headline,
+  // La promesa real de la marca ("convertir tus redes en un sistema de ventas") pasa a la bajada, con las palabras que usa la gente
+  subtitle: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.', // TODO copy
   cta: { label: 'Hablemos por WhatsApp', href: WHATSAPP },
   ianTeaser: { label: 'Conocé a Ian', hint: 'Video con sonido · 0:25' },
   // Foto real de Ian en un lago de la Patagonia (nítida, sin overlay)

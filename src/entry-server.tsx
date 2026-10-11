@@ -146,7 +146,6 @@ export function head(url: string): Head {
             description: service.text,
             url,
             provider: { '@type': 'ProfessionalService', name: brand.name, url: abs('/'), telephone: contact.whatsapp.href.replace('https://wa.me/', '+') },
-            areaServed: { '@type': 'Place', name: 'Patagonia, Argentina' },
           },
           breadcrumbs([
             { name: blog.breadcrumbHome, url: '/' },
