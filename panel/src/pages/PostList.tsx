@@ -108,40 +108,50 @@ export function PostList({ notify }: { notify: (t: ToastData) => void }) {
       )}
 
       <ul className="flex flex-col gap-3">
-        {visible.map((p) => (
-          <li key={p.slug} className="flex flex-col gap-4 rounded-2xl bg-white p-3 shadow-soft ring-1 ring-brand-deep/10 sm:flex-row sm:items-center sm:pr-5">
-            <a href={`#/blog/editar/${p.slug}`} className="block aspect-video w-full shrink-0 overflow-hidden rounded-xl bg-brand-paper sm:w-40">
-              {p.cover ? <img src={mediaSrc(p.cover)} alt="" loading="lazy" className="size-full object-cover" /> : <span className="grid size-full place-items-center text-xs font-semibold text-brand-night/40">Sin portada</span>}
-            </a>
-            <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-1 sm:px-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge tone={p.draft ? 'draft' : 'live'}>{p.draft ? 'Borrador' : 'Publicada'}</Badge>
-                <Badge tone="neutral">{p.category || 'Sin categoría'}</Badge>
-                <span className="text-xs font-semibold text-brand-night/50">
-                  {formatDate(p.date)}
-                  {p.updated ? ` · editada ${formatDate(p.updated)}` : ''}
-                </span>
-              </div>
-              <a href={`#/blog/editar/${p.slug}`} className="truncate text-lg font-extrabold tracking-tight text-brand-deep hover:text-brand-signal">
-                {p.title || '(sin título)'}
-              </a>
-              <p className="line-clamp-1 text-sm text-brand-night/60">{p.description}</p>
-            </div>
-            <div className="flex shrink-0 gap-2 px-1 pb-1 sm:px-0 sm:pb-0">
-              <Button variant="secondary" onClick={() => go(`#/blog/editar/${p.slug}`)}>
+        {visible.map((p) => {
+          const editHash = `#/blog/editar/${p.slug}`
+          const actions = (
+            <>
+              <Button variant="secondary" onClick={() => go(editHash)}>
                 Editar
               </Button>
               {!p.draft && (
-                <a href={postUrl(p.slug)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-full px-4 py-2.5 text-sm font-bold text-brand-deep hover:bg-brand-deep/5">
+                <a href={postUrl(p.slug)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-full px-3 py-2.5 text-sm font-bold text-brand-deep hover:bg-brand-deep/5">
                   Ver ↗
                 </a>
               )}
               <Button variant="ghost" onClick={() => setToDelete(p)} aria-label={`Eliminar ${p.title}`} className="text-red-700 hover:bg-red-50">
                 Eliminar
               </Button>
-            </div>
-          </li>
-        ))}
+            </>
+          )
+          return (
+            <li key={p.slug} className="rounded-2xl bg-white p-3 shadow-soft ring-1 ring-brand-deep/10 lg:pr-5">
+              <div className="flex gap-3 sm:gap-4 lg:items-center">
+                <a href={editHash} className="block aspect-video w-28 shrink-0 self-start overflow-hidden rounded-xl bg-brand-paper sm:w-40 lg:self-center">
+                  {p.cover ? <img src={mediaSrc(p.cover)} alt="" loading="lazy" className="size-full object-cover" /> : <span className="grid size-full place-items-center text-xs font-semibold text-brand-night/40">Sin portada</span>}
+                </a>
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <Badge tone={p.draft ? 'draft' : 'live'}>{p.draft ? 'Borrador' : 'Publicada'}</Badge>
+                    <Badge tone="neutral">{p.category || 'Sin categoría'}</Badge>
+                    <span className="text-xs font-semibold text-brand-night/50">
+                      {formatDate(p.date)}
+                      {p.updated ? ` · editada ${formatDate(p.updated)}` : ''}
+                    </span>
+                  </div>
+                  <a href={editHash} className="line-clamp-2 text-base leading-snug font-extrabold tracking-tight text-brand-deep hover:text-brand-signal sm:text-lg">
+                    {p.title || '(sin título)'}
+                  </a>
+                  <p className="line-clamp-1 text-sm text-brand-night/60 max-sm:hidden">{p.description}</p>
+                </div>
+                <div className="hidden shrink-0 gap-2 lg:flex">{actions}</div>
+              </div>
+              {/* celular y tablet: acciones en una barra debajo */}
+              <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-brand-deep/10 pt-3 lg:hidden">{actions}</div>
+            </li>
+          )
+        })}
       </ul>
 
       <ConfirmDialog

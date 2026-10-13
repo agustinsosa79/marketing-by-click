@@ -185,7 +185,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
           </Field>
 
           <Field label="Resumen" htmlFor="description" count={post.description.length} ideal={[LIMITS.description.seoMin, LIMITS.description.seoMax]} hint="Aparece debajo del título en Google y en las tarjetas del blog. 1 o 2 oraciones.">
-            <textarea id="description" rows={3} value={post.description} maxLength={LIMITS.description.max} onChange={(e) => set('description', e.target.value)} className={`${inputClass} resize-y`} />
+            <textarea id="description" rows={3} value={post.description} maxLength={LIMITS.description.max} onChange={(e) => set('description', e.target.value)} className={`${inputClass} min-h-24 resize-y field-sizing-content`} />
           </Field>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_auto]">
@@ -235,7 +235,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
         </div>
 
         {/* Publicación + Google */}
-        <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
+        <aside className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:sticky lg:top-24 lg:flex lg:flex-col lg:self-start">
           <section className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-brand-deep/10" aria-label="Publicación">
             <p className="text-xs font-bold tracking-widest text-brand-deep/60 uppercase">Estado</p>
             <div className="grid grid-cols-2 rounded-full bg-brand-paper p-1" role="radiogroup" aria-label="Estado de la nota">

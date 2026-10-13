@@ -96,59 +96,73 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
         {projects?.map((p, i) => {
           const home = onHome.has(p.slug)
           const working = busy === p.slug
+          const editHash = `#/proyectos/editar/${p.slug}`
+          // posición en el portfolio: subir, bajar, al principio
+          const position = (
+            <div className="flex items-center gap-1.5">
+              <button type="button" aria-label={`Subir ${p.brand}`} disabled={i === 0 || Boolean(busy)} onClick={() => move(p, 'up')} className={round}>
+                ↑
+              </button>
+              <button type="button" aria-label={`Bajar ${p.brand}`} disabled={i === projects.length - 1 || Boolean(busy)} onClick={() => move(p, 'down')} className={round}>
+                ↓
+              </button>
+              <button
+                type="button"
+                onClick={() => move(p, 'top')}
+                disabled={i === 0 || Boolean(busy)}
+                className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold text-brand-deep ring-1 ring-brand-deep/15 transition hover:ring-brand-deep/40 disabled:opacity-35"
+              >
+                {working ? <Spinner /> : <span aria-hidden="true">⇡</span>} Al principio
+              </button>
+            </div>
+          )
+          const actions = (
+            <div className="flex items-center gap-1.5">
+              <Button variant="secondary" onClick={() => go(editHash)} className="py-2">
+                Editar
+              </Button>
+              {!p.draft && (
+                <a href={projectUrl(p.slug)} target="_blank" rel="noopener noreferrer" className="rounded-full px-3 py-2 text-sm font-bold text-brand-deep hover:bg-brand-deep/5">
+                  Ver ↗
+                </a>
+              )}
+              <button type="button" onClick={() => setToDelete(p)} aria-label={`Eliminar ${p.brand}`} className="rounded-full px-3 py-2 text-sm font-bold text-red-700 hover:bg-red-50">
+                Eliminar
+              </button>
+            </div>
+          )
           return (
-            <li key={p.slug} className={`flex flex-col gap-4 rounded-2xl bg-white p-3 ring-1 transition sm:flex-row sm:items-center ${home ? 'ring-2 ring-brand-signal/40' : 'ring-brand-deep/10'} ${working ? 'opacity-60' : ''}`}>
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col gap-1">
-                  <button type="button" aria-label={`Subir ${p.brand}`} disabled={i === 0 || Boolean(busy)} onClick={() => move(p, 'up')} className={round}>
-                    ↑
-                  </button>
-                  <button type="button" aria-label={`Bajar ${p.brand}`} disabled={i === projects.length - 1 || Boolean(busy)} onClick={() => move(p, 'down')} className={round}>
-                    ↓
-                  </button>
-                </div>
-                <a href={`#/proyectos/editar/${p.slug}`} className="block aspect-4/3 w-28 shrink-0 overflow-hidden rounded-xl bg-brand-paper sm:w-32">
+            <li key={p.slug} className={`rounded-2xl bg-white p-3 ring-1 transition ${home ? 'ring-2 ring-brand-signal/40' : 'ring-brand-deep/10'} ${working ? 'opacity-60' : ''}`}>
+              <div className="flex gap-3 sm:gap-4 lg:items-center">
+                <a href={editHash} className="block aspect-4/3 w-24 shrink-0 self-start overflow-hidden rounded-xl bg-brand-paper sm:w-32 lg:self-center">
                   {p.cover ? <img src={mediaSrc(p.cover)} alt="" loading="lazy" className="size-full object-cover" /> : <span className="grid size-full place-items-center text-xs text-brand-night/40">Sin portada</span>}
                 </a>
-              </div>
-
-              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-black text-brand-night/40">#{i + 1}</span>
-                  <Badge tone={p.draft ? 'draft' : 'live'}>{p.draft ? 'Borrador' : 'Publicado'}</Badge>
-                  {home && <Badge tone="neutral">★ En el inicio</Badge>}
-                  {p.services.map((s) => (
-                    <Badge key={s} tone="neutral">
-                      {s}
-                    </Badge>
-                  ))}
-                </div>
-                <a href={`#/proyectos/editar/${p.slug}`} className="truncate text-lg font-extrabold tracking-tight text-brand-deep hover:text-brand-signal">
-                  {p.brand}
-                </a>
-                {p.title && <p className="line-clamp-1 text-sm text-brand-night/60">{p.title}</p>}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-                <button
-                  type="button"
-                  onClick={() => move(p, 'top')}
-                  disabled={i === 0 || Boolean(busy)}
-                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-bold text-brand-deep ring-1 ring-brand-deep/15 transition hover:ring-brand-deep/40 disabled:opacity-35"
-                >
-                  {working ? <Spinner /> : <span aria-hidden="true">⇡</span>} Al principio
-                </button>
-                <Button variant="secondary" onClick={() => go(`#/proyectos/editar/${p.slug}`)}>
-                  Editar
-                </Button>
-                {!p.draft && (
-                  <a href={projectUrl(p.slug)} target="_blank" rel="noopener noreferrer" className="rounded-full px-3 py-2.5 text-sm font-bold text-brand-deep hover:bg-brand-deep/5">
-                    Ver ↗
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <span className="text-xs font-black text-brand-night/40">#{i + 1}</span>
+                    <Badge tone={p.draft ? 'draft' : 'live'}>{p.draft ? 'Borrador' : 'Publicado'}</Badge>
+                    {home && <Badge tone="neutral">★ En el inicio</Badge>}
+                    {p.services.map((s) => (
+                      <Badge key={s} tone="neutral">
+                        {s}
+                      </Badge>
+                    ))}
+                  </div>
+                  <a href={editHash} className="line-clamp-2 text-base leading-snug font-extrabold tracking-tight text-brand-deep hover:text-brand-signal sm:text-lg">
+                    {p.brand}
                   </a>
-                )}
-                <button type="button" onClick={() => setToDelete(p)} aria-label={`Eliminar ${p.brand}`} className="rounded-full px-3 py-2.5 text-sm font-bold text-red-700 hover:bg-red-50">
-                  Eliminar
-                </button>
+                  {p.title && <p className="line-clamp-1 text-sm text-brand-night/60 max-sm:hidden">{p.title}</p>}
+                </div>
+                {/* computadora: todo en una línea */}
+                <div className="hidden shrink-0 items-center gap-3 lg:flex">
+                  {position}
+                  {actions}
+                </div>
+              </div>
+              {/* celular y tablet: posición a la izquierda, acciones a la derecha, en una barra debajo */}
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-brand-deep/10 pt-3 lg:hidden">
+                {position}
+                {actions}
               </div>
             </li>
           )

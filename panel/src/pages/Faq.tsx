@@ -166,7 +166,7 @@ export function Faq({ notify }: { notify: (t: ToastData) => void }) {
                     {row.a.length}/{FAQ_LIMITS.a}
                   </span>
                 </span>
-                <textarea value={row.a} rows={3} onChange={(e) => edit(row.id, { a: e.target.value })} className={`${inputClass} resize-y`} placeholder="Respuesta corta y concreta: 1 a 3 oraciones." />
+                <textarea value={row.a} rows={3} onChange={(e) => edit(row.id, { a: e.target.value })} className={`${inputClass} min-h-24 resize-y field-sizing-content`} placeholder="Respuesta corta y concreta: 1 a 3 oraciones." />
               </label>
             </section>
           ))}

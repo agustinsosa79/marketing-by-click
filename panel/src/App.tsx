@@ -146,14 +146,14 @@ export function App() {
           </div>
         </div>
         {/* Celular: las secciones en una fila que se desliza */}
-        <nav aria-label="Secciones del panel" className="no-scrollbar flex gap-1 overflow-x-auto border-t border-brand-deep/5 px-4 py-2 md:hidden">
+        <nav aria-label="Secciones del panel" className="grid grid-cols-5 gap-1 border-t border-brand-deep/5 px-2 py-2 md:hidden">
           {SECTIONS.map((s) => (
             <a
               key={s.id}
               href={s.href}
               onClick={guard}
               aria-current={current === s.id ? 'page' : undefined}
-              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-bold ${current === s.id ? 'bg-brand-deep text-white' : 'text-brand-deep'}`}
+              className={`rounded-full px-0.5 py-2 text-center text-[0.7rem] font-bold tracking-tight min-[380px]:text-xs sm:text-sm ${current === s.id ? 'bg-brand-deep text-white' : 'text-brand-deep'}`}
             >
               {s.label}
             </a>

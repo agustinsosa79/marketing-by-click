@@ -296,7 +296,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
                   <input id="title" value={project.title} maxLength={L.title.max} onChange={(e) => set('title', e.target.value)} className={inputClass} />
                 </Field>
                 <Field label="Resumen" htmlFor="summary" count={project.summary.length} ideal={[L.summary.seoMin, L.summary.seoMax]} hint="Una o dos oraciones. Se usa en el inicio, en la tarjeta y en Google.">
-                  <textarea id="summary" rows={3} value={project.summary} maxLength={L.summary.max} onChange={(e) => set('summary', e.target.value)} className={`${inputClass} resize-y`} />
+                  <textarea id="summary" rows={3} value={project.summary} maxLength={L.summary.max} onChange={(e) => set('summary', e.target.value)} className={`${inputClass} min-h-24 resize-y field-sizing-content`} />
                 </Field>
                 <Field label="Servicios">
                   <div className="flex flex-wrap gap-2" role="group" aria-label="Servicios del proyecto">
@@ -355,7 +355,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
               </Block>
 
               <Block title="El desafío" hint="Qué necesitaba la marca cuando llegó. 2 a 4 oraciones. Una línea en blanco separa párrafos.">
-                <textarea aria-label="El desafío" rows={4} value={project.challenge} maxLength={L.long.max} onChange={(e) => set('challenge', e.target.value)} className={`${inputClass} resize-y`} />
+                <textarea aria-label="El desafío" rows={4} value={project.challenge} maxLength={L.long.max} onChange={(e) => set('challenge', e.target.value)} className={`${inputClass} min-h-24 resize-y field-sizing-content`} />
               </Block>
 
               <Block
@@ -387,7 +387,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div className="flex flex-col gap-3">
                         <input aria-label={`Título del paso ${i + 1}`} value={step.title} maxLength={L.stepTitle.max} onChange={(e) => setStep(i, { title: e.target.value })} className={`${inputClass} font-bold`} placeholder="Ej.: Logo completo" />
-                        <textarea aria-label={`Texto del paso ${i + 1}`} rows={4} value={step.text} maxLength={L.long.max} onChange={(e) => setStep(i, { text: e.target.value })} className={`${inputClass} resize-y`} placeholder="Qué se hizo y por qué." />
+                        <textarea aria-label={`Texto del paso ${i + 1}`} rows={4} value={step.text} maxLength={L.long.max} onChange={(e) => setStep(i, { text: e.target.value })} className={`${inputClass} min-h-24 resize-y field-sizing-content`} placeholder="Qué se hizo y por qué." />
                       </div>
                       <div className="flex flex-col gap-2">
                         <ImagePicker
@@ -427,7 +427,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
               </Block>
 
               <Block title="El resultado" hint="Qué cambió para la marca. Si hay números reales (consultas, ventas, seguidores), mejor.">
-                <textarea aria-label="El resultado" rows={4} value={project.result} maxLength={L.long.max} onChange={(e) => set('result', e.target.value)} className={`${inputClass} resize-y`} />
+                <textarea aria-label="El resultado" rows={4} value={project.result} maxLength={L.long.max} onChange={(e) => set('result', e.target.value)} className={`${inputClass} min-h-24 resize-y field-sizing-content`} />
               </Block>
 
               <Block
@@ -477,8 +477,8 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
         </div>
 
         {/* Publicación + tarjeta + revisión */}
-        <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:col-span-4 lg:self-start">
-          <section className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-brand-deep/10" aria-label="Publicación">
+        <aside className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:sticky lg:top-24 lg:col-span-4 lg:flex lg:flex-col lg:self-start">
+          <section className="flex flex-col gap-4 rounded-2xl md:col-span-2 lg:col-span-1 bg-white p-5 ring-1 ring-brand-deep/10" aria-label="Publicación">
             <p className="text-xs font-bold tracking-widest text-brand-deep/60 uppercase">Estado</p>
             <div className="grid grid-cols-2 rounded-full bg-brand-paper p-1" role="radiogroup" aria-label="Estado del proyecto">
               {[
