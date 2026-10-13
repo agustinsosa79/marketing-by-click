@@ -17,7 +17,7 @@ import { ImagePicker } from '../components/ImagePicker'
 import { PreviewFrame, ProjectCardPreview, ProjectPagePreview } from '../components/previews'
 import { Button, Field, Spinner, inputClass, type ToastData } from '../components/ui'
 import { prepareImage, type PreparedImage } from '../lib/image'
-import { go, unsaved, useLeaveGuard } from '../lib/nav'
+import { go, leaveTo, unsaved, useLeaveGuard } from '../lib/nav'
 
 const EMPTY: ProjectInput = {
   slug: '',
@@ -138,11 +138,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
       homeSlugs([...others, { slug: project.slug || 'nuevo', draft: false, order: editing ? project.order : Infinity }].sort((a, b) => a.order - b.order)).has(project.slug || 'nuevo'),
   )
 
-  const back = () => {
-    if (dirty && !window.confirm('Hay cambios sin guardar. ¿Salir igual?')) return
-    unsaved.current = false
-    go('#/proyectos')
-  }
+  const back = () => leaveTo('#/proyectos')
 
   const save = async () => {
     if (!project) return

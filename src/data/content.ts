@@ -315,6 +315,8 @@ export interface Plan {
   featured?: boolean
   price: string
   for: string
+  /** Lo que diferencia al plan del resto: va destacado arriba de la lista */
+  highlight?: { title: string; text: string }
   features: string[]
 }
 
@@ -350,7 +352,9 @@ export const planes = {
       tone: 'night',
       price: prices.plans.premium,
       for: 'Para estar en todas las redes que necesites.', // TODO copy
-      features: ['Análisis avanzado y llamadas 1:1 semanales', 'Hasta 5 campañas de Meta Ads simultáneas*', 'Todas las redes necesarias', '8 posteos, 12 historias y 8 reels al mes'],
+      // La llamada 1:1 es la gran diferencia del Premium (texto real del sitio anterior: "Llamadas 1:1 semanales")
+      highlight: { title: 'Llamadas 1:1 semanales', text: 'Exclusivo del plan Premium' }, // TODO copy
+      features: ['Análisis avanzado', 'Hasta 5 campañas de Meta Ads simultáneas*', 'Todas las redes necesarias', '8 posteos, 12 historias y 8 reels al mes'],
     },
   ] satisfies Plan[],
   note: '*La inversión en publicidad se cotiza aparte.',

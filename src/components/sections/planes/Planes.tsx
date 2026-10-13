@@ -61,7 +61,7 @@ function PlanCard({ plan }: { plan: Plan }) {
       data-plan-card
       className={`group relative isolate flex shrink-0 snap-center flex-col overflow-hidden rounded-4xl transition duration-500 ease-expo lg:w-auto lg:hover:-translate-y-2 ${t.card} ${
         featured
-          ? 'z-10 w-5/6 p-6 ring-8 ring-brand-signal/15 sm:w-3/5 md:p-9 lg:col-span-5 lg:w-auto lg:py-12 short:py-7'
+          ? 'z-10 w-5/6 p-6 ring-8 ring-brand-signal/15 sm:w-3/5 md:p-9 lg:col-span-5 lg:w-auto lg:py-14 short:py-8'
           : 'w-3/4 p-5 sm:w-1/2 md:p-7 lg:col-span-4 short:p-5'
       }`}
     >
@@ -77,6 +77,21 @@ function PlanCard({ plan }: { plan: Plan }) {
         </span>
       </p>
       <p className={`mt-2 font-medium ${featured ? 'text-base md:text-lg' : 'text-sm'} ${t.muted}`}>{plan.for}</p>
+
+      {plan.highlight && (
+        <p className="mt-4 flex items-center gap-3 rounded-2xl bg-brand-signal px-3 py-2.5 text-white md:mt-5 short:mt-3">
+          <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-white text-brand-signal">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4.5 fill-none stroke-current stroke-2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3.5 7.5A1.5 1.5 0 0 1 5 6h9a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 14 18H5a1.5 1.5 0 0 1-1.5-1.5z" />
+              <path d="M15.5 10.5l5-3v9l-5-3" />
+            </svg>
+          </span>
+          <span className="flex flex-col leading-tight">
+            <span className="text-sm font-bold md:text-base">{plan.highlight.title}</span>
+            <span className="text-xs font-semibold">{plan.highlight.text}</span>
+          </span>
+        </p>
+      )}
 
       <ul className={`mt-4 flex flex-1 flex-col gap-2.5 border-t pt-4 md:mt-5 md:gap-3 md:pt-5 short:mt-3 short:gap-2 short:pt-3 ${t.rule}`}>
         {plan.features.map((f) => (
@@ -153,7 +168,7 @@ export function Planes() {
 
       <div
         ref={track}
-        className="no-scrollbar mt-3 flex snap-x snap-mandatory items-center gap-3 overflow-x-auto px-5 py-6 md:mt-8 md:gap-4 md:px-10 lg:grid lg:grid-cols-13 lg:gap-6 lg:overflow-visible lg:py-6 short:mt-3 short:py-4"
+        className="no-scrollbar mt-3 flex snap-x snap-mandatory items-center gap-3 overflow-x-auto px-5 py-6 md:mt-8 md:gap-4 md:px-10 lg:mt-4 lg:grid lg:grid-cols-13 lg:gap-6 lg:overflow-visible lg:py-4 short:mt-3 short:py-4"
       >
         {planes.plans.map((plan) => (
           <PlanCard key={plan.name} plan={plan} />

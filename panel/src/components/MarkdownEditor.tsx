@@ -3,6 +3,7 @@ import { MEDIA_URL } from '../../shared/blog'
 import { prepareImage, type PreparedImage } from '../lib/image'
 import { renderMarkdown } from '../lib/markdown'
 import { Spinner } from './ui'
+import { askText } from '../lib/dialog'
 
 interface Props {
   value: string
@@ -56,9 +57,22 @@ export function MarkdownEditor({ value, onChange, imageBase, onImage, resolveIma
       return { text }
     })
 
-  const link = () => {
-    const url = window.prompt('Pegá la dirección del enlace (por ejemplo https://marketingbyclic.com/servicios/meta-ads):', 'https://')
-    if (!url || url === 'https://') return
+  const link = async () => {
+    // el modal le saca el foco al texto: se guarda la selección para aplicar el enlace sobre ella
+    const el = area.current!
+    const [start, end] = [el.selectionStart, el.selectionEnd]
+    const url = await askText({
+      title: 'Agregar enlace',
+      text: 'Se aplica sobre el texto seleccionado. Para enlazar a un servicio o a otra nota, copiá la dirección desde la web.',
+      label: 'Dirección',
+      placeholder: 'https://marketingbyclic.com/servicios/meta-ads',
+      initial: 'https://',
+      confirmLabel: 'Agregar enlace',
+      validate: (v) => (/^(https?:\/\/\S+\.\S+|\/\S*|mailto:\S+)$/.test(v) ? null : 'Escribí una dirección completa, por ejemplo https://marketingbyclic.com/blog'),
+    })
+    if (!url) return
+    el.focus()
+    el.setSelectionRange(start, end)
     apply((sel) => {
       const label = sel || 'texto del enlace'
       return { text: `[${label}](${url.trim()})`, select: [1, 1 + label.length] }

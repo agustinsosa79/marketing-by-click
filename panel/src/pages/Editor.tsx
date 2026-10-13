@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { CATEGORIES, LIMITS, MEDIA_URL, postUrl, slugify, today, type Category, type PostInput } from '../../shared/blog'
 import { api, ApiError, mediaSrc } from '../api'
-import { go, unsaved } from '../lib/nav'
+import { go, leaveTo, unsaved } from '../lib/nav'
 import { CoverInput } from '../components/CoverInput'
 import { MarkdownEditor } from '../components/MarkdownEditor'
 import { SeoPanel } from '../components/SeoPanel'
@@ -75,11 +75,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
 
   const coverPreview = post?.cover ? resolveImage(post.cover) : ''
 
-  const back = () => {
-    if (dirty && !window.confirm('Hay cambios sin guardar. ¿Salir igual?')) return
-    unsaved.current = false
-    go('#/blog')
-  }
+  const back = () => leaveTo('#/blog')
 
   const save = async () => {
     if (!post) return

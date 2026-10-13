@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState, type MouseEvent } from 'react'
 import { SITE_URL } from '../shared/blog'
 import { api, ApiError, onUnauthorized } from './api'
 import { Spinner, Toast, type ToastData } from './components/ui'
-import { leaveOk, unsaved } from './lib/nav'
+import { DialogHost } from './components/DialogHost'
+import { confirmLeave, go, unsaved } from './lib/nav'
 import { Editor } from './pages/Editor'
 import { Faq } from './pages/Faq'
 import { Home } from './pages/Home'
@@ -101,12 +102,16 @@ export function App() {
   if (auth === 'out') return <Login onLogin={() => setAuth('in')} />
 
   const logout = async () => {
-    if (!leaveOk()) return
+    if (!(await confirmLeave())) return
     await api.logout().catch(() => {})
     setAuth('out')
   }
-  const guard = (e: MouseEvent) => {
-    if (!leaveOk()) e.preventDefault()
+  // con cambios sin guardar, la navegación espera la respuesta del modal
+  const guard = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!unsaved.current) return
+    e.preventDefault()
+    const hash = e.currentTarget.getAttribute('href') ?? '#/'
+    confirmLeave().then((ok) => ok && go(hash))
   }
   const current = sectionOf(route)
 
@@ -169,6 +174,7 @@ export function App() {
       </main>
 
       <Toast toast={toast} onClose={closeToast} />
+      <DialogHost />
     </div>
   )
 }

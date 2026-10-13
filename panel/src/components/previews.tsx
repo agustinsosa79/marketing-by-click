@@ -48,10 +48,10 @@ const Check = ({ className = '' }: { className?: string }) => (
 // ---------------------------------------------------------------- planes
 
 /** Textos de cada plan (copia de src/data/content.ts del sitio: acá solo se editan los precios). */
-const PLAN_COPY: Record<PlanId, { name: string; tone: 'light' | 'signal' | 'night'; for: string; features: string[] }> = {
+const PLAN_COPY: Record<PlanId, { name: string; tone: 'light' | 'signal' | 'night'; for: string; highlight?: string; features: string[] }> = {
   inicial: { name: 'Inicial', tone: 'light', for: 'Para empezar con contenido constante.', features: ['Análisis básico', 'Contenido orgánico, sin anuncios', 'Hasta 2 canales', '6 posteos, 8 historias y 2 reels al mes'] },
   plus: { name: 'Plus', tone: 'signal', for: 'Para sumar anuncios y vender más.', features: ['Análisis avanzado', 'Contenido + 2 campañas de Meta Ads*', 'Hasta 3 canales con contenido adaptado', '8 posteos, 12 historias y 4 reels al mes'] },
-  premium: { name: 'Premium', tone: 'night', for: 'Para estar en todas las redes que necesites.', features: ['Análisis avanzado y llamadas 1:1 semanales', 'Hasta 5 campañas de Meta Ads simultáneas*', 'Todas las redes necesarias', '8 posteos, 12 historias y 8 reels al mes'] },
+  premium: { name: 'Premium', tone: 'night', for: 'Para estar en todas las redes que necesites.', highlight: 'Llamadas 1:1 semanales', features: ['Análisis avanzado', 'Hasta 5 campañas de Meta Ads simultáneas*', 'Todas las redes necesarias', '8 posteos, 12 historias y 8 reels al mes'] },
 }
 
 const TONE = {
@@ -89,6 +89,7 @@ export function PlansPreview({ prices, highlight }: { prices: PricesInput; highl
                 <span className={`pb-1 text-[0.65rem] font-semibold ${t.muted}`}>{prices.currency} por mes</span>
               </p>
               <p className={`mt-1.5 text-[0.7rem] font-medium ${t.muted}`}>{plan.for}</p>
+              {plan.highlight && <p className="mt-3 rounded-xl bg-brand-signal px-2.5 py-2 text-[0.7rem] font-bold text-white">★ {plan.highlight}</p>}
               <ul className={`mt-3 flex flex-1 flex-col gap-1.5 border-t pt-3 ${t.rule}`}>
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2 text-[0.65rem] leading-snug font-medium">
