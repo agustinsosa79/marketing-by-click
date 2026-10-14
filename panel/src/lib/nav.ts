@@ -29,15 +29,12 @@ export async function leaveTo(hash: string) {
 }
 
 /**
- * Marca la pantalla con cambios sin guardar: la navegación del panel pregunta antes de salir.
- * Al cerrar o recargar la pestaña el aviso lo muestra el navegador (es el único que puede hacerlo).
+ * Marca la pantalla con cambios sin guardar: cualquier navegación del panel (barra, botones, "atrás" del
+ * navegador) pregunta antes con el modal propio. A propósito no se usa `beforeunload`: muestra el cartel
+ * nativo del navegador, que no se puede diseñar.
  */
 export function useLeaveGuard(dirty: boolean) {
   useEffect(() => {
     unsaved.current = dirty
-    if (!dirty) return
-    const warn = (e: BeforeUnloadEvent) => e.preventDefault()
-    window.addEventListener('beforeunload', warn)
-    return () => window.removeEventListener('beforeunload', warn)
   }, [dirty])
 }

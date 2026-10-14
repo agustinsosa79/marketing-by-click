@@ -77,9 +77,20 @@ export function App() {
         setAuth('misconfigured')
       })
     onUnauthorized.current = () => setAuth('out')
+    // Toda navegación pasa por acá (barra, links, "atrás" del navegador). Con cambios sin guardar,
+    // se vuelve a la pantalla actual y se pregunta con el modal del panel.
+    let current = window.location.hash
     const onHash = () => {
-      unsaved.current = false
-      setRoute(parse(window.location.hash))
+      const target = window.location.hash
+      if (target === current) return
+      if (unsaved.current) {
+        // se vuelve a poner la pantalla actual en el historial: así un segundo "atrás" tampoco sale del panel
+        history.pushState(null, '', current || '#/')
+        confirmLeave().then((ok) => ok && go(target))
+        return
+      }
+      current = target
+      setRoute(parse(target))
       window.scrollTo(0, 0)
     }
     window.addEventListener('hashchange', onHash)
@@ -127,7 +138,7 @@ export function App() {
             <span role="img" aria-label="Marketing by Clic" className="logo h-7 text-brand-deep" />
             <span className="hidden border-l border-brand-deep/15 pl-3 text-sm font-bold text-brand-deep lg:inline">Panel</span>
           </a>
-          <nav aria-label="Secciones del panel" className="hidden items-center gap-1 md:flex">
+          <nav aria-label="Secciones del panel" className="hidden items-center gap-1 lg:flex">
             {SECTIONS.map((s) => (
               <a
                 key={s.id}
@@ -150,7 +161,7 @@ export function App() {
           </div>
         </div>
         {/* Celular: las secciones en una fila que se desliza */}
-        <nav aria-label="Secciones del panel" className="grid grid-cols-3 gap-1 border-t border-brand-deep/5 px-2 py-2 md:hidden">
+        <nav aria-label="Secciones del panel" className="grid grid-cols-3 gap-1 border-t border-brand-deep/5 px-2 py-2 sm:grid-cols-6 sm:px-4 lg:hidden">
           {SECTIONS.map((s) => (
             <a
               key={s.id}

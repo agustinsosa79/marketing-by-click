@@ -71,19 +71,27 @@ function TextFieldEditor({ field, value, onChange, onRestore }: FieldProps) {
     input = (
       <div className="flex flex-col gap-2">
         {items.map((item, i) => (
-          <div key={i} className="flex items-center gap-1.5">
+          // celular: el texto ocupa todo el ancho y los controles van en una fila debajo
+          <div key={i} className="flex flex-col gap-1.5 rounded-2xl max-sm:bg-brand-paper max-sm:p-2 sm:flex-row sm:items-center">
             <div className="relative flex-1">
-              <input
+              {/* una sola línea de texto, pero crece hacia abajo para que se lea completo (Enter no corta línea) */}
+              <textarea
+                rows={1}
                 aria-label={`${field.label}, ítem ${i + 1}`}
                 value={item}
                 maxLength={field.itemMax + 20}
-                onChange={(e) => set(items.map((x, k) => (k === i ? e.target.value : x)))}
-                className={`${inputClass} py-2.5 pr-14`}
+                onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
+                onChange={(e) => set(items.map((x, k) => (k === i ? e.target.value.replace(/\s*\n\s*/g, ' ') : x)))}
+                className={`${inputClass} block resize-none py-2.5 field-sizing-content sm:pr-14`}
               />
-              <span className="absolute top-1/2 right-3 -translate-y-1/2">
+              <span className="absolute top-1/2 right-3 hidden -translate-y-1/2 sm:block">
                 <Counter length={item.trim().length} min={field.itemMin} max={field.itemMax} />
               </span>
             </div>
+            <div className="flex items-center gap-1.5">
+              <span className="mr-auto pl-1 sm:hidden">
+                <Counter length={item.trim().length} min={field.itemMin} max={field.itemMax} />
+              </span>
             <button type="button" aria-label="Subir" disabled={i === 0} onClick={() => move(i, -1)} className={`${smallBtn} text-brand-deep ring-brand-deep/15 hover:bg-brand-deep/5`}>
               ↑
             </button>
@@ -99,6 +107,7 @@ function TextFieldEditor({ field, value, onChange, onRestore }: FieldProps) {
             >
               ✕
             </button>
+            </div>
           </div>
         ))}
         <div className="flex flex-wrap items-center justify-between gap-2">

@@ -32,7 +32,7 @@ await p.screenshot({ path: `${out}/tx-01-servicios.png` })
 // Planes: editar "Para quién es" del Plus, un ítem del Premium y forzar un error
 await p.click('nav[aria-label="Secciones de la web"] >> text=Planes')
 await p.fill('[id="t-planes.plus.for"]', 'Para vender más con anuncios.')
-await p.fill('input[aria-label="Qué incluye, ítem 4"] >> nth=2', '8 posteos, 12 historias y 10 reels al mes')
+await p.fill('textarea[aria-label="Qué incluye, ítem 4"] >> nth=2', '8 posteos, 12 historias y 10 reels al mes')
 await p.fill('[id="t-planes.badge"]', 'El más elegido por nuestros clientes')
 await p.waitForTimeout(300)
 const tooLong = await p.locator('text=Muy largo: máximo 16 caracteres.').count()

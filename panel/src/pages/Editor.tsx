@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { CATEGORIES, LIMITS, MEDIA_URL, postUrl, slugify, today, type Category, type PostInput } from '../../shared/blog'
 import { api, ApiError, mediaSrc } from '../api'
-import { go, leaveTo, unsaved } from '../lib/nav'
+import { go, leaveTo, unsaved, useLeaveGuard } from '../lib/nav'
 import { CoverInput } from '../components/CoverInput'
 import { MarkdownEditor } from '../components/MarkdownEditor'
 import { SeoPanel } from '../components/SeoPanel'
@@ -42,14 +42,8 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
       .catch((e) => setLoadError(e instanceof ApiError ? e.message : 'No se pudo cargar la nota.'))
   }, [slug])
 
-  // Aviso si se cierra la pestaña (o se cambia de sección) con cambios sin guardar
-  useEffect(() => {
-    unsaved.current = dirty
-    if (!dirty) return
-    const warn = (e: BeforeUnloadEvent) => e.preventDefault()
-    window.addEventListener('beforeunload', warn)
-    return () => window.removeEventListener('beforeunload', warn)
-  }, [dirty])
+  // Con cambios sin guardar, la navegación del panel pregunta antes de salir (modal propio)
+  useLeaveGuard(dirty)
 
   const set = <K extends keyof PostInput>(key: K, value: PostInput[K]) => {
     setDirty(true)
