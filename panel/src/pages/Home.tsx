@@ -10,12 +10,13 @@ interface Data {
   projects: ProjectSummary[] | null
   prices: PricesInput | null
   faq: FaqItem[] | null
+  texts: number | null
 }
 
 /** Tarjeta de una sección: qué hay hoy y la acción más común. */
-function Card({ title, href, stat, detail, action, onAction }: { title: string; href: string; stat: ReactNode; detail?: ReactNode; action: string; onAction: () => void }) {
+function Card({ title, href, stat, detail, action, onAction, className = '' }: { title: string; href: string; stat: ReactNode; detail?: ReactNode; action: string; onAction: () => void; className?: string }) {
   return (
-    <section className="group flex flex-col justify-between gap-6 rounded-3xl bg-white p-6 ring-1 ring-brand-deep/10 transition hover:shadow-lift">
+    <section className={`group flex flex-col justify-between gap-6 rounded-3xl bg-white p-6 ring-1 ring-brand-deep/10 transition hover:shadow-lift ${className}`}>
       <div className="flex flex-col gap-2">
         <a href={href} className="flex items-center justify-between gap-3 text-xs font-bold tracking-widest text-brand-deep/60 uppercase hover:text-brand-signal">
           {title}
@@ -40,7 +41,7 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 
 /** Inicio del panel: un vistazo a cada sección de la web que se puede editar. */
 export function Home() {
-  const [data, setData] = useState<Data>({ posts: null, projects: null, prices: null, faq: null })
+  const [data, setData] = useState<Data>({ posts: null, projects: null, prices: null, faq: null, texts: null })
 
   useEffect(() => {
     // cada tarjeta carga por su lado: si una falla, las otras se ven igual
@@ -48,6 +49,7 @@ export function Home() {
     api.projects().then((r) => setData((d) => ({ ...d, projects: r.projects })), () => setData((d) => ({ ...d, projects: [] })))
     api.prices().then((r) => setData((d) => ({ ...d, prices: r.data })), () => {})
     api.faq().then((r) => setData((d) => ({ ...d, faq: r.data })), () => setData((d) => ({ ...d, faq: [] })))
+    api.texts().then((r) => setData((d) => ({ ...d, texts: Object.keys(r.data).length })), () => setData((d) => ({ ...d, texts: 0 })))
   }, [])
 
   const loading = <Spinner className="size-5 text-brand-deep" />
@@ -93,6 +95,15 @@ export function Home() {
           detail="Las dudas que aparecen en la página principal."
           action="Editar preguntas"
           onAction={() => go('#/preguntas')}
+        />
+        <Card
+          title="Textos de la web"
+          href="#/textos"
+          stat={data.texts === null ? loading : data.texts ? plural(data.texts, 'texto editado', 'textos editados') : 'Todos los textos originales'}
+          detail="Descripciones, ítems, botones y mensajes de WhatsApp de cada sección. Los títulos quedan fijos."
+          action="Editar textos"
+          onAction={() => go('#/textos')}
+          className="md:col-span-2"
         />
       </div>
     </div>

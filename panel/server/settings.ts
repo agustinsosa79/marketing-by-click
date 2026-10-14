@@ -8,8 +8,10 @@ import {
   PRICES_FILE,
   type FaqItem,
   type PricesInput,
+  TEXTS_FILE,
   type Versioned,
 } from '../shared/site.js'
+import { cleanTexts, TEXT_FIELDS, type TextValues } from '../shared/texts.js'
 import { UserError } from './http.js'
 import { getStorage } from './storage.js'
 
@@ -79,6 +81,25 @@ export async function savePrices(raw: PricesInput, version: string) {
   if (prices.asesoria.price && !PRICE_RE.test(prices.asesoria.price)) throw new UserError('El precio de la asesoría tiene que ser un número, sin puntos ni símbolos (o dejalo vacío).')
   if ([prices.asesoria.detail, prices.sesion.detail].some((d) => d.length > PRICE_DETAIL_MAX)) throw new UserError(`El detalle de un precio puede tener hasta ${PRICE_DETAIL_MAX} caracteres.`)
   return writeFile(PRICES_FILE, prices, version, 'Precios (panel): actualiza los precios')
+}
+
+// ---------------------------------------------------------------- textos de la web
+
+/** Textos cambiados respecto del original (lo que no está, se ve con su texto original). */
+export async function getTexts(): Promise<Versioned<TextValues>> {
+  const { data, version } = await readFile<{ values?: unknown }>(TEXTS_FILE, { values: {} })
+  // al leer se limpia igual que al guardar: un archivo editado a mano no rompe el panel
+  return { data: cleanTexts(data.values).values, version }
+}
+
+export async function saveTexts(raw: TextValues, version: string) {
+  const { values, errors } = cleanTexts(raw)
+  if (errors.length) {
+    const field = TEXT_FIELDS[errors[0].key]
+    throw new UserError(`«${field?.label ?? errors[0].key}»: ${errors[0].message}`)
+  }
+  const changed = Object.keys(values).length
+  return writeFile(TEXTS_FILE, { values }, version, `Textos (panel): ${changed} texto${changed === 1 ? '' : 's'} distinto${changed === 1 ? '' : 's'} del original`)
 }
 
 // ---------------------------------------------------------------- preguntas frecuentes

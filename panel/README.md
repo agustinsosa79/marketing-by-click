@@ -8,6 +8,7 @@ App aparte para que el cliente edite la web sin tocar código:
 | **Proyectos** | portfolio: crear, editar, borrar y ordenar (los 3 primeros publicados se ven en el inicio) | `content/proyectos/*.json` · `public/media/proyectos/*.webp` |
 | **Precios** | planes, asesoría 1:1 y sesión de fotos | `content/precios.json` |
 | **Preguntas** | preguntas frecuentes del inicio | `content/faq.json` |
+| **Textos** | descripciones, ítems, botones y mensajes de WhatsApp de cada sección (títulos y SEO bloqueados) | `content/textos.json` |
 
 Todas las pantallas tienen vista previa con el diseño del sitio antes de guardar.
 
@@ -52,7 +53,7 @@ Si algo quedó mal configurado, el panel lo dice al abrirlo (ej. *"Falta la vari
 ### Opcionales
 
 - **Dominio propio** (`panel.marketingbyclic.com`): Settings → Domains. No hace falta, el link de Vercel funciona igual.
-- **Que no se reconstruyan de más:** Settings → Build and Deployment → Ignored Build Step → Custom. En el panel `git diff --quiet HEAD^ HEAD -- .`; en el sitio `git diff --quiet HEAD^ HEAD -- . ':(exclude)panel'`. Sin esto todo funciona igual, solo hay builds de más.
+- **Que no se reconstruyan de más:** Settings → Build and Deployment → Ignored Build Step → Custom. En el panel `git diff --quiet HEAD^ HEAD -- .`; en el sitio `git diff --quiet HEAD^ HEAD -- . ':(exclude)panel' panel/shared` (el sitio importa `panel/shared/texts.ts`: un cambio ahí tiene que reconstruirlo). Sin esto todo funciona igual, solo hay builds de más.
 - `GITHUB_BRANCH` (por defecto `master`) y `GITHUB_REPO` (por defecto `agustinsosa79/marketing-by-click`) si alguna vez cambian.
 
 ## Mantenimiento
@@ -60,7 +61,7 @@ Si algo quedó mal configurado, el panel lo dice al abrirlo (ej. *"Falta la vari
 - **Cambiar la contraseña:** editar `PANEL_PASSWORD` en Vercel → Redeploy. Se cierran todas las sesiones abiertas.
 - **La llave vence al año:** el panel avisa *"El panel perdió el permiso para guardar en la web"*. Repetir el paso 1, reemplazar `GITHUB_TOKEN` → Redeploy.
 - **Dos cambios a la vez:** si alguien commitea en `master` justo mientras el cliente guarda, el panel no pisa nada: pide volver a guardar. En precios y preguntas, si el archivo cambió mientras se editaba (otra pestaña), pide recargar.
-- **Límite de funciones:** el plan gratuito de Vercel admite hasta 12 funciones por proyecto. El panel usa 10 (`api/*.ts`). Para sumar algo nuevo, agregarlo como acción de un endpoint existente (como `PATCH /api/project`, que sube, baja o lleva un proyecto al principio).
+- **Límite de funciones:** el plan gratuito de Vercel admite hasta 12 funciones por proyecto. El panel usa 11 (`api/*.ts`). Para sumar algo nuevo, agregarlo como acción de un endpoint existente (como `PATCH /api/project`, que sube, baja o lleva un proyecto al principio).
 
 ## Seguridad
 
@@ -89,10 +90,18 @@ npm run dev                  # http://localhost:5180
 - QA de punta a punta, con el panel en modo local sobre una **copia** de `content/` y `public/media/` (desde la raíz del repo):
   - blog: `node scripts/qa-panel.mjs http://localhost:5180 <contraseña> <carpeta de la copia>`
   - inicio, precios, preguntas y proyectos: `node scripts/qa-panel-general.mjs http://localhost:5180 <contraseña> <carpeta de la copia>`
+  - textos: `node scripts/qa-panel-textos.mjs http://localhost:5180 <contraseña> <carpeta de la copia>`
 
 ```
-api/       endpoints (Vercel Functions): login, logout, session, posts, post, projects, project, prices, faq, media
+api/       endpoints (Vercel Functions): login, logout, session, posts, post, projects, project, prices, faq, texts, media
 server/    auth · http (guardas) · storage (GitHub / local, lista cerrada de archivos) · images · posts · projects · settings (precios y preguntas)
-shared/    reglas comunes navegador/servidor: blog.ts (notas) · site.ts (proyectos, precios, preguntas)
-src/       la app: inicio, blog, proyectos, precios, preguntas · components/previews.tsx (réplicas del sitio para las vistas previas)
+shared/    reglas comunes navegador/servidor: blog.ts (notas) · site.ts (proyectos, precios, preguntas) · texts.ts (textos editables: campos, límites y originales; también lo importa el sitio)
+src/       la app: inicio, blog, proyectos, precios, preguntas, textos · components/previews.tsx (réplicas del sitio para las vistas previas)
 ```
+
+## Textos editables
+
+- **Agregar un texto editable:** declararlo en `shared/texts.ts` (clave, límites y texto original) y usarlo en `src/data/content.ts` del sitio con `txt('clave')` o `list('clave')`. El panel lo muestra solo, en su sección.
+- **Bloquear algo:** no declararlo como campo; sumarlo a `locked` de su sección para que el cliente vea por qué no se edita.
+- **Cambiar un texto original:** editarlo en `shared/texts.ts`. Si el cliente lo había cambiado, se mantiene su versión.
+- En `content/textos.json` solo se guardan los textos distintos del original. Un valor inválido o vacío hace que la web use el original.

@@ -12,6 +12,7 @@ export const PROJECTS_MEDIA_DIR = 'public/media/proyectos'
 export const PROJECTS_MEDIA_URL = '/media/proyectos'
 export const PRICES_FILE = 'content/precios.json'
 export const FAQ_FILE = 'content/faq.json'
+export const TEXTS_FILE = 'content/textos.json'
 
 // ---------------------------------------------------------------- proyectos
 

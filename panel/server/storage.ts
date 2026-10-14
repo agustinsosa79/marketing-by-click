@@ -1,7 +1,7 @@
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { MEDIA_DIR, POSTS_DIR } from '../shared/blog.js'
-import { FAQ_FILE, PRICES_FILE, PROJECTS_DIR, PROJECTS_MEDIA_DIR } from '../shared/site.js'
+import { FAQ_FILE, PRICES_FILE, PROJECTS_DIR, PROJECTS_MEDIA_DIR, TEXTS_FILE } from '../shared/site.js'
 import { UserError } from './http.js'
 
 /**
@@ -29,7 +29,7 @@ export interface Storage {
  * Lista cerrada de lo que el panel puede tocar en el repo. Nada más:
  *   content/blog/*.md · public/media/blog/*.webp|jpg|png
  *   content/proyectos/*.json · public/media/proyectos/*.webp
- *   content/precios.json · content/faq.json
+ *   content/precios.json · content/faq.json · content/textos.json
  */
 export function assertAllowedPath(file: string) {
   const inDir = (dir: string, re: RegExp) => file.startsWith(`${dir}/`) && re.test(file.slice(dir.length + 1))
@@ -39,7 +39,8 @@ export function assertAllowedPath(file: string) {
     inDir(PROJECTS_DIR, /^[a-z0-9-]+\.json$/) ||
     inDir(PROJECTS_MEDIA_DIR, /^[a-z0-9-]+\.webp$/) ||
     file === PRICES_FILE ||
-    file === FAQ_FILE
+    file === FAQ_FILE ||
+    file === TEXTS_FILE
   if (!ok || file.includes('..')) throw new UserError('Ruta no permitida.', 403)
 }
 

@@ -9,6 +9,8 @@
 
 import faqData from '../../content/faq.json'
 import preciosData from '../../content/precios.json'
+import textosData from '../../content/textos.json'
+import { resolveList, resolveText, TOKENS } from '../../panel/shared/texts'
 
 export interface Link {
   label: string
@@ -43,6 +45,14 @@ const prices = {
 const minPlanPrice = Math.min(...Object.values(prices.plans).map(Number).filter(Number.isFinite))
 /** "2 horas · 100 USD" */
 const sesionPrice = [prices.sesion.detail, `${prices.sesion.price} ${prices.currency}`].filter(Boolean).join(' · ')
+
+/**
+ * Textos editables desde el panel (content/textos.json; reglas y originales en panel/shared/texts.ts).
+ * Si un texto no se cambió o no es válido, queda el original.
+ */
+const withTokens = (s: string) => s.split(TOKENS.precioSesion).join(sesionPrice)
+const txt = (key: string) => withTokens(resolveText(textosData.values, key))
+const list = (key: string) => resolveList(textosData.values, key).map(withTokens)
 
 export const contact = {
   whatsapp: { label: '+54 9 2944 12-6756', href: WHATSAPP },
@@ -134,16 +144,12 @@ export const hero = {
 
 export const nosotros = {
   eyebrow: 'Nosotros',
-  cta: { label: 'Hablemos con Ian', href: WHATSAPP }, // TODO copy
+  cta: { label: txt('nosotros.cta'), href: WHATSAPP },
   // Bio de Instagram: "Construimos marcas que venden más."
   title: { text: 'Construimos marcas que venden más.', emphasis: 'venden más.' } satisfies Headline,
-  points: [
-    'Un estudio de marketing digital nacido en la Patagonia.',
-    'Desde 1987, de la gráfica al mundo digital.',
-    'Acompañamos cada marca de cerca y hacemos lo que realmente necesita.',
-  ],
-  quote: 'Hola, soy Ian. Creé Marketing by Clic para ayudar a marcas con un gran producto que necesitan más claridad y estrategia.',
-  instagram: { ...contact.founderInstagram, text: 'El Instagram de Ian' }, // TODO copy
+  points: list('nosotros.points'),
+  quote: txt('nosotros.quote'),
+  instagram: { ...contact.founderInstagram, text: txt('nosotros.instagram') },
   video: { src: '/media/video-hero-ian.mp4', poster: '/media/ian-video-poster.webp', label: 'Ian presenta Marketing by Clic' },
   player: {
     play: 'Mirá el video',
@@ -185,13 +191,7 @@ export const servicios = {
       text: 'Entendemos tu negocio y armamos un plan de acción 100% a medida.',
       icon: 'strategy',
       blogCategory: 'Estrategia',
-      includes: [
-        'Reunión inicial para conocer tu negocio y tus objetivos',
-        'Investigación de tu marca, tu público y tu competencia',
-        'Propuesta y planificación para tus redes',
-        'Análisis básico en el plan Inicial y avanzado en Plus y Premium',
-        'Llamadas 1:1 semanales en el plan Premium',
-      ],
+      includes: list('servicios.estrategia.includes'),
       seo: {
         title: 'Estrategia de marketing digital para tu marca | Marketing by Clic',
         description: 'Entendemos tu negocio y armamos un plan de acción 100% a medida para tus redes. Diagnóstico, propuesta y planificación. Escribinos por WhatsApp.',
@@ -204,13 +204,7 @@ export const servicios = {
       text: 'Contenido que conecta con tu audiencia y mejora tu visibilidad.',
       icon: 'content',
       blogCategory: 'Contenido',
-      includes: [
-        'Posteos, historias y reels cada mes, según tu plan',
-        'De 2 canales en el plan Inicial a todas las redes que necesites en Premium',
-        'Contenido adaptado a cada canal en los planes Plus y Premium',
-        'Aprobación de las primeras piezas antes de publicar',
-        `Sesión de fotos y videos opcional: ${sesionPrice}`,
-      ],
+      includes: list('servicios.contenido.includes'),
       seo: {
         title: 'Contenido para redes sociales | Marketing by Clic',
         description: `Posteos, historias y reels que conectan con tu audiencia y mejoran tu visibilidad. Planes mensuales desde ${minPlanPrice} ${prices.currency}. Escribinos por WhatsApp.`,
@@ -223,13 +217,7 @@ export const servicios = {
       text: 'Anuncios estratégicos en Instagram y Facebook para que vendas de verdad.',
       icon: 'ads',
       blogCategory: 'Meta Ads',
-      includes: [
-        'Anuncios estratégicos en Instagram y Facebook',
-        '2 campañas en el plan Plus',
-        'Hasta 5 campañas simultáneas en el plan Premium',
-        'Reporte de resultados cada mes',
-        'La inversión en publicidad se cotiza aparte',
-      ],
+      includes: list('servicios.meta-ads.includes'),
       seo: {
         title: 'Meta Ads: anuncios en Instagram y Facebook | Marketing by Clic',
         description: 'Campañas de Meta Ads en Instagram y Facebook para que tus redes vendan de verdad. Incluidas en los planes Plus y Premium. Escribinos por WhatsApp.',
@@ -242,13 +230,7 @@ export const servicios = {
       text: 'Tu marca necesita más que un logo: necesita una identidad.',
       icon: 'branding',
       blogCategory: 'Branding',
-      includes: [
-        'Logo completo',
-        'Versión reducida para espacios chicos',
-        'Aplicaciones en productos reales',
-        'Manual de marca para una comunicación coherente y reconocible',
-        'Más de 10 años de experiencia en identidad visual',
-      ],
+      includes: list('servicios.branding.includes'),
       seo: {
         title: 'Branding e identidad de marca | Marketing by Clic',
         description: 'Tu marca necesita más que un logo: necesita una identidad. Logo, versión reducida, aplicaciones y manual de marca. Escribinos por WhatsApp.',
@@ -260,7 +242,7 @@ export const servicios = {
   // etiquetas dentro de las mini animaciones de cada servicio
   demo: { reels: 'Reels', ads: 'Meta Ads' },
   more: 'Ver el servicio',
-  cta: 'Consultar por WhatsApp',
+  cta: txt('servicios.cta'),
   listAria: 'Elegí un servicio',
   extrasLabel: 'También',
   // todos llevan a la sección de la asesoría, donde están los servicios fuera de los planes
@@ -273,33 +255,33 @@ export const servicios = {
 
 export const proceso = {
   eyebrow: 'Cómo trabajamos',
-  cta: { label: 'Empezar mi primer mes', href: WHATSAPP_MESSAGE }, // TODO copy
+  cta: { label: txt('proceso.cta'), href: WHATSAPP_MESSAGE },
   title: { text: 'Tu primer mes, en tres etapas.', emphasis: 'tres etapas.' } satisfies Headline, // TODO copy
   // Agrupa los 7 pasos reales del cronograma; la cuarta etapa es lo que se repite cada mes
   stages: [
     {
       name: 'Diagnóstico',
       when: 'Semanas 1 y 2',
-      text: 'Conocemos tu marca, tu público y tu competencia antes de proponer nada.', // TODO copy
-      steps: ['Reunión inicial', 'Investigación'],
+      text: txt('proceso.diagnostico.text'),
+      steps: list('proceso.diagnostico.steps'),
     },
     {
       name: 'Estrategia',
       when: 'Semanas 1 y 2',
-      text: 'Armamos el plan para tus redes y lo ajustamos con vos.', // TODO copy
-      steps: ['Propuesta', 'Planificación y desarrollo'],
+      text: txt('proceso.estrategia.text'),
+      steps: list('proceso.estrategia.steps'),
     },
     {
       name: 'Ejecución',
       when: 'Semanas 3 y 4',
-      text: 'Producimos el contenido, lo aprobás y lo publicamos.', // TODO copy
-      steps: ['Producción de contenidos', 'Aprobación de las primeras piezas', 'Publicación'],
+      text: txt('proceso.ejecucion.text'),
+      steps: list('proceso.ejecucion.steps'),
     },
     {
       name: 'Cada mes',
       when: 'Desde el mes 2',
-      text: 'El ciclo se repite: medimos, ajustamos y seguimos creciendo.', // TODO copy
-      steps: ['Contenido renovado', 'Campañas en Meta Ads según tu plan', 'Reporte de resultados'],
+      text: txt('proceso.mensual.text'),
+      steps: list('proceso.mensual.steps'),
       loop: true,
     },
   ],
@@ -325,8 +307,8 @@ export const planes = {
   title: { text: 'Hagamos crecer tus redes.', emphasis: 'crecer' } satisfies Headline,
   currency: prices.currency,
   period: 'por mes',
-  badge: 'Más elegido',
-  cta: 'Quiero este plan',
+  badge: txt('planes.badge'),
+  cta: txt('planes.cta'),
   ctaHref: WHATSAPP_MESSAGE,
   plans: [
     {
@@ -334,8 +316,8 @@ export const planes = {
       name: 'Inicial',
       tone: 'light',
       price: prices.plans.inicial,
-      for: 'Para empezar con contenido constante.', // TODO copy
-      features: ['Análisis básico', 'Contenido orgánico, sin anuncios', 'Hasta 2 canales', '6 posteos, 8 historias y 2 reels al mes'],
+      for: txt('planes.inicial.for'),
+      features: list('planes.inicial.features'),
     },
     {
       id: 'plus',
@@ -343,23 +325,23 @@ export const planes = {
       tone: 'signal',
       featured: true,
       price: prices.plans.plus,
-      for: 'Para sumar anuncios y vender más.', // TODO copy
-      features: ['Análisis avanzado', 'Contenido + 2 campañas de Meta Ads*', 'Hasta 3 canales con contenido adaptado', '8 posteos, 12 historias y 4 reels al mes'],
+      for: txt('planes.plus.for'),
+      features: list('planes.plus.features'),
     },
     {
       id: 'premium',
       name: 'Premium',
       tone: 'night',
       price: prices.plans.premium,
-      for: 'Para estar en todas las redes que necesites.', // TODO copy
+      for: txt('planes.premium.for'),
       // La llamada 1:1 es la gran diferencia del Premium (texto real del sitio anterior: "Llamadas 1:1 semanales")
-      highlight: { title: 'Llamadas 1:1 semanales', text: 'Exclusivo del plan Premium' }, // TODO copy
-      features: ['Análisis avanzado', 'Hasta 5 campañas de Meta Ads simultáneas*', 'Todas las redes necesarias', '8 posteos, 12 historias y 8 reels al mes'],
+      highlight: { title: txt('planes.premium.highlight'), text: txt('planes.premium.highlightNote') },
+      features: list('planes.premium.features'),
     },
   ] satisfies Plan[],
-  note: '*La inversión en publicidad se cotiza aparte.',
+  note: txt('planes.note'),
   // lleva a la sección de abajo (asesoría + servicios fuera de los planes)
-  extra: { text: '¿Necesitás algo a medida, una web o una sesión de fotos?', link: 'Mirá las otras opciones', id: sections.asesoria }, // TODO copy
+  extra: { text: txt('planes.extra.text'), link: txt('planes.extra.link'), id: sections.asesoria },
 }
 
 /**
@@ -370,12 +352,12 @@ export const planes = {
  */
 export const asesoria = {
   eyebrow: 'Asesoría 1:1',
-  kicker: '¿Todavía no buscás un plan mensual?', // TODO copy
+  kicker: txt('asesoria.kicker'),
   title: { text: 'Una asesoría 1:1, 100% personalizada.', emphasis: '100% personalizada.' } satisfies Headline,
-  text: '¿Tu negocio tiene potencial para crecer, pero no tenés claro cuál es el siguiente paso? Lo vemos juntos, a la medida de tu marca.', // TODO copy
-  points: ['Ordenamos tus ideas', 'Detectamos oportunidades', 'Definimos un camino claro para crecer'],
+  text: txt('asesoria.text'),
+  points: list('asesoria.points'),
   price: prices.asesoria.price ? { value: prices.asesoria.price, currency: prices.currency, detail: prices.asesoria.detail } : null,
-  cta: { label: 'Quiero una asesoría', href: whatsappWith('Hola! Quiero una asesoría 1:1.') }, // TODO copy
+  cta: { label: txt('asesoria.cta'), href: whatsappWith(txt('asesoria.message')) },
   // Foto real del sitio anterior: Ian en una videollamada
   image: { src: '/media/videollamada.webp', alt: 'Ian en una videollamada, en la pantalla de una laptop', width: 900, height: 1600 } satisfies ImageAsset,
 }
@@ -388,28 +370,28 @@ export const asesoria = {
 export const extras = {
   eyebrow: 'También hacemos',
   title: 'Proyectos fuera de los planes', // TODO copy
-  cta: 'Consultar',
+  cta: txt('extras.cta'),
   items: [
     {
       icon: 'web',
       name: 'Sitio web / e-commerce',
-      text: 'Tu web o tu tienda online, pensada para que te encuentren y te escriban.', // TODO copy
+      text: txt('extras.web.text'),
       price: '',
-      href: whatsappWith('Hola! Quiero consultar por un sitio web.'),
+      href: whatsappWith(txt('extras.web.message')),
     },
     {
       icon: 'camera',
       name: 'Sesión de fotos y videos',
-      text: 'Contenido propio para tus redes, hecho en una sola jornada.', // TODO copy
+      text: txt('extras.sesion.text'),
       price: sesionPrice,
-      href: whatsappWith('Hola! Quiero consultar por una sesión de fotos y videos.'),
+      href: whatsappWith(txt('extras.sesion.message')),
     },
     {
       icon: 'custom',
       name: 'Soluciones a medida',
-      text: 'Planificamos estrategias creativas y prácticas para conectar con tus clientes.',
+      text: txt('extras.medida.text'),
       price: '',
-      href: whatsappWith('Hola! Necesito algo a medida para mi marca.'),
+      href: whatsappWith(txt('extras.medida.message')),
     },
   ] as { icon: 'web' | 'camera' | 'custom'; name: string; text: string; price: string; href: string }[],
 }
@@ -423,15 +405,15 @@ export const extras = {
 export const proyectos = {
   eyebrow: 'Proyectos',
   title: { text: 'Marcas que ya confiaron en nosotros.', emphasis: 'confiaron en nosotros.' } satisfies Headline, // TODO copy
-  text: 'Acompañamos a marcas, profesionales y emprendimientos de distintos rubros a construir, comunicar y hacer crecer sus proyectos.',
+  text: txt('proyectos.text'),
   view: 'Ver el proyecto',
   cursor: 'Ver',
-  all: 'Ver todos los proyectos',
+  all: txt('proyectos.all'),
   // tarjeta que completa la grilla del inicio mientras haya menos de 3 proyectos
   next: {
     title: 'Tu marca puede ser la próxima.', // TODO copy
-    text: 'Contanos qué necesitás y armamos el proyecto juntos.', // TODO copy
-    cta: { label: 'Empezar mi proyecto', href: whatsappWith('Hola! Quiero empezar un proyecto con ustedes.') },
+    text: txt('proyectos.next.text'),
+    cta: { label: txt('proyectos.next.cta'), href: whatsappWith(txt('proyectos.next.message')) },
   },
   page: {
     seo: {
@@ -457,22 +439,22 @@ export const proyectos = {
     back: 'Ver todos los proyectos',
     cta: {
       title: { text: '¿Querés algo así para tu marca?', emphasis: 'tu marca?' } satisfies Headline, // TODO copy
-      text: 'Contanos tu proyecto en una videollamada gratuita y vemos juntos por dónde empezar.', // TODO copy
+      text: txt('proyectos.detail.cta.text'),
       button: { label: 'Agendá una videollamada', href: WHATSAPP_MESSAGE },
     },
   },
 }
 
 export const contacto = {
-  eyebrow: 'Videollamada gratuita',
+  eyebrow: txt('contacto.eyebrow'),
   title: '¿Hablamos?',
-  text: '¿Tu negocio tiene potencial para crecer pero no sabés cuál es el próximo paso? Contanos tu proyecto y lo vemos juntos.',
-  button: { label: 'Agendá una videollamada', href: WHATSAPP_MESSAGE },
+  text: txt('contacto.text'),
+  button: { label: txt('contacto.button'), href: WHATSAPP_MESSAGE },
   cursor: 'Escribinos',
 }
 
 export const footer = {
-  line: 'Más visibilidad, más clientes, más ventas.',
+  line: txt('footer.line'),
   copyright: `© ${new Date().getFullYear()} Marketing by Clic`,
   backToTop: 'Volver arriba',
   blog: { label: 'Blog', href: '/blog' },
@@ -506,7 +488,7 @@ export const blog = {
   back: 'Volver al blog',
   cta: {
     title: { text: '¿Querés aplicarlo a tu marca?', emphasis: 'tu marca?' } satisfies Headline, // TODO copy
-    text: '¿Tu negocio tiene potencial para crecer pero no sabés cuál es el próximo paso? Contanos tu proyecto y lo vemos juntos.',
+    text: txt('blog.cta.text'),
     button: { label: 'Agendá una videollamada', href: WHATSAPP_MESSAGE },
   },
   notFound: {
@@ -521,42 +503,43 @@ export const blog = {
 export const diagnostico = {
   eyebrow: 'Diagnóstico rápido',
   title: { text: '¿No sabés qué plan elegir?', emphasis: 'qué plan' } satisfies Headline, // TODO copy
-  text: 'Respondé tres preguntas y te decimos cuál te conviene. Toma menos de un minuto.', // TODO copy
+  text: txt('diagnostico.text'),
   step: 'Pregunta',
   of: 'de',
   back: 'Atrás',
   restart: 'Volver a empezar',
+  // los textos se editan en el panel; el nivel de cada respuesta (qué plan recomienda) queda fijo
   questions: [
     {
-      text: '¿Querés sumar anuncios en Instagram y Facebook?',
+      text: txt('diagnostico.q1'),
       options: [
-        { label: 'Por ahora no, solo contenido', level: 0 },
-        { label: 'Sí, algunas campañas', level: 1 },
-        { label: 'Sí, varias al mismo tiempo', level: 2 },
+        { label: txt('diagnostico.q1.o1'), level: 0 },
+        { label: txt('diagnostico.q1.o2'), level: 1 },
+        { label: txt('diagnostico.q1.o3'), level: 2 },
       ],
     },
     {
-      text: '¿En cuántas redes querés estar?',
+      text: txt('diagnostico.q2'),
       options: [
-        { label: '1 o 2', level: 0 },
-        { label: '3', level: 1 },
-        { label: 'Todas las que necesite', level: 2 },
+        { label: txt('diagnostico.q2.o1'), level: 0 },
+        { label: txt('diagnostico.q2.o2'), level: 1 },
+        { label: txt('diagnostico.q2.o3'), level: 2 },
       ],
     },
     {
-      text: '¿Te sirven llamadas 1:1 todas las semanas?',
+      text: txt('diagnostico.q3'),
       options: [
-        { label: 'No hace falta', level: 0 },
-        { label: 'Sí, me gustaría', level: 2 },
+        { label: txt('diagnostico.q3.o1'), level: 0 },
+        { label: txt('diagnostico.q3.o2'), level: 2 },
       ],
     },
   ],
   result: 'Te recomendamos el plan',
-  resultText: 'Escribinos por WhatsApp con tu resultado y lo vemos juntos en una videollamada gratuita.', // TODO copy
-  resultCta: 'Enviar por WhatsApp',
+  resultText: txt('diagnostico.resultText'),
+  resultCta: txt('diagnostico.resultCta'),
   seePlans: 'Ver los planes',
   // Mensaje que se abre en WhatsApp (el nombre del plan se agrega al final)
-  message: 'Hola! Hice el diagnóstico en la web y me recomendó el plan',
+  message: txt('diagnostico.message'),
   whatsapp: WHATSAPP,
 }
 
@@ -564,8 +547,8 @@ export const diagnostico = {
 export const faq = {
   eyebrow: 'Preguntas frecuentes',
   title: { text: 'Lo que siempre nos preguntan.', emphasis: 'nos preguntan.' } satisfies Headline, // TODO copy
-  text: '¿Tenés otra duda? Escribinos y te respondemos.', // TODO copy
-  cta: { label: 'Hacer una pregunta', href: WHATSAPP_MESSAGE },
+  text: txt('faq.text'),
+  cta: { label: txt('faq.cta'), href: WHATSAPP_MESSAGE },
   items: (faqData.items ?? []).filter((item) => item.q?.trim() && item.a?.trim()),
 }
 

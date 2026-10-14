@@ -1,5 +1,6 @@
 import type { NewImage, PostInput, PostSummary } from '../shared/blog'
 import type { FaqItem, PricesInput, ProjectInput, ProjectSummary, Versioned } from '../shared/site'
+import type { TextValues } from '../shared/texts'
 
 /** Cliente del backend del panel (/api). La sesión viaja en una cookie que este código no puede leer. */
 
@@ -50,6 +51,8 @@ export const api = {
   savePrices: (data: PricesInput, version: string) => request<{ version: string }>('/api/prices', { method: 'PUT', body: JSON.stringify({ data, version }) }),
   faq: () => request<Versioned<FaqItem[]>>('/api/faq'),
   saveFaq: (data: FaqItem[], version: string) => request<{ version: string }>('/api/faq', { method: 'PUT', body: JSON.stringify({ data, version }) }),
+  texts: () => request<Versioned<TextValues>>('/api/texts'),
+  saveTexts: (data: TextValues, version: string) => request<{ version: string }>('/api/texts', { method: 'PUT', body: JSON.stringify({ data, version }) }),
 }
 
 /** URL para mostrar una imagen del sitio (blog o proyectos) dentro del panel: se lee del repo, aunque la web no se haya actualizado. */

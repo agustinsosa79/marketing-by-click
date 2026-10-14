@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { PLANS, PRICE_DETAIL_MAX, type PlanId, type PricesInput } from '../../shared/site'
 import { api, ApiError } from '../api'
 import { AsesoriaPreview, PlansPreview, PreviewFrame, SesionPreview } from '../components/previews'
 import { Button, Field, Spinner, inputClass, type ToastData } from '../components/ui'
 import { useLeaveGuard } from '../lib/nav'
+import { textReader } from '../lib/texts'
+import type { TextValues } from '../../shared/texts'
 
 type Area = 'planes' | 'asesoria' | 'sesion'
 
@@ -46,6 +48,13 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
   const [focusPlan, setFocusPlan] = useState<PlanId | null>(null)
 
   useLeaveGuard(dirty)
+
+  // textos editados en la sección Textos: la vista previa los muestra igual que la web
+  const [textValues, setTextValues] = useState<TextValues>({})
+  useEffect(() => {
+    api.texts().then((r) => setTextValues(r.data), () => {})
+  }, [])
+  const texts = useMemo(() => textReader(textValues, prices), [textValues, prices])
 
   useEffect(() => {
     api
@@ -213,17 +222,17 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
           </div>
           {area === 'planes' && (
             <PreviewFrame path="/#planes">
-              <PlansPreview prices={prices} highlight={focusPlan} />
+              <PlansPreview prices={prices} highlight={focusPlan} texts={texts} />
             </PreviewFrame>
           )}
           {area === 'asesoria' && (
             <PreviewFrame path="/#asesoria">
-              <AsesoriaPreview price={prices.asesoria.price} detail={prices.asesoria.detail} currency={prices.currency} />
+              <AsesoriaPreview price={prices.asesoria.price} detail={prices.asesoria.detail} currency={prices.currency} texts={texts} />
             </PreviewFrame>
           )}
           {area === 'sesion' && (
             <PreviewFrame path="/#servicios">
-              <SesionPreview price={prices.sesion.price} detail={prices.sesion.detail} currency={prices.currency} />
+              <SesionPreview price={prices.sesion.price} detail={prices.sesion.detail} currency={prices.currency} texts={texts} />
             </PreviewFrame>
           )}
         </aside>

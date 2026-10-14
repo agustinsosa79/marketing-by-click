@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SITE_URL } from '../../shared/blog'
 import type { FaqItem, PlanId, PricesInput, ProjectImage, ProjectInput } from '../../shared/site'
+import { textReader, type TextReader } from '../lib/texts'
 
 /**
  * Vistas previas: réplicas de las secciones del sitio con los mismos colores, tipografía y estructura,
@@ -28,7 +29,7 @@ export function PreviewFrame({ path, children, className = '' }: { path: string;
   )
 }
 
-function Eyebrow({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
+export function Eyebrow({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
   return (
     <p className={`flex items-center gap-2 font-label ${dark ? 'text-brand-haze' : 'text-brand-deep'}`}>
       <span aria-hidden="true" className="block h-0.5 w-5 rounded-full bg-brand-signal" />
@@ -37,7 +38,7 @@ function Eyebrow({ children, dark = false }: { children: ReactNode; dark?: boole
   )
 }
 
-const Check = ({ className = '' }: { className?: string }) => (
+export const Check = ({ className = '' }: { className?: string }) => (
   <span className={`grid size-4 shrink-0 place-items-center rounded-full ${className}`}>
     <svg viewBox="0 0 24 24" aria-hidden="true" className="size-2.5 fill-none stroke-current stroke-3">
       <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -47,11 +48,11 @@ const Check = ({ className = '' }: { className?: string }) => (
 
 // ---------------------------------------------------------------- planes
 
-/** Textos de cada plan (copia de src/data/content.ts del sitio: acá solo se editan los precios). */
-const PLAN_COPY: Record<PlanId, { name: string; tone: 'light' | 'signal' | 'night'; for: string; highlight?: string; features: string[] }> = {
-  inicial: { name: 'Inicial', tone: 'light', for: 'Para empezar con contenido constante.', features: ['Análisis básico', 'Contenido orgánico, sin anuncios', 'Hasta 2 canales', '6 posteos, 8 historias y 2 reels al mes'] },
-  plus: { name: 'Plus', tone: 'signal', for: 'Para sumar anuncios y vender más.', features: ['Análisis avanzado', 'Contenido + 2 campañas de Meta Ads*', 'Hasta 3 canales con contenido adaptado', '8 posteos, 12 historias y 4 reels al mes'] },
-  premium: { name: 'Premium', tone: 'night', for: 'Para estar en todas las redes que necesites.', highlight: 'Llamadas 1:1 semanales', features: ['Análisis avanzado', 'Hasta 5 campañas de Meta Ads simultáneas*', 'Todas las redes necesarias', '8 posteos, 12 historias y 8 reels al mes'] },
+/** Nombre y color de cada plan (los textos vienen de la sección Textos). */
+const PLAN_LOOK: Record<PlanId, { name: string; tone: 'light' | 'signal' | 'night' }> = {
+  inicial: { name: 'Inicial', tone: 'light' },
+  plus: { name: 'Plus', tone: 'signal' },
+  premium: { name: 'Premium', tone: 'night' },
 }
 
 const TONE = {
@@ -63,26 +64,41 @@ const TONE = {
 /** Precio vacío o inválido: se marca para que se note antes de guardar. */
 const shownPrice = (value: string) => (/^\d{1,6}$/.test(value) ? value : '—')
 
-export function PlansPreview({ prices, highlight }: { prices: PricesInput; highlight?: PlanId | null }) {
+export function PlansPreview({ prices, highlight, texts }: { prices: PricesInput; highlight?: PlanId | null; texts?: TextReader }) {
+  const tx = texts ?? textReader({}, prices)
+  // en el carrusel (vista previa angosta), se desplaza hasta el plan que se está editando
+  const track = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = track.current
+    const card = highlight ? el?.querySelector<HTMLElement>(`[data-plan="${highlight}"]`) : null
+    if (!el || !card || el.scrollWidth <= el.clientWidth) return
+    el.scrollTo({ left: card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2, behavior: 'smooth' })
+  }, [highlight])
   return (
-    <div className="bg-brand-paper px-4 py-6 sm:px-6">
+    <div className="@container bg-brand-paper px-4 py-6 sm:px-6">
       <Eyebrow>Planes</Eyebrow>
       <p className="mt-2 font-display text-2xl text-brand-deep sm:text-3xl">
         Hagamos <span className="text-brand-signal">crecer</span> tus redes.
       </p>
-      <div className="no-scrollbar -mx-4 mt-4 flex items-center gap-3 overflow-x-auto px-4 py-5 sm:mx-0 sm:px-0 xl:grid xl:grid-cols-13 xl:overflow-visible">
+      <div ref={track} className="no-scrollbar relative -mx-4 mt-4 flex items-center gap-3 overflow-x-auto px-4 py-5 sm:mx-0 sm:px-0 @xl:grid @xl:grid-cols-13 @xl:overflow-visible">
         {(['inicial', 'plus', 'premium'] as const).map((id) => {
-          const plan = PLAN_COPY[id]
+          const plan = {
+            ...PLAN_LOOK[id],
+            for: tx.get(`planes.${id}.for`),
+            features: tx.list(`planes.${id}.features`),
+            highlight: id === 'premium' ? tx.get('planes.premium.highlight') : '',
+          }
           const t = TONE[plan.tone]
           const featured = id === 'plus'
           return (
             <article
               key={id}
-              className={`relative flex shrink-0 flex-col rounded-3xl transition xl:w-auto ${t.card} ${featured ? 'z-10 w-64 p-5 ring-4 ring-brand-signal/15 xl:col-span-5 xl:py-8' : 'w-56 p-4 xl:col-span-4'} ${highlight === id ? 'outline-3 outline-offset-3 outline-brand-signal/50' : ''}`}
+              data-plan={id}
+              className={`relative flex shrink-0 flex-col rounded-3xl transition @xl:w-auto ${t.card} ${featured ? 'z-10 w-64 p-5 ring-4 ring-brand-signal/15 @xl:col-span-5 @xl:py-8' : 'w-56 p-4 @xl:col-span-4'} ${highlight === id ? 'outline-3 outline-offset-3 outline-brand-signal/50' : ''}`}
             >
               <header className="flex items-center justify-between gap-2">
                 <span className={`font-label ${t.label}`}>{plan.name}</span>
-                {featured && <span className="rounded-full bg-white px-2 py-0.5 text-[0.6rem] font-bold text-brand-signal">Más elegido</span>}
+                {featured && <span className="rounded-full bg-white px-2 py-0.5 text-[0.6rem] font-bold text-brand-signal">{tx.get('planes.badge')}</span>}
               </header>
               <p className="mt-3 flex items-end gap-1.5">
                 <span className={`font-display ${featured ? 'text-5xl' : 'text-4xl'} ${t.price}`}>{shownPrice(prices.plans[id])}</span>
@@ -98,18 +114,19 @@ export function PlansPreview({ prices, highlight }: { prices: PricesInput; highl
                   </li>
                 ))}
               </ul>
-              <span className={`mt-3 rounded-full px-3 py-2 text-center text-[0.7rem] font-bold ${t.button}`}>Quiero este plan</span>
+              <span className={`mt-3 rounded-full px-3 py-2 text-center text-[0.7rem] font-bold ${t.button}`}>{tx.get('planes.cta')}</span>
             </article>
           )
         })}
       </div>
-      <p className="mt-1 text-[0.65rem] text-brand-night/60">*La inversión en publicidad se cotiza aparte.</p>
+      <p className="mt-1 text-[0.65rem] text-brand-night/60">{tx.get('planes.note')}</p>
     </div>
   )
 }
 
 /** La tarjeta de la asesoría 1:1 (solo la parte del precio y el botón cambia). */
-export function AsesoriaPreview({ price, detail, currency }: { price: string; detail: string; currency: string }) {
+export function AsesoriaPreview({ price, detail, currency, texts }: { price: string; detail: string; currency: string; texts?: TextReader }) {
+  const tx = texts ?? textReader()
   return (
     <div className="bg-brand-paper px-4 py-6 sm:px-6">
       <div className="grid grid-cols-3 gap-3 rounded-3xl bg-white p-2.5 ring-1 ring-brand-deep/10">
@@ -120,7 +137,7 @@ export function AsesoriaPreview({ price, detail, currency }: { price: string; de
             Una asesoría 1:1, <span className="text-brand-signal">100% personalizada.</span>
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-3">
-            <span className="rounded-full bg-brand-signal px-3 py-1.5 text-[0.7rem] font-bold text-white">Quiero una asesoría</span>
+            <span className="rounded-full bg-brand-signal px-3 py-1.5 text-[0.7rem] font-bold text-white">{tx.get('asesoria.cta')}</span>
             {/^\d{1,6}$/.test(price) ? (
               <span className="flex items-baseline gap-1 text-brand-deep">
                 <span className="font-display text-xl">{price}</span>
@@ -139,12 +156,13 @@ export function AsesoriaPreview({ price, detail, currency }: { price: string; de
 }
 
 /** El bloque "También hacemos" (al lado de la asesoría), donde aparece la sesión de fotos con su precio. */
-export function SesionPreview({ price, detail, currency }: { price: string; detail: string; currency: string }) {
+export function SesionPreview({ price, detail, currency, texts }: { price: string; detail: string; currency: string; texts?: TextReader }) {
+  const tx = texts ?? textReader()
   const text = [detail, /^\d{1,6}$/.test(price) ? `${price} ${currency}` : '—'].filter(Boolean).join(' · ')
   const rows = [
-    { name: 'Sitio web / e-commerce', text: 'Tu web o tu tienda online, pensada para que te encuentren y te escriban.', price: '' },
-    { name: 'Sesión de fotos y videos', text: 'Contenido propio para tus redes, hecho en una sola jornada.', price: text },
-    { name: 'Soluciones a medida', text: 'Planificamos estrategias creativas y prácticas para conectar con tus clientes.', price: '' },
+    { name: 'Sitio web / e-commerce', text: tx.get('extras.web.text'), price: '' },
+    { name: 'Sesión de fotos y videos', text: tx.get('extras.sesion.text'), price: text },
+    { name: 'Soluciones a medida', text: tx.get('extras.medida.text'), price: '' },
   ]
   return (
     <div className="bg-brand-paper px-4 py-6 sm:px-6">
