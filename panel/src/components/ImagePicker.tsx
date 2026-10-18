@@ -16,7 +16,7 @@ interface Props {
 }
 
 /** Elegir o arrastrar una imagen. Se achica y se convierte a WebP en el navegador antes de subirla. */
-export function ImagePicker({ url, imageBase, onImage, onRemove, onError, aspect = 'aspect-4/3 md:aspect-video', hint = 'Se achica y se optimiza sola.' }: Props) {
+export function ImagePicker({ url, imageBase, onImage, onRemove, onError, aspect = 'aspect-4/3 md:aspect-video', hint = 'Se convierte sola a WebP, más liviana.' }: Props) {
   const input = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [over, setOver] = useState(false)

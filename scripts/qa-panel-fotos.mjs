@@ -1,7 +1,7 @@
 /**
  * QA de "Fotos y video" del panel (con el panel en `npm run dev`, PANEL_STORAGE=local sobre una COPIA de content/ y public/media/):
- * cambiar la foto de la portada (dos tamaños), cambiar solo una descripción, restaurar, subir un video chico
- * (sin comprimir) y uno pesado (se comprime en el navegador), archivos resultantes y celular.
+ * cambiar la foto de la portada (dos tamaños), cambiar solo una descripción, restaurar, subir dos videos
+ * (se convierten a WebM con MP4 de respaldo en el navegador), archivos resultantes y celular.
  * Uso: node scripts/qa-panel-fotos.mjs <base> <contraseña> <carpeta de la copia> → %TEMP%/qa/fv-*.png
  */
 import { chromium } from 'playwright'
@@ -64,20 +64,21 @@ await p.click('dialog[open] button:has-text("Restaurar original")')
 await p.waitForSelector('text=Foto original restaurada')
 log('restaurada y archivos borrados:', !media()['hero.photo'] && heroFiles.every((f) => !onDisk(f)))
 
-// 4. Video chico (2,6 MB): se sube tal cual
+// 4. Video MP4 de 2,6 MB: se convierte a WebM (+ MP4 de respaldo)
 const video = card('Video de presentación')
 await video.locator('input[type=file]').setInputFiles(path.join(repo, 'public/media/video-hero-ian.mp4'))
-await video.locator('text=Nuevo ·').waitFor({ timeout: 30000 })
+await video.locator('text=Nuevo ·').waitFor({ timeout: 120000 })
 log('video chico:', await video.locator('text=Nuevo ·').textContent())
 await video.locator('button:has-text("Publicar video")').click()
 await p.waitForSelector('text=Video publicado')
 const v1 = media()['nosotros.video']
-log('video guardado:', Boolean(v1 && onDisk(v1.src) && onDisk(v1.poster)), `duración ${v1?.duration}s`)
+const kindOf = (src) => { const b = readFileSync(path.join(root, 'public', src)); return b.subarray(4, 8).toString('ascii') === 'ftyp' ? 'mp4' : b[0] === 0x1a ? 'webm' : '?' }
+log('video guardado:', Boolean(v1 && onDisk(v1.src) && onDisk(v1.poster)), `principal ${kindOf(v1.src)} · respaldo ${v1.fallback ? kindOf(v1.fallback) : 'no'} · duración ${v1?.duration}s`)
 
-// 5. Video pesado (4,6 MB): se comprime en el navegador
+// 5. Video pesado (4,6 MB)
 const t0 = Date.now()
 await video.locator('input[type=file]').setInputFiles(path.join(repo, 'reference/stock/mixkit-4915-720.mp4'))
-await video.locator('text=Comprimiendo').waitFor({ timeout: 20000 })
+await video.locator('text=Convirtiendo a WebM').waitFor({ timeout: 20000 })
 await p.screenshot({ path: `${out}/fv-04-comprimiendo.png` })
 await video.locator('text=Nuevo ·').waitFor({ timeout: 120000 })
 log('video comprimido:', await video.locator('text=Nuevo ·').textContent(), `en ${Math.round((Date.now() - t0) / 1000)} s`)
@@ -87,14 +88,14 @@ await p.waitForTimeout(500)
 const v2 = media()['nosotros.video']
 const bytes = readFileSync(path.join(root, 'public', v2.src))
 const kind = bytes.subarray(4, 8).toString('ascii') === 'ftyp' ? 'mp4' : bytes[0] === 0x1a ? 'webm' : '?'
-log('video pesado guardado:', `${(statSync(path.join(root, 'public', v2.src)).size / 1e6).toFixed(2)} MB ${kind}`, '· anterior borrado:', !onDisk(v1.src))
+log('video pesado guardado:', `${(statSync(path.join(root, 'public', v2.src)).size / 1e6).toFixed(2)} MB ${kind}`, v2.fallback ? `+ respaldo ${(statSync(path.join(root, 'public', v2.fallback)).size / 1e6).toFixed(2)} MB ${kindOf(v2.fallback)}` : 'sin respaldo', '· anteriores borrados:', !onDisk(v1.src) && (!v1.fallback || !onDisk(v1.fallback)))
 await p.screenshot({ path: `${out}/fv-05-video.png`, fullPage: true })
 log('archivos en media/sitio:', siteFiles().join(', '))
 
 // Celular
 const m = await b.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
 await m.context().addCookies(await p.context().cookies())
-await m.goto(`${base}/#/fotos`, { waitUntil: 'networkidle' })
+await m.goto(`${base}/#/fotos`, { waitUntil: 'load' })
 await m.waitForTimeout(1000)
 log('celular desborde:', await m.evaluate(() => document.documentElement.scrollWidth - innerWidth), 'px')
 await m.screenshot({ path: `${out}/fv-06-celular.png`, fullPage: true })

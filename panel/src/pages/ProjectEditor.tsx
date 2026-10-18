@@ -339,7 +339,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
                     set('cover', toImage(img, project.cover?.alt ?? ''))
                   }}
                   onError={setError}
-                  hint="Horizontal o cuadrada. Se achica y se optimiza sola."
+                  hint="Horizontal o cuadrada. Se convierte sola a WebP, más liviana."
                 />
                 <Field label="Descripción de la portada" htmlFor="coverAlt" hint="Qué se ve en la imagen. La leen Google y las personas que usan lectores de pantalla.">
                   <input

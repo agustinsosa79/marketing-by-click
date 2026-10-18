@@ -35,7 +35,7 @@ export interface SiteMediaSave {
   width?: number
   height?: number
   duration?: number
-  files?: { main?: { base64: string }; small?: { base64: string }; poster?: { base64: string } }
+  files?: { main?: { base64: string }; small?: { base64: string }; poster?: { base64: string }; fallback?: { base64: string } }
 }
 
 export interface FullPost extends PostInput {

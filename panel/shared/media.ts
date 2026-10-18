@@ -14,7 +14,10 @@ export const SITE_MEDIA_DIR = 'public/media/sitio'
 export const SITE_MEDIA_URL = '/media/sitio'
 export const MEDIA_FILE = 'content/medios.json'
 
-/** Tope por archivo de video ya comprimido: cada guardado del panel viaja en un solo pedido (límite de Vercel 4,5 MB). */
+/**
+ * Tope de los archivos de video de un guardado (WebM + MP4 de respaldo, ya comprimidos): cada guardado del panel
+ * viaja en un solo pedido (límite de Vercel 4,5 MB).
+ */
 export const VIDEO_MAX_BYTES = 3_100_000
 export const VIDEO_MAX_SECONDS = 60
 export const IMAGE_MAX_BYTES = 1_500_000
@@ -29,7 +32,10 @@ export interface MediaImage {
 }
 
 export interface MediaVideo {
+  /** WebM (VP9 + Opus): el formato principal, más liviano. */
   src: string
+  /** MP4 (H.264) de respaldo para iPhones que no reproducen WebM. */
+  fallback?: string
   poster: string
   /** Segundos (se muestra como "0:25"). */
   duration: number
@@ -74,8 +80,8 @@ export const MEDIA_SLOTS: MediaSlot[] = [
     label: 'Video de presentación',
     section: 'Nosotros',
     where: 'Sección Nosotros. El botón “Conocé a Ian” del inicio lo reproduce y muestra su duración.',
-    hint: `Vertical u horizontal, de hasta ${VIDEO_MAX_SECONDS} segundos, con sonido. El panel lo comprime y arma la imagen de portada sola.`,
-    default: { src: '/media/video-hero-ian.mp4', poster: '/media/ian-video-poster.webp', duration: 25 },
+    hint: `Vertical u horizontal, de hasta ${VIDEO_MAX_SECONDS} segundos, con sonido. El panel lo convierte a WebM (más un MP4 de respaldo para iPhone) y arma la imagen de portada sola.`,
+    default: { src: '/media/video-hero-ian.webm', fallback: '/media/video-hero-ian.mp4', poster: '/media/ian-video-poster.webp', duration: 25 },
   },
   {
     key: 'asesoria.photo',
@@ -139,8 +145,10 @@ export function cleanMedia(key: string, raw: unknown): MediaValue | null {
   }
   const duration = Math.round(Number(v.duration))
   const d = slot.default
-  if (!isFile(v.src, /\.(mp4|webm)$/, d.src) || !isFile(v.poster, /\.webp$/, d.poster) || !(duration > 0 && duration <= VIDEO_MAX_SECONDS + 1)) return null
-  return { src: String(v.src), poster: String(v.poster), duration }
+  if (!isFile(v.src, /\.webm$/, d.src) || !isFile(v.poster, /\.webp$/, d.poster) || !(duration > 0 && duration <= VIDEO_MAX_SECONDS + 1)) return null
+  const fallback = v.fallback === undefined || v.fallback === null || v.fallback === '' ? undefined : isFile(v.fallback, /\.mp4$/, d.fallback) ? String(v.fallback) : null
+  if (fallback === null) return null
+  return { src: String(v.src), ...(fallback ? { fallback } : {}), poster: String(v.poster), duration }
 }
 
 /** Lo que usa el sitio para un lugar: el guardado si es válido, si no el original. */
@@ -161,4 +169,4 @@ export const formatDuration = (s: number) => `${Math.floor(s / 60)}:${String(Mat
 
 /** Archivos que usa un valor (para borrar los que quedan sin uso al reemplazar). */
 export const filesOf = (v: MediaValue | null | undefined): string[] =>
-  !v ? [] : 'poster' in v ? [v.src, v.poster] : [v.src, ...(v.srcSm ? [v.srcSm] : [])]
+  !v ? [] : 'poster' in v ? [v.src, v.poster, ...(v.fallback ? [v.fallback] : [])] : [v.src, ...(v.srcSm ? [v.srcSm] : [])]

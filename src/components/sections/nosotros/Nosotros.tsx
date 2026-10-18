@@ -77,7 +77,7 @@ export function Nosotros() {
 
         <figure className="order-1 lg:order-2 lg:col-span-7">
           <div data-nosotros-video>
-            <VideoPlayer src={nosotros.video.src} poster={nosotros.video.poster} duration={nosotros.video.duration} label={nosotros.video.label} labels={nosotros.player} listenGlobalPlay />
+            <VideoPlayer src={nosotros.video.src} fallback={nosotros.video.fallback} poster={nosotros.video.poster} duration={nosotros.video.duration} label={nosotros.video.label} labels={nosotros.player} listenGlobalPlay />
           </div>
           <figcaption data-reveal="rise" className="mt-5 hidden text-lead font-medium text-brand-haze lg:block">
             {nosotros.quote}

@@ -3,18 +3,20 @@ import { VIDEO_MAX_BYTES, VIDEO_MAX_SECONDS } from '../../shared/media'
 /**
  * Prepara un video en el navegador antes de subirlo:
  *  - lee la duración y arma la imagen de portada (un cuadro del video, en WebP);
- *  - si pesa más de lo que admite un guardado (o no es MP4/WebM), lo vuelve a grabar más liviano
- *    (máx. 1280 px de lado, con su sonido) usando las herramientas del propio navegador.
- * La grabación tarda lo mismo que dura el video.
+ *  - lo convierte siempre a WebM (VP9 + Opus, máx. 1280 px de lado, con su sonido);
+ *  - en la misma pasada graba un MP4 de respaldo para iPhones que no reproducen WebM (si el navegador puede).
+ * Usa las herramientas del propio navegador: la conversión tarda lo mismo que dura el video.
  */
 
 export interface PreparedVideo {
+  /** WebM: el formato principal */
   base64: string
   /** para verlo en el panel antes de guardar */
   url: string
   duration: number
   size: number
-  compressed: boolean
+  /** MP4 de respaldo (si el navegador pudo grabarlo) */
+  fallback: { base64: string; size: number } | null
   poster: { base64: string; url: string }
 }
 
@@ -32,7 +34,6 @@ function load(src: string) {
     v.preload = 'auto'
     v.playsInline = true
     v.muted = true
-    v.crossOrigin = 'anonymous'
     v.onloadedmetadata = () => resolve(v)
     v.onerror = () => reject(new Error('No se pudo leer el video. Probá con un MP4 grabado con el celular.'))
     v.src = src
@@ -58,11 +59,17 @@ async function makePoster(v: HTMLVideoElement, duration: number) {
   return { base64, url: `data:image/webp;base64,${base64}` }
 }
 
-const MIME = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
+const supported = (list: string[]) => (typeof MediaRecorder === 'undefined' ? undefined : list.find((m) => MediaRecorder.isTypeSupported(m)))
+const WEBM = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
+const MP4 = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4']
 
-async function reencode(v: HTMLVideoElement, duration: number, onProgress: (p: number) => void): Promise<Blob> {
-  const mimeType = typeof MediaRecorder !== 'undefined' ? MIME.find((m) => MediaRecorder.isTypeSupported(m)) : undefined
-  if (!mimeType) throw new Error('Este navegador no puede comprimir el video. Probá con Chrome o subí un video de menos de 3 MB.')
+/** Bitrate de video para que el archivo entre en `bytes` según la duración (el audio va a 96 kbps). */
+const videoBits = (bytes: number, duration: number) => Math.max(200_000, Math.min(2_500_000, Math.floor((bytes * 8 * 0.85) / duration) - 96_000))
+
+async function convert(v: HTMLVideoElement, duration: number, onProgress: (p: number) => void) {
+  const webmType = supported(WEBM)
+  if (!webmType) throw new Error('Este navegador no puede convertir el video a WebM. Usá Chrome, Edge o Firefox en la computadora.')
+  const mp4Type = supported(MP4)
 
   const scale = Math.min(1, 1280 / Math.max(v.videoWidth, v.videoHeight))
   const canvas = document.createElement('canvas')
@@ -71,19 +78,23 @@ async function reencode(v: HTMLVideoElement, duration: number, onProgress: (p: n
   const ctx = canvas.getContext('2d')!
   const stream = canvas.captureStream(30)
 
-  // el sonido pasa por el grabador sin sonar en los parlantes
+  // el sonido pasa por los grabadores sin sonar en los parlantes
   const audio = new AudioContext()
   const source = audio.createMediaElementSource(v)
   const dest = audio.createMediaStreamDestination()
   source.connect(dest)
   dest.stream.getAudioTracks().forEach((t) => stream.addTrack(t))
 
-  // bitrate según la duración, para entrar en el tope de un guardado
-  const total = Math.floor((VIDEO_MAX_BYTES * 8 * 0.85) / duration)
-  const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: Math.max(250_000, Math.min(2_500_000, total - 96_000)), audioBitsPerSecond: 96_000 })
-  const chunks: Blob[] = []
-  recorder.ondataavailable = (e) => e.data.size && chunks.push(e.data)
-  const stopped = new Promise<void>((r) => (recorder.onstop = () => r()))
+  // los dos archivos comparten el tope del guardado: WebM 55 %, MP4 de respaldo 40 %
+  const record = (mimeType: string, share: number) => {
+    const rec = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: videoBits(VIDEO_MAX_BYTES * share, duration), audioBitsPerSecond: 96_000 })
+    const chunks: Blob[] = []
+    rec.ondataavailable = (e) => e.data.size && chunks.push(e.data)
+    const done = new Promise<Blob>((r) => (rec.onstop = () => r(new Blob(chunks, { type: mimeType.split(';')[0] }))))
+    return { rec, done }
+  }
+  const webm = record(webmType, mp4Type ? 0.55 : 0.95)
+  const mp4 = mp4Type ? record(mp4Type, 0.4) : null
 
   let running = true
   const draw = () => {
@@ -97,15 +108,17 @@ async function reencode(v: HTMLVideoElement, duration: number, onProgress: (p: n
   await seek(v, 0)
   v.muted = false
   await audio.resume()
-  recorder.start(1000)
+  webm.rec.start(1000)
+  mp4?.rec.start(1000)
   draw()
   await v.play()
   await new Promise<void>((r) => (v.onended = () => r()))
   running = false
-  recorder.stop()
-  await stopped
+  webm.rec.stop()
+  mp4?.rec.stop()
+  const [webmBlob, mp4Blob] = await Promise.all([webm.done, mp4?.done ?? null])
   await audio.close()
-  return new Blob(chunks, { type: mimeType.split(';')[0] })
+  return { webm: webmBlob, mp4: mp4Blob }
 }
 
 export async function prepareVideo(file: File, onProgress: (p: number) => void = () => {}): Promise<PreparedVideo> {
@@ -117,12 +130,19 @@ export async function prepareVideo(file: File, onProgress: (p: number) => void =
     if (!Number.isFinite(duration) || duration <= 0) throw new Error('No se pudo leer la duración del video. Probá con un MP4.')
     if (duration > VIDEO_MAX_SECONDS + 0.5) throw new Error(`El video dura ${Math.round(duration)} segundos; el máximo es ${VIDEO_MAX_SECONDS}. Recortalo y volvé a elegirlo.`)
     const poster = await makePoster(v, duration)
-
-    const usable = file.size <= VIDEO_MAX_BYTES && /^video\/(mp4|webm)$/.test(file.type)
-    const blob = usable ? file : await reencode(v, duration, onProgress)
-    if (blob.size > VIDEO_MAX_BYTES) throw new Error('El video sigue pesando demasiado. Probá con uno más corto.')
+    const { webm, mp4 } = await convert(v, duration, onProgress)
+    if (webm.size > VIDEO_MAX_BYTES) throw new Error('El video sigue pesando demasiado. Probá con uno más corto.')
+    // el respaldo solo viaja si entra junto con el WebM en el tope del guardado
+    const keepMp4 = mp4 && mp4.size > 0 && webm.size + mp4.size <= VIDEO_MAX_BYTES
     onProgress(1)
-    return { base64: await toBase64(blob), url: URL.createObjectURL(blob), duration: Math.round(duration), size: blob.size, compressed: !usable, poster }
+    return {
+      base64: await toBase64(webm),
+      url: URL.createObjectURL(webm),
+      duration: Math.round(duration),
+      size: webm.size,
+      fallback: keepMp4 ? { base64: await toBase64(mp4), size: mp4.size } : null,
+      poster,
+    }
   } finally {
     URL.revokeObjectURL(original)
   }

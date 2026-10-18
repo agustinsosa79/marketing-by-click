@@ -8,7 +8,7 @@ App aparte para que el cliente edite la web sin tocar código:
 | **Proyectos** | portfolio: crear, editar, borrar y ordenar (los 3 primeros publicados se ven en el inicio) | `content/proyectos/*.json` · `public/media/proyectos/*.webp` |
 | **Precios** | planes, asesoría 1:1 y sesión de fotos | `content/precios.json` |
 | **Preguntas** | preguntas frecuentes del inicio | `content/faq.json` |
-| **Fotos y video** | foto de la portada (y la de compartir el link), de la asesoría, del autor del blog y el video de Nosotros; el video se comprime en el navegador | `content/medios.json` · `public/media/sitio/*` |
+| **Fotos y video** | foto de la portada (y la de compartir el link), de la asesoría, del autor del blog y el video de Nosotros; las fotos se convierten a WebP y el video a WebM (+ MP4 de respaldo para Safari/iPhone) en el navegador | `content/medios.json` · `public/media/sitio/*` |
 | **Textos** | descripciones, ítems, botones y mensajes de WhatsApp de cada sección (títulos y SEO bloqueados) | `content/textos.json` |
 
 Todas las pantallas tienen vista previa con el diseño del sitio antes de guardar.

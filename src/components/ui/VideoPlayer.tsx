@@ -19,7 +19,10 @@ interface PlayerLabels {
 }
 
 interface VideoPlayerProps {
+  /** Principal (WebM o MP4: el tipo sale de la extensión). */
   src: string
+  /** Respaldo MP4 para navegadores que no reproducen WebM (iPhones viejos). */
+  fallback?: string
   poster: string
   label: string
   labels: PlayerLabels
@@ -30,6 +33,16 @@ interface VideoPlayerProps {
 }
 
 type Mode = 'preview' | 'playing' | 'paused' | 'ended'
+
+/**
+ * Safari y cualquier navegador del iPhone/iPad (todos usan WebKit) pueden decir que reproducen WebM y después
+ * no cargarlo, sin pasar al siguiente <source>. Ahí va primero el MP4; en el resto, el WebM (más liviano).
+ */
+const appleWebKit = () => {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent
+  return /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) || (/AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg|OPR|Firefox/.test(ua))
+}
 
 const fmt = (t: number) => {
   const s = Math.max(0, Math.floor(t))
@@ -43,9 +56,10 @@ const fmt = (t: number) => {
  *  - si sale de pantalla reproduciendo, se pausa
  *  - teclado: Espacio/K play-pausa, ← → ±5 s, M mute
  */
-export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = false, duration = 0 }: VideoPlayerProps) {
+export function VideoPlayer({ src, fallback, poster, label, labels, listenGlobalPlay = false, duration = 0 }: VideoPlayerProps) {
   // duración: la conocida (la guarda el panel) manda; los videos comprimidos en el navegador informan una
   // duración parcial hasta terminar de cargar. Si no hay una conocida, la del archivo.
+  const [sources] = useState(() => (!fallback ? [src] : appleWebKit() ? [fallback, src] : [src, fallback]))
   const len = (v: HTMLVideoElement) => (duration > 0 ? duration : Number.isFinite(v.duration) ? v.duration : 0)
   const wrap = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
@@ -221,7 +235,10 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
           data-cursor={mode === 'playing' ? labels.cursorPause : labels.cursorPlay}
           onClick={toggle}
         >
-          <source src={src} type="video/mp4" />
+          {/* el navegador usa el primero que dice poder reproducir (Safari: el MP4 primero, ver appleWebKit) */}
+          {sources.map((s) => (
+            <source key={s} src={s} type={s.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
+          ))}
         </video>
 
         {/* CTA central: preview, pausa o final */}

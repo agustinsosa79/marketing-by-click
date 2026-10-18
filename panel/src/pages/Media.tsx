@@ -186,6 +186,7 @@ function ImageCard({ slot, value, version, onSaved, onDirty, notify }: CardProps
       </div>
       <p className="text-xs leading-relaxed text-brand-night/60">{slot.hint}</p>
       <Picker accept="image/*" label={large ? 'Elegir otra' : 'Cambiar foto'} busy={busy} onFile={take} />
+      <p className="text-xs text-brand-night/50">JPG, PNG o la que tengas: se convierte sola a WebP, más liviana.</p>
       {tooSmall && <p className="rounded-xl bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">La foto es chica ({large.width} px de ancho): puede verse borrosa. Lo ideal es al menos {slot.minWidth} px.</p>}
       <label className="flex flex-col gap-1.5">
         <span className="flex justify-between text-sm font-bold text-brand-deep">
@@ -237,7 +238,7 @@ function VideoCard({ slot, value, version, onSaved, onDirty, notify }: CardProps
     try {
       const body: SiteMediaSave = restore
         ? { key: slot.key, version, restore: true }
-        : { key: slot.key, version, duration: next!.duration, files: { main: { base64: next!.base64 }, poster: { base64: next!.poster.base64 } } }
+        : { key: slot.key, version, duration: next!.duration, files: { main: { base64: next!.base64 }, poster: { base64: next!.poster.base64 }, ...(next!.fallback ? { fallback: { base64: next!.fallback.base64 } } : {}) } }
       const r = await api.saveSiteMedia(body)
       setNext(null)
       onSaved(r.version, r.value as MediaVideo | null)
@@ -263,12 +264,14 @@ function VideoCard({ slot, value, version, onSaved, onDirty, notify }: CardProps
         className={`mx-auto max-h-96 w-full rounded-2xl bg-brand-night object-contain ${next ? 'ring-2 ring-brand-signal' : ''}`}
       />
       <p className="text-center text-xs font-semibold text-brand-night/60">
-        {next ? `Nuevo · ${formatDuration(next.duration)} · ${(next.size / 1e6).toFixed(1)} MB${next.compressed ? ' (comprimido)' : ''}` : `Duración: ${formatDuration(current.duration)}`}
+        {next
+          ? `Nuevo · ${formatDuration(next.duration)} · WebM ${(next.size / 1e6).toFixed(1)} MB${next.fallback ? ` + MP4 de respaldo ${(next.fallback.size / 1e6).toFixed(1)} MB` : ''}`
+          : `Duración: ${formatDuration(current.duration)} · ${current.src.endsWith('.webm') ? 'WebM' : 'MP4'}${current.fallback ? ' + MP4 de respaldo' : ''}`}
       </p>
       <p className="text-xs leading-relaxed text-brand-night/60">{slot.hint}</p>
       {working ? (
         <div className="flex flex-col gap-2 rounded-2xl bg-brand-paper p-3" role="status">
-          <p className="text-sm font-bold text-brand-deep">{progress! > 0 ? `Comprimiendo el video… ${Math.round(progress! * 100)}%` : 'Leyendo el video…'}</p>
+          <p className="text-sm font-bold text-brand-deep">{progress! > 0 ? `Convirtiendo a WebM… ${Math.round(progress! * 100)}%` : 'Leyendo el video…'}</p>
           <div className="h-2 overflow-hidden rounded-full bg-white ring-1 ring-brand-deep/10">
             <div className="h-full rounded-full bg-brand-signal transition-[width]" style={{ width: `${Math.round((progress ?? 0) * 100)}%` }} />
           </div>
@@ -277,7 +280,7 @@ function VideoCard({ slot, value, version, onSaved, onDirty, notify }: CardProps
       ) : (
         <Picker accept="video/*" label={next ? 'Elegir otro' : 'Cambiar video'} busy={false} onFile={take} />
       )}
-      <p className="text-xs text-brand-night/50">Hasta {VIDEO_MAX_SECONDS} segundos. Si pesa más de 3 MB, se comprime solo antes de subirlo.</p>
+      <p className="text-xs text-brand-night/50">Hasta {VIDEO_MAX_SECONDS} segundos. Se convierte solo a WebM, el formato más liviano, y se guarda también un MP4 para iPhones que no lo reproducen.</p>
       {error && (
         <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
           {error}

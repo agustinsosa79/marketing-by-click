@@ -51,7 +51,7 @@ export function CoverInput({ previewUrl, imageBase, onImage, onError }: Props) {
         <div className="grid aspect-video place-items-center bg-brand-paper text-center">
           <div className="px-6">
             <p className="text-sm font-bold text-brand-deep">Arrastrá una imagen o elegila</p>
-            <p className="mt-1 text-xs text-brand-night/55">Horizontal (16:9). Se achica y se optimiza sola.</p>
+            <p className="mt-1 text-xs text-brand-night/55">Horizontal (16:9). Se convierte sola a WebP, más liviana.</p>
           </div>
         </div>
       )}

@@ -160,7 +160,7 @@ export const nosotros = {
   points: list('nosotros.points'),
   quote: txt('nosotros.quote'),
   instagram: { ...contact.founderInstagram, text: txt('nosotros.instagram') },
-  video: { src: ianVideo.src, poster: ianVideo.poster, duration: ianVideo.duration, label: 'Ian presenta Marketing by Clic' },
+  video: { src: ianVideo.src, fallback: ianVideo.fallback, poster: ianVideo.poster, duration: ianVideo.duration, label: 'Ian presenta Marketing by Clic' },
   player: {
     play: 'Mirá el video',
     resume: 'Seguir viendo',

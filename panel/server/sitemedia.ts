@@ -66,8 +66,8 @@ export interface SaveMediaInput {
   width?: number
   height?: number
   duration?: number
-  /** main: la foto o el video · small: versión chica (portada) · poster: portada del video */
-  files?: { main?: Upload; small?: Upload; poster?: Upload }
+  /** main: la foto o el video (WebM) · small: versión chica (portada) · poster: portada del video · fallback: MP4 de respaldo */
+  files?: { main?: Upload; small?: Upload; poster?: Upload; fallback?: Upload }
 }
 
 export async function saveSiteMedia(input: SaveMediaInput) {
@@ -85,7 +85,7 @@ export async function saveSiteMedia(input: SaveMediaInput) {
     if (!upload) return null
     const bytes = Buffer.from(String(upload.base64 ?? ''), 'base64')
     const kind = sniff(bytes)
-    if (!kind || !kinds.includes(kind)) throw new UserError(kinds.includes('mp4') ? 'El archivo no es un video válido (MP4 o WebM).' : 'El archivo no es una imagen válida.')
+    if (!kind || !kinds.includes(kind)) throw new UserError(kinds.includes('webp') ? 'El archivo no es una imagen válida.' : 'El archivo no es un video válido.')
     if (bytes.length > max) throw new UserError(`El archivo pesa ${(bytes.length / 1e6).toFixed(1)} MB; el máximo es ${(max / 1e6).toFixed(1)} MB.`)
     const name = `${stem}${suffix}.${kind}`
     changes.push({ path: `${SITE_MEDIA_DIR}/${name}`, content: upload.base64, encoding: 'base64' })
@@ -111,10 +111,14 @@ export async function saveSiteMedia(input: SaveMediaInput) {
     if (!next) throw new UserError('Revisá la descripción de la foto (mínimo 5 caracteres).')
     message = `Fotos y video (panel): ${main ? 'cambia' : 'edita la descripción de'} «${slot.label}»`
   } else {
-    const main = take(input.files?.main, ['mp4', 'webm'], VIDEO_MAX_BYTES)
+    // WebM obligatorio; MP4 de respaldo opcional. Entre los dos, dentro del tope del guardado.
+    const size = (u?: Upload) => (u ? Buffer.byteLength(String(u.base64 ?? ''), 'base64') : 0)
+    if (size(input.files?.main) + size(input.files?.fallback) > VIDEO_MAX_BYTES) throw new UserError('El video pesa demasiado. Probá con uno más corto.')
+    const main = take(input.files?.main, ['webm'], VIDEO_MAX_BYTES)
+    const fallback = take(input.files?.fallback, ['mp4'], VIDEO_MAX_BYTES, '-respaldo')
     const poster = take(input.files?.poster, ['webp'], IMAGE_MAX_BYTES, '-portada')
     if (!main || !poster) throw new UserError('Falta el video o su imagen de portada. Volvé a elegirlo.')
-    next = cleanMedia(slot.key, { src: main, poster, duration: input.duration })
+    next = cleanMedia(slot.key, { src: main, fallback: fallback ?? undefined, poster, duration: input.duration })
     if (!next) throw new UserError('El video no es válido (duración máxima superada).')
     message = `Fotos y video (panel): cambia «${slot.label}»`
   }
