@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { FAQ_LIMITS, type FaqItem } from '../../shared/site'
 import { api, ApiError } from '../api'
 import { FaqPreview, PreviewFrame } from '../components/previews'
-import { Button, Spinner, inputClass, type ToastData } from '../components/ui'
+import { Button, MobileSaveBar, Spinner, inputClass, type ToastData } from '../components/ui'
 import { useLeaveGuard } from '../lib/nav'
+import { useSnapshot } from '../lib/snapshot'
 
 type Row = FaqItem & { id: number }
 let nextId = 1
@@ -30,12 +31,13 @@ export function Faq({ notify }: { notify: (t: ToastData) => void }) {
   const [rows, setRows] = useState<Row[] | null>(null)
   const [version, setVersion] = useState('')
   const [loadError, setLoadError] = useState('')
-  const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [focus, setFocus] = useState<number | null>(0)
   const focusNew = useRef(false)
 
+  // los ids son internos de la pantalla: no cuentan como cambio
+  const { dirty, markSaved } = useSnapshot(rows, (r) => r.map(({ q, a }) => ({ q, a })))
   useLeaveGuard(dirty)
 
   useEffect(() => {
@@ -56,7 +58,6 @@ export function Faq({ notify }: { notify: (t: ToastData) => void }) {
   }, [rows])
 
   const change = (fn: (r: Row[]) => Row[]) => {
-    setDirty(true)
     setError('')
     setRows((r) => (r ? fn(r) : r))
   }
@@ -83,8 +84,9 @@ export function Faq({ notify }: { notify: (t: ToastData) => void }) {
       const data = rows.map(({ q, a }) => ({ q, a }))
       const r = await api.saveFaq(data, version)
       setVersion(r.version)
-      setRows((current) => current?.filter((row) => row.q.trim() || row.a.trim()) ?? null)
-      setDirty(false)
+      const kept = rows.filter((row) => row.q.trim() || row.a.trim())
+      setRows(kept)
+      markSaved(kept)
       notify({ tone: 'ok', title: 'Preguntas guardadas', text: 'La web se actualiza sola en 1 o 2 minutos.' })
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'No se pudo guardar. Revisá tu conexión y probá de nuevo.')
@@ -106,7 +108,7 @@ export function Faq({ notify }: { notify: (t: ToastData) => void }) {
   const saveButton = (
     <Button onClick={save} disabled={saving || !dirty} className="w-full py-3">
       {saving && <Spinner />}
-      {saving ? 'Guardando…' : 'Guardar preguntas'}
+      {saving ? 'Guardando…' : dirty ? 'Guardar preguntas' : 'Sin cambios'}
     </Button>
   )
   const errorBox = error && (
@@ -194,10 +196,10 @@ export function Faq({ notify }: { notify: (t: ToastData) => void }) {
         </aside>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 flex flex-col gap-3 border-t border-brand-deep/10 bg-white/95 p-4 backdrop-blur lg:hidden">
+      <MobileSaveBar show={dirty || saving || Boolean(error)}>
         {errorBox}
         {saveButton}
-      </div>
+      </MobileSaveBar>
     </div>
   )
 }

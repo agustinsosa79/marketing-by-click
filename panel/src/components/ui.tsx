@@ -113,6 +113,22 @@ export function ConfirmDialog({
   )
 }
 
+/**
+ * Barra de guardar del celular: fija abajo, entra solo cuando hay algo que guardar (y se va al guardar).
+ * En computadora el botón vive en la columna de la pantalla.
+ */
+export function MobileSaveBar({ show, children }: { show: boolean; children: ReactNode }) {
+  return (
+    <div
+      inert={!show}
+      className={`fixed inset-x-0 bottom-0 z-40 flex flex-col gap-3 border-t border-brand-deep/10 bg-white/95 p-4 shadow-lift backdrop-blur transition duration-300 ease-expo lg:hidden ${show ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-full opacity-0'}`}
+    >
+      <p className="text-center text-xs font-semibold text-brand-night/60">Tenés cambios sin guardar</p>
+      {children}
+    </div>
+  )
+}
+
 export interface ToastData {
   tone: 'ok' | 'error'
   title: string
@@ -122,16 +138,19 @@ export interface ToastData {
 export function Toast({ toast, onClose }: { toast: ToastData | null; onClose: () => void }) {
   useEffect(() => {
     if (!toast || toast.tone === 'error') return
-    const id = window.setTimeout(onClose, 9000)
+    const id = window.setTimeout(onClose, 6000)
     return () => window.clearTimeout(id)
   }, [toast, onClose])
   if (!toast) return null
+  const ok = toast.tone === 'ok'
   return (
-    <div role="status" className="fixed right-4 bottom-4 left-4 z-50 sm:left-auto sm:w-96">
-      <div className={`flex gap-3 rounded-2xl p-4 shadow-lift ring-1 ${toast.tone === 'ok' ? 'bg-brand-night text-white ring-white/10' : 'bg-white text-red-800 ring-red-200'}`}>
-        <span aria-hidden="true" className={`mt-0.5 grid size-6 shrink-0 place-items-center rounded-full text-xs font-black ${toast.tone === 'ok' ? 'bg-brand-signal' : 'bg-red-100'}`}>
-          {toast.tone === 'ok' ? '✓' : '!'}
+    // aviso emergente arriba al centro: entra con un "pop" y, si es una confirmación, se va solo (barra de tiempo)
+    <div role="status" className="pointer-events-none fixed inset-x-4 top-20 z-50 flex justify-center sm:top-24">
+      <div key={toast.title} className={`toast-pop pointer-events-auto relative flex w-full max-w-md gap-3 overflow-hidden rounded-2xl p-4 shadow-lift ring-1 ${ok ? 'bg-brand-night text-white ring-white/10' : 'bg-white text-red-800 ring-red-200'}`}>
+        <span aria-hidden="true" className={`toast-check grid size-9 shrink-0 place-items-center rounded-full text-base font-black ${ok ? 'bg-brand-signal' : 'bg-red-100'}`}>
+          {ok ? '✓' : '!'}
         </span>
+        {ok && <span aria-hidden="true" className="toast-timer absolute inset-x-0 bottom-0 h-1 origin-left bg-brand-signal" />}
         <div className="flex-1 text-sm">
           <p className="font-bold">{toast.title}</p>
           {toast.text && <div className={`mt-1 leading-relaxed ${toast.tone === 'ok' ? 'text-brand-haze' : 'text-red-700'}`}>{toast.text}</div>}

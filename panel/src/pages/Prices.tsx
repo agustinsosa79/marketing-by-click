@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { PLANS, PRICE_DETAIL_MAX, type PlanId, type PricesInput } from '../../shared/site'
 import { api, ApiError } from '../api'
 import { AsesoriaPreview, PlansPreview, PreviewFrame, SesionPreview } from '../components/previews'
-import { Button, Field, Spinner, inputClass, type ToastData } from '../components/ui'
+import { Button, Field, MobileSaveBar, Spinner, inputClass, type ToastData } from '../components/ui'
 import { useLeaveGuard } from '../lib/nav'
+import { useSnapshot } from '../lib/snapshot'
 import { textReader } from '../lib/texts'
 import type { TextValues } from '../../shared/texts'
 
@@ -41,12 +42,12 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
   const [prices, setPrices] = useState<PricesInput | null>(null)
   const [version, setVersion] = useState('')
   const [loadError, setLoadError] = useState('')
-  const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [area, setArea] = useState<Area>('planes')
   const [focusPlan, setFocusPlan] = useState<PlanId | null>(null)
 
+  const { dirty, markSaved } = useSnapshot(prices)
   useLeaveGuard(dirty)
 
   // textos editados en la sección Textos: la vista previa los muestra igual que la web
@@ -67,7 +68,6 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
   }, [])
 
   const update = (fn: (p: PricesInput) => PricesInput) => {
-    setDirty(true)
     setError('')
     setPrices((p) => (p ? fn(p) : p))
   }
@@ -79,7 +79,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
     try {
       const r = await api.savePrices(prices, version)
       setVersion(r.version)
-      setDirty(false)
+      markSaved(prices)
       notify({ tone: 'ok', title: 'Precios guardados', text: 'La web se actualiza sola en 1 o 2 minutos.' })
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'No se pudo guardar. Revisá tu conexión y probá de nuevo.')
@@ -199,7 +199,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
             )}
             <Button onClick={save} disabled={saving || !dirty} className="w-full py-3">
               {saving && <Spinner />}
-              {saving ? 'Guardando…' : 'Guardar precios'}
+              {saving ? 'Guardando…' : dirty ? 'Guardar precios' : 'Sin cambios'}
             </Button>
           </div>
         </div>
@@ -239,7 +239,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
       </div>
 
       {/* Celular: guardar siempre a mano */}
-      <div className="fixed inset-x-0 bottom-0 z-40 flex flex-col gap-3 border-t border-brand-deep/10 bg-white/95 p-4 backdrop-blur lg:hidden">
+      <MobileSaveBar show={dirty || saving || Boolean(error)}>
         {error && (
           <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
             {error}
@@ -247,9 +247,9 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
         )}
         <Button onClick={save} disabled={saving || !dirty} className="w-full py-3">
           {saving && <Spinner />}
-          {saving ? 'Guardando…' : 'Guardar precios'}
+          {saving ? 'Guardando…' : dirty ? 'Guardar precios' : 'Sin cambios'}
         </Button>
-      </div>
+      </MobileSaveBar>
     </div>
   )
 }

@@ -15,9 +15,10 @@ import {
 import { api, ApiError, mediaSrc } from '../api'
 import { ImagePicker } from '../components/ImagePicker'
 import { PreviewFrame, ProjectCardPreview, ProjectPagePreview } from '../components/previews'
-import { Button, Field, Spinner, inputClass, type ToastData } from '../components/ui'
+import { type ToastData, Button, Field, inputClass, MobileSaveBar, Spinner } from '../components/ui'
 import { prepareImage, type PreparedImage } from '../lib/image'
 import { go, leaveTo, unsaved, useLeaveGuard } from '../lib/nav'
+import { useSnapshot } from '../lib/snapshot'
 
 const EMPTY: ProjectInput = {
   slug: '',
@@ -66,13 +67,13 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
   const [loadError, setLoadError] = useState('')
   const [slugTouched, setSlugTouched] = useState(editing)
   const [pending, setPending] = useState<Record<string, PreparedImage>>({})
-  const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [tab, setTab] = useState<'edit' | 'preview'>('edit')
   const [adding, setAdding] = useState(false)
   const gallery = useRef<HTMLInputElement>(null)
 
+  const { dirty, markSaved } = useSnapshot(project)
   useLeaveGuard(dirty)
 
   useEffect(() => {
@@ -90,7 +91,6 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
   const resolve = useCallback((src: string) => pending[nameOf(src)]?.url ?? mediaSrc(src), [pending])
 
   const set = <K extends keyof ProjectInput>(key: K, value: ProjectInput[K]) => {
-    setDirty(true)
     setError('')
     setProject((p) => {
       if (!p) return p
@@ -160,7 +160,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
     setSaving(true)
     try {
       const result = editing ? await api.updateProject(project, images) : await api.createProject(project, images)
-      setDirty(false)
+      markSaved(project)
       unsaved.current = false
       notify({
         tone: 'ok',
@@ -222,9 +222,9 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
     </p>
   )
   const saveButton = (
-    <Button onClick={save} disabled={saving} className="w-full py-3">
+    <Button onClick={save} disabled={saving || !dirty} className="w-full py-3">
       {saving && <Spinner />}
-      {saving ? 'Guardando…' : saveLabel}
+      {saving ? 'Guardando…' : dirty ? saveLabel : 'Sin cambios'}
     </Button>
   )
 
@@ -540,10 +540,10 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
         </aside>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 flex flex-col gap-3 border-t border-brand-deep/10 bg-white/95 p-4 backdrop-blur lg:hidden">
+      <MobileSaveBar show={dirty || saving || Boolean(error)}>
         {errorBox}
         {saveButton}
-      </div>
+      </MobileSaveBar>
     </div>
   )
 }

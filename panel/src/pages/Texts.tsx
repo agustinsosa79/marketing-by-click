@@ -4,9 +4,10 @@ import { cleanTexts, fieldError, LOCKED_REASON, TEXT_FIELDS, TEXT_SECTIONS, type
 import { api, ApiError } from '../api'
 import { PreviewFrame } from '../components/previews'
 import { TextSectionPreview } from '../components/textPreviews'
-import { Button, Spinner, inputClass, type ToastData } from '../components/ui'
+import { Button, MobileSaveBar, Spinner, inputClass, type ToastData } from '../components/ui'
 import { ask } from '../lib/dialog'
 import { useLeaveGuard } from '../lib/nav'
+import { useSnapshot } from '../lib/snapshot'
 import { textReader } from '../lib/texts'
 
 const same = (a: TextValue, b: TextValue) => JSON.stringify(a) === JSON.stringify(b)
@@ -152,10 +153,15 @@ export function Texts({ notify }: { notify: (t: ToastData) => void }) {
   const [loadError, setLoadError] = useState('')
   const [sectionId, setSectionId] = useState(TEXT_SECTIONS[1].id)
   const [group, setGroup] = useState(0)
-  const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
+  // lo que difiere del original, en orden fijo: restaurar un texto o escribirlo igual que el original no es un cambio
+  const { dirty, markSaved } = useSnapshot(values, (v) =>
+    Object.entries(v)
+      .filter(([k, val]) => TEXT_FIELDS[k] && !same(val, TEXT_FIELDS[k].default))
+      .sort(([a], [b]) => a.localeCompare(b)),
+  )
   useLeaveGuard(dirty)
 
   useEffect(() => {
@@ -174,7 +180,6 @@ export function Texts({ notify }: { notify: (t: ToastData) => void }) {
   const invalid = useMemo(() => (values ? cleanTexts(values).errors : []), [values])
 
   const change = (key: string, value: TextValue | undefined) => {
-    setDirty(true)
     setError('')
     setValues((v) => {
       const next = { ...(v ?? {}) }
@@ -198,7 +203,6 @@ export function Texts({ notify }: { notify: (t: ToastData) => void }) {
       tone: 'danger',
     })
     if (!ok) return
-    setDirty(true)
     setValues((v) => {
       const next = { ...(v ?? {}) }
       for (const f of fieldsOf(section)) delete next[f.key]
@@ -220,8 +224,9 @@ export function Texts({ notify }: { notify: (t: ToastData) => void }) {
     try {
       const r = await api.saveTexts(values, version)
       setVersion(r.version)
-      setValues(cleanTexts(values).values)
-      setDirty(false)
+      const clean = cleanTexts(values).values
+      setValues(clean)
+      markSaved(clean)
       notify({ tone: 'ok', title: 'Textos guardados', text: 'La web se actualiza sola en 1 o 2 minutos.' })
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'No se pudo guardar. Revisá tu conexión y probá de nuevo.')
@@ -249,7 +254,7 @@ export function Texts({ notify }: { notify: (t: ToastData) => void }) {
   const saveButton = (
     <Button onClick={save} disabled={saving || !dirty} className="w-full py-3">
       {saving && <Spinner />}
-      {saving ? 'Guardando…' : 'Guardar textos'}
+      {saving ? 'Guardando…' : dirty ? 'Guardar textos' : 'Sin cambios'}
     </Button>
   )
 
@@ -353,10 +358,10 @@ export function Texts({ notify }: { notify: (t: ToastData) => void }) {
         </aside>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 flex flex-col gap-3 border-t border-brand-deep/10 bg-white/95 p-4 backdrop-blur lg:hidden">
+      <MobileSaveBar show={dirty || saving || Boolean(error)}>
         {errorBox}
         {saveButton}
-      </div>
+      </MobileSaveBar>
     </div>
   )
 }

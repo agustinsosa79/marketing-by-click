@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { CATEGORIES, LIMITS, MEDIA_URL, postUrl, slugify, today, type Category, type PostInput } from '../../shared/blog'
 import { api, ApiError, mediaSrc } from '../api'
 import { go, leaveTo, unsaved, useLeaveGuard } from '../lib/nav'
+import { useSnapshot } from '../lib/snapshot'
 import { CoverInput } from '../components/CoverInput'
 import { MarkdownEditor } from '../components/MarkdownEditor'
 import { SeoPanel } from '../components/SeoPanel'
-import { Button, Field, Spinner, inputClass, type ToastData } from '../components/ui'
+import { type ToastData, Button, Field, inputClass, MobileSaveBar, Spinner } from '../components/ui'
 import type { PreparedImage } from '../lib/image'
 
 const EMPTY: PostInput = {
@@ -30,7 +31,6 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
   const [loadError, setLoadError] = useState('')
   const [slugTouched, setSlugTouched] = useState(editing)
   const [pending, setPending] = useState<Record<string, PreparedImage>>({})
-  const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -43,10 +43,10 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
   }, [slug])
 
   // Con cambios sin guardar, la navegación del panel pregunta antes de salir (modal propio)
+  const { dirty, markSaved } = useSnapshot(post)
   useLeaveGuard(dirty)
 
   const set = <K extends keyof PostInput>(key: K, value: PostInput[K]) => {
-    setDirty(true)
     setPost((p) => {
       if (!p) return p
       const next = { ...p, [key]: value }
@@ -82,7 +82,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
         .filter((i) => used.has(i.name))
         .map(({ name, base64 }) => ({ name, base64 }))
       const result = editing ? await api.update(post, images) : await api.create(post, images)
-      setDirty(false)
+      markSaved(post)
       unsaved.current = false
       notify({
         tone: 'ok',
@@ -131,9 +131,9 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
     </p>
   )
   const saveButton = (
-    <Button onClick={save} disabled={saving} className="w-full py-3">
+    <Button onClick={save} disabled={saving || !dirty} className="w-full py-3">
       {saving && <Spinner />}
-      {saving ? 'Guardando…' : saveLabel}
+      {saving ? 'Guardando…' : dirty ? saveLabel : 'Sin cambios'}
     </Button>
   )
 
@@ -261,10 +261,10 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
       </div>
 
       {/* En el celular el botón de guardar queda siempre a mano, abajo */}
-      <div className="fixed inset-x-0 bottom-0 z-40 flex flex-col gap-3 border-t border-brand-deep/10 bg-white/95 p-4 backdrop-blur lg:hidden">
+      <MobileSaveBar show={dirty || saving || Boolean(error)}>
         {errorBox}
         {saveButton}
-      </div>
+      </MobileSaveBar>
     </div>
   )
 }
