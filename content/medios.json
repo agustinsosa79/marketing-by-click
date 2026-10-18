@@ -1,3 +1,10 @@
 {
-  "values": {}
+  "values": {
+    "blog.author": {
+      "src": "/media/founder-ian-sm.webp",
+      "alt": "Ian, fundador de Clic Studio",
+      "width": 600,
+      "height": 800
+    }
+  }
 }
