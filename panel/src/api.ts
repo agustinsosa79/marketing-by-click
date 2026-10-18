@@ -1,6 +1,7 @@
 import type { NewImage, PostInput, PostSummary } from '../shared/blog'
 import type { FaqItem, PricesInput, ProjectInput, ProjectSummary, Versioned } from '../shared/site'
 import type { TextValues } from '../shared/texts'
+import type { MediaValue, MediaValues } from '../shared/media'
 
 /** Cliente del backend del panel (/api). La sesión viaja en una cookie que este código no puede leer. */
 
@@ -23,6 +24,18 @@ async function request<T>(url: string, init: RequestInit = {}): Promise<T> {
     throw new ApiError(data.error ?? 'No se pudo completar la acción.', res.status)
   }
   return data
+}
+
+/** Cambio de una foto o del video de la web (ver panel/server/sitemedia.ts). */
+export interface SiteMediaSave {
+  key: string
+  version: string
+  restore?: boolean
+  alt?: string
+  width?: number
+  height?: number
+  duration?: number
+  files?: { main?: { base64: string }; small?: { base64: string }; poster?: { base64: string } }
 }
 
 export interface FullPost extends PostInput {
@@ -53,6 +66,8 @@ export const api = {
   saveFaq: (data: FaqItem[], version: string) => request<{ version: string }>('/api/faq', { method: 'PUT', body: JSON.stringify({ data, version }) }),
   texts: () => request<Versioned<TextValues>>('/api/texts'),
   saveTexts: (data: TextValues, version: string) => request<{ version: string }>('/api/texts', { method: 'PUT', body: JSON.stringify({ data, version }) }),
+  siteMedia: () => request<Versioned<MediaValues>>('/api/media'),
+  saveSiteMedia: (body: SiteMediaSave) => request<{ version: string; value: MediaValue | null }>('/api/media', { method: 'PUT', body: JSON.stringify(body) }),
 }
 
 /** URL para mostrar una imagen del sitio (blog o proyectos) dentro del panel: se lee del repo, aunque la web no se haya actualizado. */

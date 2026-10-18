@@ -11,6 +11,7 @@ interface Data {
   prices: PricesInput | null
   faq: FaqItem[] | null
   texts: number | null
+  media: number | null
 }
 
 /** Tarjeta de una sección: qué hay hoy y la acción más común. */
@@ -41,7 +42,7 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 
 /** Inicio del panel: un vistazo a cada sección de la web que se puede editar. */
 export function Home() {
-  const [data, setData] = useState<Data>({ posts: null, projects: null, prices: null, faq: null, texts: null })
+  const [data, setData] = useState<Data>({ posts: null, projects: null, prices: null, faq: null, texts: null, media: null })
 
   useEffect(() => {
     // cada tarjeta carga por su lado: si una falla, las otras se ven igual
@@ -49,6 +50,7 @@ export function Home() {
     api.projects().then((r) => setData((d) => ({ ...d, projects: r.projects })), () => setData((d) => ({ ...d, projects: [] })))
     api.prices().then((r) => setData((d) => ({ ...d, prices: r.data })), () => {})
     api.faq().then((r) => setData((d) => ({ ...d, faq: r.data })), () => setData((d) => ({ ...d, faq: [] })))
+    api.siteMedia().then((r) => setData((d) => ({ ...d, media: Object.keys(r.data).length })), () => setData((d) => ({ ...d, media: 0 })))
     api.texts().then((r) => setData((d) => ({ ...d, texts: Object.keys(r.data).length })), () => setData((d) => ({ ...d, texts: 0 })))
   }, [])
 
@@ -103,7 +105,14 @@ export function Home() {
           detail="Descripciones, ítems, botones y mensajes de WhatsApp de cada sección. Los títulos quedan fijos."
           action="Editar textos"
           onAction={() => go('#/textos')}
-          className="md:col-span-2"
+        />
+        <Card
+          title="Fotos y video"
+          href="#/fotos"
+          stat={data.media === null ? loading : data.media ? plural(data.media, 'archivo cambiado', 'archivos cambiados') : 'Todas las originales'}
+          detail="Foto de la portada, de la asesoría, del autor del blog y el video de Nosotros."
+          action="Cambiar fotos"
+          onAction={() => go('#/fotos')}
         />
       </div>
     </div>

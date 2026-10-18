@@ -25,6 +25,8 @@ interface VideoPlayerProps {
   labels: PlayerLabels
   /** Responde al evento global "mirá el video de Ian" (botón del hero). */
   listenGlobalPlay?: boolean
+  /** Duración conocida (s). Si está, manda sobre la del archivo. */
+  duration?: number
 }
 
 type Mode = 'preview' | 'playing' | 'paused' | 'ended'
@@ -41,7 +43,10 @@ const fmt = (t: number) => {
  *  - si sale de pantalla reproduciendo, se pausa
  *  - teclado: Espacio/K play-pausa, ← → ±5 s, M mute
  */
-export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = false }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = false, duration = 0 }: VideoPlayerProps) {
+  // duración: la conocida (la guarda el panel) manda; los videos comprimidos en el navegador informan una
+  // duración parcial hasta terminar de cargar. Si no hay una conocida, la del archivo.
+  const len = (v: HTMLVideoElement) => (duration > 0 ? duration : Number.isFinite(v.duration) ? v.duration : 0)
   const wrap = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   const fill = useRef<HTMLDivElement>(null)
@@ -94,15 +99,15 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
 
   const seekTo = (t: number) => {
     const v = video.current
-    if (!v || !v.duration) return
-    v.currentTime = Math.min(v.duration, Math.max(0, t))
+    if (!v || !len(v)) return
+    v.currentTime = Math.min(len(v), Math.max(0, t))
   }
 
   const onSeekClick = (e: MouseEvent<HTMLDivElement>) => {
     const v = video.current
-    if (!v?.duration) return
+    if (!v || !len(v)) return
     const r = e.currentTarget.getBoundingClientRect()
-    const t = ((e.clientX - r.left) / r.width) * v.duration
+    const t = ((e.clientX - r.left) / r.width) * len(v)
     if (modeRef.current !== 'playing' && modeRef.current !== 'paused') startWithSound()
     seekTo(t)
   }
@@ -128,8 +133,8 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
   useEffect(() => {
     const v = video.current
     if (!v) return
-    const onMeta = () => setTime((t) => ({ ...t, duration: v.duration }))
-    const onTime = () => setTime({ current: v.currentTime, duration: v.duration || 0 })
+    const onMeta = () => setTime((t) => ({ ...t, duration: len(v) }))
+    const onTime = () => setTime({ current: v.currentTime, duration: len(v) })
     const onEnded = () => {
       if (modeRef.current !== 'preview') setModeBoth('ended')
     }
@@ -161,9 +166,9 @@ export function VideoPlayer({ src, poster, label, labels, listenGlobalPlay = fal
           // escribe solo cuando cambia el tiempo (en pausa no toca el DOM)
           let last = -1
           const tick = () => {
-            if (!v.duration || v.currentTime === last) return
+            if (!len(v) || v.currentTime === last) return
             last = v.currentTime
-            setFill(last / v.duration)
+            setFill(last / len(v))
           }
           gsap.ticker.add(tick)
 

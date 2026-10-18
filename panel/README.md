@@ -8,6 +8,7 @@ App aparte para que el cliente edite la web sin tocar código:
 | **Proyectos** | portfolio: crear, editar, borrar y ordenar (los 3 primeros publicados se ven en el inicio) | `content/proyectos/*.json` · `public/media/proyectos/*.webp` |
 | **Precios** | planes, asesoría 1:1 y sesión de fotos | `content/precios.json` |
 | **Preguntas** | preguntas frecuentes del inicio | `content/faq.json` |
+| **Fotos y video** | foto de la portada (y la de compartir el link), de la asesoría, del autor del blog y el video de Nosotros; el video se comprime en el navegador | `content/medios.json` · `public/media/sitio/*` |
 | **Textos** | descripciones, ítems, botones y mensajes de WhatsApp de cada sección (títulos y SEO bloqueados) | `content/textos.json` |
 
 Todas las pantallas tienen vista previa con el diseño del sitio antes de guardar.
@@ -90,10 +91,11 @@ npm run dev                  # http://localhost:5180
 - QA de punta a punta, con el panel en modo local sobre una **copia** de `content/` y `public/media/` (desde la raíz del repo):
   - blog: `node scripts/qa-panel.mjs http://localhost:5180 <contraseña> <carpeta de la copia>`
   - inicio, precios, preguntas y proyectos: `node scripts/qa-panel-general.mjs http://localhost:5180 <contraseña> <carpeta de la copia>`
+  - fotos y video: `node scripts/qa-panel-fotos.mjs http://localhost:5180 <contraseña> <carpeta de la copia>` (la copia tiene que incluir todo `public/media/`)
   - textos: `node scripts/qa-panel-textos.mjs http://localhost:5180 <contraseña> <carpeta de la copia>`
 
 ```
-api/       endpoints (Vercel Functions): login, logout, session, posts, post, projects, project, prices, faq, texts, media
+api/       endpoints (Vercel Functions): login, logout, session, posts, post, projects, project, prices, faq, texts, media (archivos + fotos y video de la web)
 server/    auth · http (guardas) · storage (GitHub / local, lista cerrada de archivos) · images · posts · projects · settings (precios y preguntas)
 shared/    reglas comunes navegador/servidor: blog.ts (notas) · site.ts (proyectos, precios, preguntas) · texts.ts (textos editables: campos, límites y originales; también lo importa el sitio)
 src/       la app: inicio, blog, proyectos, precios, preguntas, textos · components/previews.tsx (réplicas del sitio para las vistas previas)

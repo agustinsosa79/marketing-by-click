@@ -11,6 +11,7 @@ import { Login } from './pages/Login'
 import { PostList } from './pages/PostList'
 import { Prices } from './pages/Prices'
 import { Texts } from './pages/Texts'
+import { Media } from './pages/Media'
 import { ProjectEditor } from './pages/ProjectEditor'
 import { ProjectList } from './pages/ProjectList'
 
@@ -19,7 +20,7 @@ import { ProjectList } from './pages/ProjectList'
  *   #/                         inicio
  *   #/blog · #/blog/nueva · #/blog/editar/<slug>
  *   #/proyectos · #/proyectos/nuevo · #/proyectos/editar/<slug>
- *   #/precios · #/preguntas · #/textos
+ *   #/precios · #/preguntas · #/textos · #/fotos
  */
 type Route =
   | { name: 'home' }
@@ -32,6 +33,7 @@ type Route =
   | { name: 'prices' }
   | { name: 'faq' }
   | { name: 'texts' }
+  | { name: 'media' }
 
 function parse(hash: string): Route {
   const path = hash.replace(/^#/, '') || '/'
@@ -46,6 +48,7 @@ function parse(hash: string): Route {
   if (path === '/precios') return { name: 'prices' }
   if (path === '/preguntas') return { name: 'faq' }
   if (path === '/textos') return { name: 'texts' }
+  if (path === '/fotos') return { name: 'media' }
   return { name: 'home' }
 }
 
@@ -56,6 +59,7 @@ const SECTIONS = [
   { id: 'prices', label: 'Precios', href: '#/precios' },
   { id: 'faq', label: 'Preguntas', href: '#/preguntas' },
   { id: 'texts', label: 'Textos', href: '#/textos' },
+  { id: 'media', label: 'Fotos', href: '#/fotos' },
 ] as const
 
 const sectionOf = (route: Route) => (route.name.startsWith('blog') ? 'blog' : route.name.startsWith('project') ? 'projects' : route.name)
@@ -161,7 +165,7 @@ export function App() {
           </div>
         </div>
         {/* Celular: las secciones en una fila que se desliza */}
-        <nav aria-label="Secciones del panel" className="grid grid-cols-3 gap-1 border-t border-brand-deep/5 px-2 py-2 sm:grid-cols-6 sm:px-4 lg:hidden">
+        <nav aria-label="Secciones del panel" className="grid grid-cols-4 gap-1 border-t border-brand-deep/5 px-2 py-2 sm:grid-cols-7 sm:px-4 lg:hidden">
           {SECTIONS.map((s) => (
             <a
               key={s.id}
@@ -187,6 +191,7 @@ export function App() {
         {route.name === 'prices' && <Prices notify={setToast} />}
         {route.name === 'faq' && <Faq notify={setToast} />}
         {route.name === 'texts' && <Texts notify={setToast} />}
+        {route.name === 'media' && <Media notify={setToast} />}
       </main>
 
       <Toast toast={toast} onClose={closeToast} />

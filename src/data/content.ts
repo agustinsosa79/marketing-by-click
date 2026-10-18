@@ -10,7 +10,9 @@
 import faqData from '../../content/faq.json'
 import preciosData from '../../content/precios.json'
 import textosData from '../../content/textos.json'
+import { formatDuration, resolveImage, resolveVideo } from '../../panel/shared/media'
 import { resolveList, resolveText, TOKENS } from '../../panel/shared/texts'
+import mediosData from '../../content/medios.json'
 
 export interface Link {
   label: string
@@ -53,6 +55,14 @@ const sesionPrice = [prices.sesion.detail, `${prices.sesion.price} ${prices.curr
 const withTokens = (s: string) => s.split(TOKENS.precioSesion).join(sesionPrice)
 const txt = (key: string) => withTokens(resolveText(textosData.values, key))
 const list = (key: string) => resolveList(textosData.values, key).map(withTokens)
+
+/** Fotos y video editables desde el panel (content/medios.json; originales en panel/shared/media.ts). */
+const heroPhoto = resolveImage(mediosData.values, 'hero.photo')
+const ianVideo = resolveVideo(mediosData.values, 'nosotros.video')
+const asesoriaPhoto = resolveImage(mediosData.values, 'asesoria.photo')
+const authorPhoto = resolveImage(mediosData.values, 'blog.author')
+/** Foto que se ve al compartir el link (la de la portada). */
+export const shareImage = heroPhoto.src
 
 export const contact = {
   whatsapp: { label: '+54 9 2944 12-6756', href: WHATSAPP },
@@ -130,14 +140,14 @@ export const hero = {
   // La promesa real de la marca ("convertir tus redes en un sistema de ventas") pasa a la bajada, con las palabras que usa la gente
   subtitle: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.', // TODO copy
   cta: { label: 'Hablemos por WhatsApp', href: WHATSAPP },
-  ianTeaser: { label: 'Conocé a Ian', hint: 'Video con sonido · 0:25' },
+  ianTeaser: { label: 'Conocé a Ian', hint: `Video con sonido · ${formatDuration(ianVideo.duration)}` },
   // Foto real de Ian en un lago de la Patagonia (nítida, sin overlay)
   image: {
-    src: '/media/founder-ian.webp',
-    srcSet: '/media/founder-ian-sm.webp 600w, /media/founder-ian.webp 1200w',
-    alt: 'Ian, fundador de Marketing by Clic, frente a un lago de la Patagonia',
-    width: 1200,
-    height: 1600,
+    src: heroPhoto.src,
+    srcSet: heroPhoto.srcSm ? `${heroPhoto.srcSm} 600w, ${heroPhoto.src} ${heroPhoto.width}w` : undefined,
+    alt: heroPhoto.alt,
+    width: heroPhoto.width,
+    height: heroPhoto.height,
   },
   founderTag: 'Ian · Fundador', // TODO copy
 }
@@ -150,7 +160,7 @@ export const nosotros = {
   points: list('nosotros.points'),
   quote: txt('nosotros.quote'),
   instagram: { ...contact.founderInstagram, text: txt('nosotros.instagram') },
-  video: { src: '/media/video-hero-ian.mp4', poster: '/media/ian-video-poster.webp', label: 'Ian presenta Marketing by Clic' },
+  video: { src: ianVideo.src, poster: ianVideo.poster, duration: ianVideo.duration, label: 'Ian presenta Marketing by Clic' },
   player: {
     play: 'Mirá el video',
     resume: 'Seguir viendo',
@@ -359,7 +369,7 @@ export const asesoria = {
   price: prices.asesoria.price ? { value: prices.asesoria.price, currency: prices.currency, detail: prices.asesoria.detail } : null,
   cta: { label: txt('asesoria.cta'), href: whatsappWith(txt('asesoria.message')) },
   // Foto real del sitio anterior: Ian en una videollamada
-  image: { src: '/media/videollamada.webp', alt: 'Ian en una videollamada, en la pantalla de una laptop', width: 900, height: 1600 } satisfies ImageAsset,
+  image: { src: asesoriaPhoto.src, alt: asesoriaPhoto.alt, width: asesoriaPhoto.width, height: asesoriaPhoto.height } satisfies ImageAsset,
 }
 
 /**
@@ -483,7 +493,7 @@ export const blog = {
   shareWhatsapp: 'Compartir por WhatsApp',
   copy: 'Copiar link',
   copied: 'Link copiado',
-  author: { name: 'Ian', role: 'Fundador de Marketing by Clic', photo: '/media/founder-ian-sm.webp', instagram: contact.founderInstagram },
+  author: { name: 'Ian', role: 'Fundador de Marketing by Clic', photo: authorPhoto.src, instagram: contact.founderInstagram },
   related: 'Seguí leyendo',
   back: 'Volver al blog',
   cta: {

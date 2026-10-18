@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { renderToString } from 'react-dom/server'
 import { App } from './app/App'
 import { normalizePath, resolveRoute } from './app/routes'
-import { blog, brand, contact, faq, proyectos, seo, servicePage, servicios } from './data/content'
+import { blog, brand, contact, faq, proyectos, seo, servicePage, servicios, shareImage } from './data/content'
 import { findPost, posts, postUrl, type Post } from './lib/blog'
 import { findProject, projects, projectUrl } from './lib/projects'
 import { SITE_URL } from './lib/site'
@@ -72,7 +72,7 @@ export function head(url: string): Head {
       title: blog.seo.title,
       description: blog.seo.description,
       canonical: abs('/blog'),
-      image: abs(posts[0]?.cover ?? '/media/founder-ian.webp'),
+      image: abs(posts[0]?.cover ?? shareImage),
       type: 'website',
       jsonLd: [
         {
@@ -135,7 +135,7 @@ export function head(url: string): Head {
         title: service.seo.title,
         description: service.seo.description,
         canonical: url,
-        image: abs('/media/founder-ian.webp'),
+        image: abs(shareImage),
         type: 'website',
         jsonLd: [
           {
@@ -162,7 +162,7 @@ export function head(url: string): Head {
       title: proyectos.page.seo.title,
       description: proyectos.page.seo.description,
       canonical: abs('/proyectos'),
-      image: abs(projects[0]?.cover.src ?? '/media/founder-ian.webp'),
+      image: abs(projects[0]?.cover.src ?? shareImage),
       type: 'website',
       jsonLd: [
         {
@@ -219,7 +219,7 @@ export function head(url: string): Head {
       title: seo.title,
       description: seo.description,
       canonical: abs('/'),
-      image: abs('/media/founder-ian.webp'),
+      image: abs(shareImage),
       type: 'website',
       jsonLd: [
         {
@@ -235,7 +235,7 @@ export function head(url: string): Head {
     title: `${blog.notFound.title.text} | ${brand.name}`,
     description: blog.notFound.text,
     canonical: abs('/404'),
-    image: abs('/media/founder-ian.webp'),
+    image: abs(shareImage),
     type: 'website',
     jsonLd: [],
     noindex: true,
