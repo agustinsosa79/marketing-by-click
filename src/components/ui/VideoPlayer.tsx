@@ -248,7 +248,7 @@ export function VideoPlayer({ src, fallback, poster, label, labels, listenGlobal
           data-cursor={labels.cursorPlay}
           className={`absolute inset-0 flex flex-col items-center justify-center gap-4 bg-linear-to-t from-brand-night/70 to-brand-night/10 transition-opacity duration-500 ${showCta ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
         >
-          <span className="relative grid size-18 place-items-center rounded-full bg-brand-signal text-white transition-transform duration-500 ease-expo group-hover/player:scale-110 md:size-24">
+          <span className="relative grid size-18 place-items-center rounded-full bg-brand-signal text-brand-ink transition-transform duration-500 ease-expo group-hover/player:scale-110 md:size-24">
             {showCta && !reduced && <span aria-hidden="true" className="absolute inset-0 animate-ping rounded-full bg-brand-signal/40" />}
             <svg viewBox="0 0 24 24" aria-hidden="true" className="relative size-7 translate-x-0.5 fill-current md:size-9">
               {mode === 'ended' ? <path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z" /> : <path d="M7 4v16l13-8z" />}
@@ -264,7 +264,7 @@ export function VideoPlayer({ src, fallback, poster, label, labels, listenGlobal
         <div
           className={`absolute inset-x-0 bottom-0 flex items-center gap-3 bg-brand-night/85 px-3 py-2 backdrop-blur-md transition-opacity duration-500 md:gap-4 md:px-4 md:py-3 ${mode === 'preview' ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
         >
-          <button type="button" onClick={toggle} aria-label={mode === 'playing' ? labels.pauseAria : labels.playAria} className="grid size-10 place-items-center rounded-full bg-white/10 transition duration-300 ease-expo hover:scale-110 hover:bg-brand-signal active:scale-95">
+          <button type="button" onClick={toggle} aria-label={mode === 'playing' ? labels.pauseAria : labels.playAria} className="grid size-10 place-items-center rounded-full bg-white/10 transition duration-300 ease-expo hover:scale-110 hover:bg-brand-signal hover:text-brand-ink active:scale-95">
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-current">
               {mode === 'playing' ? <path d="M6 4h4v16H6zM14 4h4v16h-4z" /> : <path d="M7 4v16l13-8z" />}
             </svg>
@@ -291,7 +291,7 @@ export function VideoPlayer({ src, fallback, poster, label, labels, listenGlobal
             {fmt(time.current)} / {fmt(time.duration)}
           </span>
 
-          <button type="button" onClick={toggleMute} aria-label={muted ? labels.unmuteAria : labels.muteAria} className="grid size-10 place-items-center rounded-full bg-white/10 transition duration-300 ease-expo hover:scale-110 hover:bg-brand-signal active:scale-95">
+          <button type="button" onClick={toggleMute} aria-label={muted ? labels.unmuteAria : labels.muteAria} className="grid size-10 place-items-center rounded-full bg-white/10 transition duration-300 ease-expo hover:scale-110 hover:bg-brand-signal hover:text-brand-ink active:scale-95">
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-none stroke-current stroke-2">
               <path d="M4 9h4l5-4v14l-5-4H4z" className="fill-current" />
               {muted ? <path d="M17 9l5 6M22 9l-5 6" /> : <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />}

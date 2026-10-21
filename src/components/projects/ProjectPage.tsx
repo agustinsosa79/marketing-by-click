@@ -77,12 +77,12 @@ export function ProjectPage({ project }: { project: Project }) {
                 <ul aria-label={d.services} className="intro-delay-1 flex animate-intro flex-wrap gap-2">
                   {project.services.map((s) => (
                     <li key={s}>
-                      <CategoryChip className="bg-brand-signal text-white">{s}</CategoryChip>
+                      <CategoryChip className="bg-brand-signal text-brand-ink">{s}</CategoryChip>
                     </li>
                   ))}
                 </ul>
               )}
-              <h1 className="intro-delay-1 animate-intro font-display text-hero text-brand-deep">{project.brand}</h1>
+              <h1 className="intro-delay-1 animate-intro font-display text-hero text-brand-night">{project.brand}</h1>
               {project.title && <p className="intro-delay-2 animate-intro text-lead font-semibold text-brand-deep">{project.title}</p>}
               <p className="intro-delay-2 animate-intro text-base font-medium text-brand-night/75 md:text-lg">{project.summary}</p>
               {facts.length > 0 && (
@@ -109,7 +109,7 @@ export function ProjectPage({ project }: { project: Project }) {
               <div className="grid grid-cols-1 gap-6 border-t border-brand-deep/15 pt-10 md:pt-14 lg:grid-cols-12 lg:gap-10">
                 <div className="lg:col-span-4">
                   <Label>{project.brand}</Label>
-                  <h2 id="desafio" data-reveal="lines" className="mt-4 font-display text-title text-brand-deep">
+                  <h2 id="desafio" data-reveal="lines" className="mt-4 font-display text-title text-brand-night">
                     {d.challenge}
                   </h2>
                 </div>
@@ -155,7 +155,7 @@ export function ProjectPage({ project }: { project: Project }) {
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-10">
                 <div className="lg:col-span-4">
                   <Label>{project.brand}</Label>
-                  <h2 id="resultado" data-reveal="lines" className="mt-4 font-display text-title text-brand-deep">
+                  <h2 id="resultado" data-reveal="lines" className="mt-4 font-display text-title text-brand-night">
                     {d.result}
                   </h2>
                 </div>
@@ -188,7 +188,7 @@ export function ProjectPage({ project }: { project: Project }) {
               {next ? (
                 <a href={projectUrl(next.slug)} data-cursor={proyectos.cursor} className="group flex flex-col gap-2">
                   <span className="font-label text-label text-brand-night/60">{d.next}</span>
-                  <span className="flex items-center gap-4 font-display text-title text-brand-deep transition-colors duration-500 group-hover:text-brand-signal">
+                  <span className="flex items-center gap-4 font-display text-title text-brand-night transition-colors duration-500 group-hover:text-brand-flame">
                     {next.brand}
                     <Arrow className="size-8 shrink-0 transition-transform duration-500 ease-expo group-hover:rotate-45 md:size-12" />
                   </span>

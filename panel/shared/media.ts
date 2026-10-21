@@ -69,7 +69,7 @@ export const MEDIA_SLOTS: MediaSlot[] = [
     default: {
       src: '/media/founder-ian.webp',
       srcSm: '/media/founder-ian-sm.webp',
-      alt: 'Ian, fundador de Marketing by Clic, frente a un lago de la Patagonia',
+      alt: 'Ian, fundador de Clic Studio, frente a un lago de la Patagonia',
       width: 1200,
       height: 1600,
     },
@@ -106,7 +106,7 @@ export const MEDIA_SLOTS: MediaSlot[] = [
     maxWidth: 600,
     minWidth: 300,
     round: true,
-    default: { src: '/media/founder-ian-sm.webp', alt: 'Ian, fundador de Marketing by Clic', width: 600, height: 800 },
+    default: { src: '/media/founder-ian-sm.webp', alt: 'Ian, fundador de Clic Studio', width: 600, height: 800 },
   },
 ]
 

@@ -177,7 +177,7 @@ export function Faq({ notify }: { notify: (t: ToastData) => void }) {
             type="button"
             onClick={add}
             disabled={full}
-            className="rounded-2xl border-2 border-dashed border-brand-deep/20 p-5 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-signal disabled:opacity-40"
+            className="rounded-2xl border-2 border-dashed border-brand-deep/20 p-5 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-ember disabled:opacity-40"
           >
             {full ? `Máximo ${FAQ_LIMITS.items} preguntas` : '+ Agregar pregunta'}
           </button>

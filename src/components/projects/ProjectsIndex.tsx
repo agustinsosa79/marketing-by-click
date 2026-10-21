@@ -76,9 +76,9 @@ export function ProjectsIndex() {
                 <span aria-hidden="true" className="block h-0.5 w-6 rounded-full bg-brand-signal" />
                 {proyectos.eyebrow}
               </p>
-              <h1 className="intro-delay-1 mt-5 animate-intro font-display text-hero text-brand-deep">
+              <h1 className="intro-delay-1 mt-5 animate-intro font-display text-hero text-brand-night">
                 {before}
-                <span className="text-brand-signal">{em}</span>
+                <span className="italic text-brand-flame">{em}</span>
                 {after}
               </h1>
             </div>
@@ -109,8 +109,8 @@ export function ProjectsIndex() {
                   ))}
                   {projectMeta(featured) && <span className="text-sm font-semibold text-brand-night/60">{projectMeta(featured)}</span>}
                 </div>
-                <h2 className="font-display text-big text-brand-deep">
-                  <a href={projectUrl(featured.slug)} className="transition-colors duration-500 hover:text-brand-signal">
+                <h2 className="font-display text-big text-brand-night">
+                  <a href={projectUrl(featured.slug)} className="transition-colors duration-500 hover:text-brand-flame">
                     {featured.brand}
                   </a>
                 </h2>

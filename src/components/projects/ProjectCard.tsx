@@ -54,9 +54,9 @@ export function ProjectCard({
         </div>
         <div className={`flex flex-col gap-2 ${boxed ? 'px-2 pb-3' : ''}`}>
           {meta && <p className={`text-sm font-semibold ${dark ? 'text-brand-haze' : 'text-brand-night/60'}`}>{meta}</p>}
-          <Heading className={`font-display text-2xl transition-colors duration-500 md:text-3xl ${dark ? 'text-white' : 'text-brand-deep group-hover:text-brand-signal'}`}>{project.brand}</Heading>
+          <Heading className={`font-display text-2xl transition-colors duration-500 md:text-3xl ${dark ? 'text-white' : 'text-brand-deep group-hover:text-brand-flame'}`}>{project.brand}</Heading>
           {project.title && <p className={`line-clamp-2 text-base ${dark ? 'text-brand-haze' : 'text-brand-night/70'}`}>{project.title}</p>}
-          <span className={`mt-1 flex items-center gap-2 text-sm font-bold ${dark ? 'text-white' : 'text-brand-signal'}`}>
+          <span className={`mt-1 flex items-center gap-2 text-sm font-bold ${dark ? 'text-white' : 'text-brand-deep'}`}>
             <span className="link-underline">{proyectos.view}</span>
             <Arrow className="size-4 transition-transform duration-500 ease-expo group-hover:rotate-45" />
           </span>

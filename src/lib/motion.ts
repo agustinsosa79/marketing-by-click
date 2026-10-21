@@ -55,16 +55,10 @@ export function revealFrom(targets: Targets, vars: gsap.TweenVars) {
 
 /**
  * Entradas declarativas: cualquier elemento con `data-reveal` dentro de `scope` anima al entrar en viewport.
- *   lines  → SplitText por líneas con máscara (títulos y párrafos)
- *   words  → palabras con máscara
- *   chars  → letras con máscara
- *   fade   → sube y aparece (default, bloques)
- *   rise   → igual pero más corto: cuerpo de texto y labels
- *   cta    → entrada un poco más marcada (escala + subida) para acciones
- *   rule   → línea divisoria que se dibuja de izquierda a derecha (scaleX)
- *   clip   → imagen que se abre desde abajo con clip-path + zoom-out de la imagen
- *   pop    → escala desde 0 con rebote (stickers, íconos)
- * `data-reveal-delay="0.2"` suma un retraso. Los elementos dentro de [hidden] se ignoran.
+ * Un solo lenguaje para todo el sitio (fluidez): sube un poco y aparece, siempre igual, sin importar el tipo.
+ * La única excepción es `chars` (letra por letra), reservada para el cierre ("¿Hablamos?").
+ * Los valores viejos (lines, words, rise, cta, rule, clip, pop, fade) quedan como sinónimos de la entrada común.
+ * `data-reveal-delay="0.2"` suma un retraso (escalonado de listas). Los elementos dentro de [hidden] se ignoran.
  * Se llama desde el useGSAP de cada sección (el contexto revierte todo al desmontar).
  */
 export function setupReveals(scope: Element | Document = document) {
@@ -74,7 +68,7 @@ export function setupReveals(scope: Element | Document = document) {
   for (const el of els) {
     const type = el.dataset.reveal || 'fade'
     const delay = parseFloat(el.dataset.revealDelay ?? '0')
-    const start = el.dataset.revealStart ?? 'top 88%'
+    const start = el.dataset.revealStart ?? 'top 90%'
     const scrollTrigger = { trigger: el, start, once: true }
 
     if (reduced) {
@@ -82,61 +76,18 @@ export function setupReveals(scope: Element | Document = document) {
       continue
     }
 
-    if (type === 'lines' || type === 'words' || type === 'chars') {
-      const stagger = STAGGER[type]
-      // chars: máscara por línea, no por letra (con tracking negativo la máscara por letra corta los bordes)
+    if (type === 'chars') {
+      // máscara por línea, no por letra (con tracking negativo la máscara por letra corta los bordes)
       SplitText.create(el, {
-        type: type === 'chars' ? 'lines,chars' : type,
-        mask: type === 'chars' ? 'lines' : type,
-        // las máscaras heredan la clase + "-mask": .split-line-mask / .split-word-mask tienen aire para tildes (index.css)
+        type: 'lines,chars',
+        mask: 'lines',
         linesClass: 'split-line',
-        wordsClass: 'split-word',
-        // títulos: aria-label (permitido en headings). Párrafos: sin ARIA, el texto partido por líneas/palabras
-        // se sigue leyendo bien y aria-label sobre <p> no está permitido.
         aria: /^H[1-6]$/.test(el.tagName) ? 'auto' : 'none',
-        autoSplit: type === 'lines',
-        onSplit: (self) =>
-          gsap.fromTo(
-            self[type],
-            { yPercent: 110 },
-            { yPercent: 0, duration: type === 'chars' ? DUR.base + 0.2 : DUR.slow, stagger, ease: EASE.reveal, delay, scrollTrigger },
-          ),
+        onSplit: (self) => gsap.fromTo(self.chars, { yPercent: 110 }, { yPercent: 0, duration: DUR.base + 0.2, stagger: STAGGER.chars, ease: EASE.reveal, delay, scrollTrigger }),
       })
       continue
     }
 
-    if (type === 'rule') {
-      gsap.fromTo(el, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: DUR.slow + 0.2, ease: 'expo.inOut', delay, scrollTrigger })
-      continue
-    }
-
-    if (type === 'clip') {
-      const img = el.querySelector('img, video')
-      const tl = gsap.timeline({ delay, scrollTrigger })
-      tl.fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: DUR.slow + 0.2, ease: 'expo.inOut' })
-      if (img) tl.fromTo(img, { scale: 1.3 }, { scale: 1, duration: DUR.slow + 0.6, ease: EASE.reveal }, 0)
-      continue
-    }
-
-    if (type === 'pop') {
-      gsap.fromTo(el, { scale: 0, rotate: -25 }, { scale: 1, rotate: 0, duration: DUR.slow, ease: 'back.out(1.7)', delay, scrollTrigger })
-      continue
-    }
-
-    if (type === 'rise') {
-      gsap.fromTo(el, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: DUR.base, ease: EASE.reveal, delay, scrollTrigger })
-      continue
-    }
-
-    if (type === 'cta') {
-      gsap.fromTo(
-        el,
-        { autoAlpha: 0, y: 28, scale: 0.97 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: DUR.slow, ease: EASE.reveal, delay, scrollTrigger },
-      )
-      continue
-    }
-
-    gsap.fromTo(el, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: DUR.slow, ease: EASE.reveal, delay, scrollTrigger })
+    gsap.fromTo(el, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: DUR.base + 0.1, ease: EASE.reveal, delay, scrollTrigger })
   }
 }

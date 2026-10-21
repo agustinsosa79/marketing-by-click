@@ -13,8 +13,6 @@ interface Options {
   onComplete: () => void
 }
 
-const circle = (r: number, x: number, y: number) => `circle(${r}px at ${x}px ${y}px)`
-
 /**
  * El wordmark entra con una animación CSS (pinta antes del JS, ver Preloader.tsx).
  * Cuando el JS llega, GSAP la toma exactamente donde está y sigue desde ahí.
@@ -30,13 +28,13 @@ function takeOverIntro(inners: HTMLElement[]) {
 }
 
 /**
- * Preloader "by Clic": un clic que termina en contacto. Labels de la timeline:
+ * Preloader "un clic": un clic que termina en contacto. Labels de la timeline:
  *   intro    → termina la entrada del wordmark (empezó con CSS)
- *   enter    → el cursor cruza la pantalla en arco hasta "CLIC"
- *   hover    → "CLIC" se subraya como un link
- *   click    → el cursor se hunde, salen dos ondas y se abre el círculo azul Clic desde la punta
- *   message  → dentro del azul, la frase de la marca
- *   collapse → el círculo se cierra sobre el botón "Hablemos por WhatsApp" del hero
+ *   enter    → el cursor cruza la pantalla en arco hasta "clic"
+ *   hover    → "clic" se subraya como un link
+ *   click    → el cursor se hunde, saltan las tres líneas del clic y se abre la burbuja naranja desde la punta
+ *   message  → sobre la burbuja, la frase de la marca
+ *   collapse → la burbuja se achica hasta el botón "Hablemos por WhatsApp" del hero
  *   handoff  → navbar + titular palabra por palabra + foto, lenis.start()
  * Debug: ?debug=preloader deja la timeline en pausa en window.__preloaderTl.
  */
@@ -58,7 +56,7 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
       const inners = [...title.querySelectorAll<HTMLElement>('[data-preloader-inner]')]
       const mark = stage.querySelector('[data-preloader-mark]')
       const line = clic.querySelector('[data-clic-line]')
-      const rings = ripple.querySelectorAll('[data-ring]')
+      const rays = ripple.querySelectorAll('[data-ray]')
       const captionInner = refs.caption.current!.querySelector('[data-caption-inner]')
       const heroMedia = scope.current!.querySelector<HTMLElement>('[data-hero-media]')
       const heroCta = scope.current!.querySelector<HTMLElement>('[data-hero-cta]')
@@ -71,7 +69,7 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
       gsap.set(navBlocks, { autoAlpha: 0, yPercent: -120 })
       gsap.set(heroLines, { yPercent: 115 })
       gsap.set(heroItems, { autoAlpha: 0 })
-      gsap.set(rings, { xPercent: -50, yPercent: -50, scale: 0 })
+      gsap.set(rays, { svgOrigin: '0 0', scale: 0.2, autoAlpha: 0 })
       // la punta del puntero (3, 2 en un viewBox de 24) queda en el punto exacto
       gsap.set(cursor.querySelector('[data-cursor-svg]'), { xPercent: -12.5, yPercent: -8.33 })
 
@@ -129,52 +127,59 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
         const c = clic.getBoundingClientRect()
         const x = c.left + c.width * 0.58
         const y = c.top + c.height * 0.55
-        // Radio que cubre toda la pantalla desde ese punto
-        const R = Math.hypot(Math.max(x, vw - x), Math.max(y, vh - y)) + 8
+        // Escala de la burbuja para cubrir toda la pantalla desde ese punto. El rectángulo seguro adentro de
+        // la forma (sin las curvas ni la cola) mide ~76% del ancho y ~48% del alto de la caja, centrado.
+        const bw = fill.offsetWidth
+        const bh = fill.offsetHeight
+        const S = Math.max(Math.max(x, vw - x) / (0.38 * bw), Math.max(y, vh - y) / (0.24 * bh)) * 1.05
         // Centro del CTA del hero: ahí se cierra el círculo
         const cta = heroCta?.getBoundingClientRect()
         const cx = cta ? cta.left + cta.width / 2 : vw / 2
         const cy = cta ? cta.top + cta.height / 2 : vh / 2
 
         gsap.set(ripple, { x, y })
-        gsap.set(fill, { clipPath: circle(0, x, y) })
+        gsap.set(fill, { x, y, xPercent: -50, yPercent: -50, scale: 0, rotate: -8 })
         gsap.set(captionInner, { yPercent: 110 })
 
         const tl = gsap.timeline({ defaults: { ease: 'reveal' }, onComplete: finish })
 
         tl.addLabel('intro', 0)
-          .to(inners, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }, 'intro')
-          .to(mark, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 'intro+=0.3')
+          .to(inners, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 }, 'intro')
+          .to(mark, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 'intro+=0.2')
 
           // El cursor entra desde abajo a la derecha: x e y con curvas distintas = trayectoria en arco
-          .addLabel('enter', 'intro+=0.5')
+          .addLabel('enter', 'intro+=0.25')
           .set(cursor, { autoAlpha: 1, x: vw * 0.94, y: vh * 1.08, rotate: 14 }, 'enter')
-          .to(cursor, { x, duration: 1.1, ease: 'power3.inOut' }, 'enter')
-          .to(cursor, { y, duration: 1.1, ease: 'power2.inOut' }, 'enter')
-          .to(cursor, { rotate: 0, duration: 1.1, ease: 'power2.out' }, 'enter')
+          .to(cursor, { x, duration: 0.75, ease: 'power3.inOut' }, 'enter')
+          .to(cursor, { y, duration: 0.75, ease: 'power2.inOut' }, 'enter')
+          .to(cursor, { rotate: 0, duration: 0.75, ease: 'power2.out' }, 'enter')
 
           // Hover: "CLIC" se subraya como un link
-          .addLabel('hover', 'enter+=0.95')
-          .to(line, { scaleX: 1, duration: 0.45, ease: 'power3.out' }, 'hover')
+          .addLabel('hover', 'enter+=0.65')
+          .to(line, { scaleX: 1, duration: 0.3, ease: 'power3.out' }, 'hover')
 
-          // Clic: el cursor se hunde y rebota, dos ondas y el círculo azul se abre desde la punta
-          .addLabel('click', 'hover+=0.4')
+          // Clic: el cursor se hunde y rebota, saltan las líneas y la burbuja se abre desde la punta
+          .addLabel('click', 'hover+=0.25')
           .to(cursor, { scale: 0.78, duration: 0.11, ease: 'power2.in' }, 'click')
           .to(cursor, { scale: 1, duration: 0.55, ease: 'elastic.out(1, 0.45)' }, 'click+=0.11')
-          .to(rings, { scale: 3.2, autoAlpha: 0, duration: 0.85, stagger: 0.12, ease: 'power2.out' }, 'click+=0.08')
-          .to(fill, { clipPath: circle(R, x, y), duration: 1.15, ease: 'hop' }, 'click+=0.14')
-          .to(cursor, { autoAlpha: 0, scale: 0.6, duration: 0.35, ease: 'power2.in' }, 'click+=0.55')
+          .to(rays, { scale: 1, autoAlpha: 1, duration: 0.25, stagger: 0.03, ease: 'back.out(2.5)' }, 'click+=0.04')
+          .to(rays, { scale: 1.5, autoAlpha: 0, duration: 0.35, stagger: 0.03, ease: 'power2.in' }, 'click+=0.3')
+          .to(fill, { scale: 0.9, rotate: 0, duration: 0.3, ease: 'back.out(2)' }, 'click+=0.12')
+          .to(fill, { scale: S, duration: 0.8, ease: 'hop' }, 'click+=0.35')
+          .to(cursor, { autoAlpha: 0, scale: 0.6, duration: 0.3, ease: 'power2.in' }, 'click+=0.5')
 
-          // Mensaje dentro del azul
-          .addLabel('message', 'click+=0.85')
-          .to(captionInner, { yPercent: 0, duration: 0.9 }, 'message')
+          // Mensaje sobre la burbuja
+          .addLabel('message', 'click+=0.8')
+          .set(refs.caption.current, { autoAlpha: 1 }, 'message')
+          .to(captionInner, { yPercent: 0, duration: 0.6 }, 'message')
           .set(stage, { autoAlpha: 0 }, 'message+=0.4')
 
-          // El círculo se cierra sobre el CTA del hero mientras entra el inicio
-          .addLabel('collapse', 'message+=1.25')
-          .to(captionInner, { yPercent: -110, duration: 0.5, ease: 'power3.in' }, 'collapse-=0.3')
-          .to(fill, { clipPath: circle(0, cx, cy), duration: 1.05, ease: 'power3.inOut' }, 'collapse')
-          .addLabel('handoff', 'collapse+=0.15')
+          // La burbuja se achica hasta el CTA del hero mientras entra el inicio
+          .addLabel('collapse', 'message+=0.85')
+          .to(captionInner, { yPercent: -110, duration: 0.4, ease: 'power3.in' }, 'collapse-=0.2')
+          .set(refs.caption.current, { autoAlpha: 0 }, 'collapse+=0.2')
+          .to(fill, { x: cx, y: cy, scale: 0, duration: 0.85, ease: 'power3.inOut' }, 'collapse')
+          .addLabel('handoff', 'collapse+=0.1')
           .call(start, undefined, 'handoff')
         revealHero(tl, 'handoff')
 
@@ -185,7 +190,7 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
 
       // Medir con la fuente del wordmark ya cargada (guarda para el doble montaje de StrictMode)
       let alive = true
-      fontReady('900 1em "Montserrat Display"', { googleSheet: false }).then(() => {
+      fontReady('700 1em Carlito').then(() => {
         if (!alive) return
         if (cameFromSite()) buildQuick()
         else if (reduced) buildReduced()

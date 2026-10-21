@@ -5,10 +5,6 @@ import { App } from './app/App'
 import { normalizePath, resolveRoute } from './app/routes'
 import { loadPost } from './lib/blog'
 
-// Hoja de Google Fonts: arranca deshabilitada en index.html para no competir con el primer pintado
-const googleFonts = document.getElementById('google-fonts') as HTMLLinkElement | null
-if (googleFonts) googleFonts.disabled = false
-
 const root = document.getElementById('root')!
 const path = normalizePath(location.pathname)
 const route = resolveRoute(path)

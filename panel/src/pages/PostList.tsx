@@ -140,7 +140,7 @@ export function PostList({ notify }: { notify: (t: ToastData) => void }) {
                       {p.updated ? ` · editada ${formatDate(p.updated)}` : ''}
                     </span>
                   </div>
-                  <a href={editHash} className="line-clamp-2 text-base leading-snug font-extrabold tracking-tight text-brand-deep hover:text-brand-signal sm:text-lg">
+                  <a href={editHash} className="line-clamp-2 text-base leading-snug font-extrabold tracking-tight text-brand-deep hover:text-brand-ember sm:text-lg">
                     {p.title || '(sin título)'}
                   </a>
                   <p className="line-clamp-1 text-sm text-brand-night/60 max-sm:hidden">{p.description}</p>

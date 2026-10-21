@@ -1,6 +1,6 @@
 ---
 title: Qué pasa en tu primer mes trabajando con nosotros
-description: Semana por semana, cómo es el primer mes con Marketing by Clic, del diagnóstico de tu marca a la publicación del contenido.
+description: Semana por semana, cómo es el primer mes con Clic Studio, del diagnóstico de tu marca a la publicación del contenido.
 date: 2026-10-04
 updated: 2026-10-07
 category: Estrategia

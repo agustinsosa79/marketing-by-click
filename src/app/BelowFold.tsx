@@ -1,7 +1,4 @@
-import { Asesoria } from '../components/sections/asesoria/Asesoria'
 import { Contacto } from '../components/sections/contacto/Contacto'
-import { Diagnostico } from '../components/sections/diagnostico/Diagnostico'
-import { Faq } from '../components/sections/faq/Faq'
 import { Footer } from '../components/sections/footer/Footer'
 import { Nosotros } from '../components/sections/nosotros/Nosotros'
 import { Planes } from '../components/sections/planes/Planes'
@@ -14,8 +11,9 @@ import { useSectionTransitions } from '../hooks/useSectionTransitions'
  * Todo lo que está debajo del hero, en un chunk aparte (React.lazy): el primer render es solo
  * hero + navbar, así el preloader arranca antes. Mientras corre el preloader nadie puede scrollear,
  * así que estas secciones llegan a tiempo sin que se note.
- * Orden: primero qué hacemos y la prueba, después cómo, cuánto y quiénes.
- * La asesoría 1:1 va justo después de los planes: es la alternativa para quien no quiere un plan mensual.
+ * Orden (7 bloques, fondos en tramos largos): inicio y servicios en claro → proyectos y cómo trabajamos en oscuro
+ * → planes (con asesoría, extras, comparación y diagnóstico) en claro → nosotros y preguntas en oscuro
+ * → contacto, el único momento de color.
  */
 export function BelowFoldSections() {
   useSectionTransitions()
@@ -25,10 +23,7 @@ export function BelowFoldSections() {
       <Servicios />
       <Proyectos />
       <Proceso />
-      <Diagnostico />
       <Planes />
-      <Asesoria />
-      <Faq />
       <Nosotros />
       <Contacto />
     </>

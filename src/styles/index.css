@@ -18,7 +18,11 @@ html.lenis.lenis-stopped {
 }
 
 /* ------------------------------------------------------------------
-   Paleta "Azul total" (paso 1 aprobado): una sola familia de azules con el matiz del azul Clic.
+   Paleta Clic Studio (manual de marca): naranja f2750e · marrón a15a1f · azul noche 063c73 · azul 2673bf.
+   Reglas de contraste (WCAG AA):
+   - Sobre naranja el texto va en tinta (azul muy oscuro), como el logo azul sobre naranja. Blanco no llega.
+   - Texto naranja sobre claro solo en títulos grandes y en su versión "flame" (3.2:1, AA texto grande).
+   - Texto chico de acento sobre claro: azul Clic (deep, 4.6:1).
    ------------------------------------------------------------------ */
 @theme {
   --color-*: initial;
@@ -26,37 +30,51 @@ html.lenis.lenis-stopped {
   --color-transparent: transparent;
   --color-current: currentColor;
 
-  --color-brand-night: #0b1435; /* Azul noche: secciones oscuras, texto principal */
-  --color-brand-navy: #16224f; /* superficie de tarjetas sobre noche */
-  --color-brand-deep: #223a8d; /* Azul Clic: protagonista, títulos, logo */
-  --color-brand-signal: #3d5ef5; /* Azul señal: botones, hover, foco, progreso */
-  --color-brand-haze: #c9d3f5; /* Bruma: bordes y texto secundario sobre oscuro */
-  --color-brand-paper: #f4f6fc; /* Nube: fondo claro */
+  --color-brand-ink: #052b52; /* Tinta: texto sobre naranja (5:1) */
+  --color-brand-night: #063c73; /* Azul noche (manual): secciones oscuras, texto principal */
+  --color-brand-navy: #0c4a87; /* superficie de tarjetas sobre noche */
+  --color-brand-deep: #2673bf; /* Azul Clic (manual): secciones azules, acentos chicos sobre claro */
+  --color-brand-signal: #f2750e; /* Naranja Clic (manual): botones, énfasis, burbujas, progreso */
+  --color-brand-flame: #e0660a; /* Naranja para texto/foco sobre claro (mismo tono, AA texto grande) */
+  --color-brand-ember: #a15a1f; /* Marrón (manual): hover del naranja, detalles cálidos */
+  --color-brand-haze: #d3e4f6; /* Bruma: bordes y texto secundario sobre noche */
+  --color-brand-paper: #f5f8fc; /* Nube: fondo claro */
 
-  /* Escala tipográfica (fluida). Interlineado ≥ 1 en títulos: tildes y colas nunca se cortan. */
-  --text-label: 0.8125rem;
+  /* Escala tipográfica (fluida). Carlito (= Calibri) es más angosta y de x-height más baja que la
+     tipografía anterior: los textos suben un escalón para leerse igual. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.45;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.45;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.55;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.5;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.4;
+  --text-label: 0.875rem;
   --text-label--line-height: 1.4;
-  /* Wordmark del preloader (medido con Montserrat Black): "MARKETING" al 88% del ancho en dos líneas,
-     "MARKETING BY CLIC" al 96% en una línea desde md. Puro CSS: pinta antes de que corra el JS. */
-  --text-wordmark: 14.39vw;
+  /* Wordmark "clicstudio" del preloader (Carlito, ~3.8em de ancho): ~80% del ancho en una línea.
+     Puro CSS: pinta antes de que corra el JS. */
+  --text-wordmark: min(21vw, 40svh);
   --text-wordmark--line-height: 1;
-  --text-wordmark-wide: 9.353vw;
+  --text-wordmark-wide: min(19vw, 40svh);
   --text-wordmark-wide--line-height: 1;
-  --text-hero: clamp(2.6rem, min(6.4vw, 11.5vh), 8rem);
-  --text-hero--line-height: 1;
-  --text-title: clamp(1.9rem, min(4.6vw, 8.5vh), 5.25rem);
-  --text-title--line-height: 1.02;
-  --text-big: clamp(1.6rem, min(2.8vw, 5vh), 3rem);
-  --text-big--line-height: 1.08;
-  --text-lead: clamp(1.15rem, min(1.6vw, 2.8vh), 1.6rem);
+  --text-hero: clamp(3rem, min(7.2vw, 13vh), 9rem);
+  --text-hero--line-height: 0.98;
+  --text-title: clamp(2.25rem, min(5.3vw, 9.8vh), 6rem);
+  --text-title--line-height: 1;
+  --text-big: clamp(1.85rem, min(3.2vw, 5.7vh), 3.4rem);
+  --text-big--line-height: 1.05;
+  --text-lead: clamp(1.25rem, min(1.75vw, 3.1vh), 1.75rem);
   --text-lead--line-height: 1.35;
-  --text-price: clamp(2.6rem, min(4.4vw, 8vh), 4.5rem);
+  --text-price: clamp(2.9rem, min(4.9vw, 9vh), 5rem);
   --text-price--line-height: 1;
   /* precio del plan destacado: un escalón más grande que el resto */
-  --text-price-xl: clamp(3.2rem, min(5.8vw, 10vh), 6rem);
+  --text-price-xl: clamp(3.5rem, min(6.4vw, 11vh), 6.6rem);
   --text-price-xl--line-height: 1;
-  --text-menu: clamp(2.4rem, min(8.5vh, 9vw), 6.5rem);
-  --text-menu--line-height: 1.05;
+  --text-menu: clamp(2.7rem, min(9.5vh, 10vw), 7.25rem);
+  --text-menu--line-height: 1;
 
   /* Profundidad: sombras neutras (negro con poca opacidad), nunca teñidas de azul */
   --shadow-soft: 0 0.0625rem 0.125rem rgb(0 0 0 / 0.05), 0 0.5rem 1.5rem -0.75rem rgb(0 0 0 / 0.12);
@@ -68,6 +86,8 @@ html.lenis.lenis-stopped {
   --spacing-gallery: min(62svh, 40rem); /* galería del caso de éxito en desktop */
   --spacing-panel: min(64svh, 40rem); /* panel del servicio activo en desktop */
   --spacing-hair: 0.0625rem;
+  --spacing-modal-h: calc(100svh - 2rem); /* alto máximo de las ventanas (Modal) */
+  --spacing-modal-w: calc(100% - 2rem); /* ancho de las ventanas en el celular */
   --spacing-descender: 0.16em; /* aire para tildes y descendentes dentro de las máscaras de línea */
   --spacing-descender-pull: -0.16em;
 
@@ -96,58 +116,82 @@ html.lenis.lenis-stopped {
   }
 }
 
-/* Montserrat Black alojada localmente (subset latin, 18 KB) y precargada en index.html:
-   es la del wordmark del preloader, así no espera la cadena CSS → fuente de Google. */
+/* Notebooks con poca altura (variante short): los títulos de sección vuelven a la escala compacta
+   para que cada sección entre en una pantalla */
+@media (min-width: 64rem) and (max-height: 52rem) {
+  :root {
+    --text-title: clamp(2rem, min(4.6vw, 8.2vh), 5rem);
+    --text-big: clamp(1.6rem, min(2.8vw, 5vh), 3rem);
+  }
+}
+
+/* Tipografía de marca: Calibri (manual) → en la web, Carlito: libre (OFL) y con las mismas medidas.
+   Alojada localmente (subset latin, ~31 KB por estilo); regular y bold precargadas en index.html. */
 @font-face {
-  font-family: 'Montserrat Display';
+  font-family: 'Carlito';
   font-style: normal;
-  font-weight: 900;
+  font-weight: 400;
   font-display: block;
-  src: url('/fonts/montserrat-900-latin.woff2') format('woff2');
+  src: url('/fonts/carlito-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Carlito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('/fonts/carlito-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Carlito';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/carlito-700-italic.woff2') format('woff2');
 }
 
 @layer components {
   /* ------------------------------------------------------------------
-     Tipografía: una sola familia (Montserrat), sin cursivas. El contraste sale del peso y del color.
+     Tipografía (manual Clic Studio): Calibri regular, bold y bold italic.
+     Títulos en bold; el énfasis del título va en bold italic naranja (EMPHASIS en lib/pageColors.ts).
      ------------------------------------------------------------------ */
-  /* Títulos: ExtraBold en mayúscula inicial */
   .font-display {
-    font-family: 'Montserrat', 'Montserrat Display', ui-sans-serif, system-ui, sans-serif;
-    font-weight: 800;
-    letter-spacing: -0.035em;
+    font-family: 'Carlito', 'Calibri', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
-  /* Wordmark (preloader y footer): Black en mayúsculas, como el logo */
+  /* Wordmark (preloader, footer, 404): "clic" bold + "studio" regular, en minúscula como el logo */
   .font-wordmark {
-    font-family: 'Montserrat Display', 'Montserrat', ui-sans-serif, system-ui, sans-serif;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -0.045em;
+    font-family: 'Carlito', 'Calibri', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.03em;
   }
 
   .font-body {
-    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Carlito', 'Calibri', ui-sans-serif, system-ui, sans-serif;
   }
 
   /* Etiquetas: Bold en versalitas con un poco de aire */
   .font-label {
-    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Carlito', 'Calibri', ui-sans-serif, system-ui, sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
   }
 
   .animation-delay-word {
     animation-delay: 0.12s;
   }
 
-  /* Máscaras de SplitText (lib/motion.ts): aire arriba y abajo para tildes y descendentes,
-     compensado con margen negativo para no mover el layout */
+  /* Máscaras de SplitText (lib/motion.ts): aire arriba y abajo para tildes y descendentes, y a los
+     costados para la inclinación de la bold italic; compensado con margen negativo para no mover el layout */
   .split-line-mask,
   .split-word-mask {
     padding-block: var(--spacing-descender);
     margin-block: var(--spacing-descender-pull);
+    padding-inline: 0.12em;
+    margin-inline: -0.12em;
   }
 
   /* ------------------------------------------------------------------
@@ -166,14 +210,6 @@ html.lenis.lenis-stopped {
   .icon-whatsapp {
     mask-image: url('/media/icono-whatsapp.webp');
   }
-  .logo-mask {
-    aspect-ratio: 640 / 178;
-    mask-image: url('/media/logo.webp');
-  }
-  .isotipo-mask {
-    aspect-ratio: 211 / 222;
-    mask-image: url('/media/isotipo.webp');
-  }
 
   /* Foto de las tarjetas de servicio: ventana arriba que al hover se abre a toda la tarjeta (clip-path, sin layout) */
   .card-photo {
@@ -189,7 +225,7 @@ html.lenis.lenis-stopped {
      Cuerpo de las notas del blog (HTML generado desde Markdown)
      ------------------------------------------------------------------ */
   .prose {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     line-height: 1.75;
     color: var(--color-brand-night);
   }
@@ -202,8 +238,8 @@ html.lenis.lenis-stopped {
   }
   .prose h2,
   .prose h3 {
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     color: var(--color-brand-deep);
     text-wrap: balance;
     scroll-margin-top: 7rem;
@@ -223,8 +259,8 @@ html.lenis.lenis-stopped {
     margin-top: 0.75em;
   }
   .prose a {
-    color: var(--color-brand-signal);
-    font-weight: 600;
+    color: var(--color-brand-deep);
+    font-weight: 700;
     text-decoration: underline;
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.2em;
@@ -254,10 +290,11 @@ html.lenis.lenis-stopped {
     margin-block: 2em;
     border-left: 0.25rem solid var(--color-brand-signal);
     padding: 0.25em 0 0.25em 1.25em;
-    font-size: 1.5rem;
-    font-weight: 800;
+    font-size: 1.625rem;
+    font-weight: 700;
+    font-style: italic;
     line-height: 1.3;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: var(--color-brand-deep);
   }
   .prose figure {
@@ -360,17 +397,17 @@ html.lenis.lenis-stopped {
   }
 
   body {
-    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Carlito', 'Calibri', ui-sans-serif, system-ui, sans-serif;
     color: var(--color-brand-night);
   }
 
   ::selection {
     background-color: var(--color-brand-signal);
-    color: var(--color-white);
+    color: var(--color-brand-ink);
   }
 
   :focus-visible {
-    outline: 0.125rem solid var(--color-brand-signal);
+    outline: 0.1875rem solid var(--color-brand-flame);
     outline-offset: 0.25rem;
   }
 
@@ -394,6 +431,29 @@ html.lenis.lenis-stopped {
   html[data-from-site] [data-preloader] {
     display: none;
   }
+}
+
+/* Ventanas (components/ui/Modal.tsx): suben y aparecen; el fondo se funde */
+dialog.modal[open] {
+  animation: modal-in 0.5s var(--ease-expo);
+}
+dialog.modal[open]::backdrop {
+  animation: modal-fade 0.4s ease-out;
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.98);
+  }
+}
+@keyframes modal-fade {
+  from {
+    opacity: 0;
+  }
+}
+html[data-motion='reduce'] dialog.modal[open],
+html[data-motion='reduce'] dialog.modal[open]::backdrop {
+  animation: none;
 }
 
 /* index.html oculta #root hasta que esta hoja está aplicada.

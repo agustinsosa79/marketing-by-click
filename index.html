@@ -3,33 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agencia de marketing digital y redes sociales | Marketing by Clic</title>
+    <title>Agencia de marketing digital y redes sociales | Clic Studio</title>
     <meta name="description" content="Agencia de marketing digital: estrategia, contenido para redes sociales y anuncios en Instagram y Facebook para que tu marca venda más. Escribinos por WhatsApp." />
-    <meta name="theme-color" content="#0b1435" />
+    <meta name="theme-color" content="#063c73" />
 
+    <link rel="icon" type="image/svg+xml" href="/media/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/media/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/media/favicon-192.png" />
     <link rel="apple-touch-icon" href="/media/apple-touch-icon-180.png" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
-    <meta property="og:site_name" content="Marketing by Clic" />
-    <meta property="og:title" content="Agencia de marketing digital y redes sociales | Marketing by Clic" />
+    <meta property="og:site_name" content="Clic Studio" />
+    <meta property="og:title" content="Agencia de marketing digital y redes sociales | Clic Studio" />
     <meta property="og:description" content="Estrategia, contenido para redes sociales y anuncios en Instagram y Facebook para que tu marca venda más." />
     <meta property="og:url" content="https://marketingbyclic.com/" />
     <meta property="og:image" content="https://marketingbyclic.com/media/founder-ian.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://marketingbyclic.com/" />
-    <link rel="alternate" type="application/rss+xml" title="Blog de Marketing by Clic" href="/blog/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Blog de Clic Studio" href="/blog/rss.xml" />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
-        "name": "Marketing by Clic",
+        "name": "Clic Studio",
         "description": "Agencia de marketing digital y redes sociales: estrategia, contenido, anuncios en Instagram y Facebook (Meta Ads) y branding para que tu marca venda más.",
         "url": "https://marketingbyclic.com/",
-        "logo": "https://marketingbyclic.com/media/logo.webp",
+        "logo": "https://marketingbyclic.com/media/logo-clic-studio.png",
         "image": "https://marketingbyclic.com/media/founder-ian.webp",
         "telephone": "+5492944126756",
         "founder": { "@type": "Person", "name": "Ian" },
@@ -38,26 +39,12 @@
       }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Fuentes de Google sin bloquear el render: la hoja arranca deshabilitada y la habilita src/main.tsx
-         (después del primer pintado; el wordmark usa la Montserrat Black local precargada).
-         src/lib/fonts.ts espera a que carguen antes de medir/partir texto. -->
-    <link
-      id="google-fonts"
-      rel="stylesheet"
-      disabled
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" />
-    </noscript>
-    <link rel="preload" as="font" href="/fonts/montserrat-900-latin.woff2" type="font/woff2" crossorigin />
+    <!-- Tipografía de marca (Carlito = Calibri del manual), local: regular y bold precargadas para el primer pintado -->
+    <link rel="preload" as="font" href="/fonts/carlito-700.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href="/fonts/carlito-400.woff2" type="font/woff2" crossorigin />
     <!-- CSS crítico: el primer paint ya es el fondo del preloader y la app no se ve sin estilos -->
     <style>
-      html { background: #f4f6fc; }
+      html { background: #f5f8fc; }
       body { margin: 0; }
       #root { visibility: hidden; }
       html[data-from-site] [data-preloader] { display: none; }

@@ -61,7 +61,7 @@ const breadcrumbs = (items: { name: string; url: string }[]) => ({
   itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, item: abs(item.url) })),
 })
 
-const publisher = { '@type': 'Organization', name: brand.name, logo: { '@type': 'ImageObject', url: abs('/media/logo.webp') } }
+const publisher = { '@type': 'Organization', name: brand.name, logo: { '@type': 'ImageObject', url: abs('/media/logo-clic-studio.png') } }
 
 export function head(url: string): Head {
   const path = normalizePath(url)

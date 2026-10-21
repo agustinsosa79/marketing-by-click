@@ -1,12 +1,11 @@
 import { useRef, useState, type KeyboardEvent } from 'react'
 import { sections, servicios } from '../../../data/content'
-import { useLenis } from '../../../hooks/useLenis'
 import { useReducedMotion } from '../../../hooks/useReducedMotion'
 import { gsap, useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
 import { deferSetup } from '../../../lib/schedule'
 import { Button } from '../../ui/Button'
-import { Arrow, Check, ServiceIcon } from '../../ui/Icon'
+import { Arrow, ServiceIcon } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
 import { Label, Title } from '../../ui/Title'
 import { ServiceDemo } from './ServiceDemo'
@@ -15,15 +14,15 @@ const ITEMS = servicios.items
 
 /**
  * Servicios: un servicio a la vez.
- *  - izquierda: los cuatro servicios (click o flechas del teclado para cambiar) y los extras
- *  - derecha: panel azul Clic con la mini animación del servicio, qué incluye y dos salidas (WhatsApp o su página)
+ *  - izquierda: los cuatro servicios (click o flechas del teclado para cambiar)
+ *  - derecha: panel azul Clic con la mini animación del servicio, una frase y dos salidas (WhatsApp o su página)
+ * El detalle de qué incluye cada uno vive en su página (/servicios/<slug>).
  */
 export function Servicios() {
   const ref = useRef<HTMLElement>(null)
   const panel = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const reduced = useReducedMotion()
-  const { scrollTo } = useLenis()
   const first = useRef(true)
   const item = ITEMS[active]
 
@@ -57,7 +56,7 @@ export function Servicios() {
         <div className="flex flex-col gap-5 lg:col-span-5 lg:gap-6">
           <div className="flex flex-col gap-4">
             <Label>{servicios.eyebrow}</Label>
-            <Title title={servicios.title} tone="paper" className="text-brand-deep" />
+            <Title title={servicios.title} tone="paper" />
           </div>
 
           <div role="tablist" aria-label={servicios.listAria} onKeyDown={onKey} className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0">
@@ -77,47 +76,15 @@ export function Servicios() {
                     on ? 'bg-white shadow-soft ring-1 ring-brand-deep/10' : 'hover:bg-white/60'
                   }`}
                 >
-                  <span className={`grid size-9 shrink-0 place-items-center rounded-2xl transition duration-500 ease-expo lg:size-11 ${on ? 'bg-brand-signal text-white' : 'bg-brand-deep/5 text-brand-deep'}`}>
+                  <span className={`grid size-9 shrink-0 place-items-center rounded-2xl transition duration-500 ease-expo lg:size-11 ${on ? 'bg-brand-signal text-brand-ink' : 'bg-brand-deep/5 text-brand-deep'}`}>
                     <ServiceIcon name={s.icon} className="size-4 lg:size-6" />
                   </span>
                   <span className={`font-display text-base whitespace-nowrap transition-colors duration-500 lg:flex-1 lg:text-xl ${on ? 'text-brand-deep' : 'text-brand-deep/75 group-hover:text-brand-deep'}`}>{s.name}</span>
-                  <Arrow className={`hidden size-5 text-brand-signal transition duration-500 ease-expo lg:block ${on ? 'rotate-45 opacity-100' : 'opacity-0'}`} />
+                  <Arrow className={`hidden size-5 text-brand-flame transition duration-500 ease-expo lg:block ${on ? 'rotate-45 opacity-100' : 'opacity-0'}`} />
                 </button>
               )
             })}
           </div>
-
-          {/* extras en una línea (el detalle está en las páginas de servicio y en preguntas frecuentes) */}
-          <p data-reveal="rise" className="hidden items-center gap-x-3 border-t border-brand-deep/15 pt-4 text-sm lg:flex lg:flex-wrap">
-            <span className="font-label text-label text-brand-deep">{servicios.extrasLabel}</span>
-            {servicios.extras.map((extra) =>
-              extra.id ? (
-                <a
-                  key={extra.name}
-                  href={`#${extra.id}`}
-                  onClick={(event) => {
-                    const target = document.getElementById(extra.id!)
-                    if (!target) return
-                    event.preventDefault()
-                    scrollTo(target, { duration: 1.6 })
-                  }}
-                  className="group flex items-center gap-1.5 font-bold text-brand-deep"
-                >
-                  <span aria-hidden="true" className="text-brand-signal">
-                    +
-                  </span>
-                  <span className="link-underline">{extra.name}</span>
-                </a>
-              ) : (
-                <span key={extra.name} className="flex items-center gap-1.5 font-bold text-brand-deep">
-                  <span aria-hidden="true" className="text-brand-signal">
-                    +
-                  </span>
-                  {extra.name}
-                </span>
-              ),
-            )}
-          </p>
         </div>
 
         <div
@@ -144,17 +111,6 @@ export function Servicios() {
               <p data-panel-part className="text-base text-brand-haze md:text-lg">
                 {item.text}
               </p>
-              {/* en mobile el detalle queda en la página del servicio */}
-              <ul data-panel-part className="hidden flex-wrap gap-2 md:flex">
-                {item.includes.slice(0, 3).map((inc, i) => (
-                  <li key={inc} className={`items-center gap-1.5 rounded-full bg-white/10 py-1 pr-3 pl-1.5 text-xs font-semibold ${i > 1 ? 'hidden md:flex' : 'flex'}`}>
-                    <span className="grid size-4 place-items-center rounded-full bg-white text-brand-deep">
-                      <Check className="size-2.5" />
-                    </span>
-                    {inc}
-                  </li>
-                ))}
-              </ul>
             </div>
             <div data-panel-part className="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3 lg:flex-col lg:items-end">
               <Button href={servicios.ctaHref} label={servicios.cta} variant="white" icon="whatsapp" cursor={servicios.cursor} />

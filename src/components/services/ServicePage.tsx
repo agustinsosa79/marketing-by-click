@@ -52,12 +52,12 @@ export function ServicePage({ service }: { service: Service }) {
           <div className="mt-8 grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
             <div className="flex flex-col items-start gap-6 lg:col-span-6">
               <p className="intro-delay-1 flex animate-intro items-center gap-3 font-label text-label text-brand-deep">
-                <span className="grid size-9 place-items-center rounded-xl bg-brand-signal text-white">
+                <span className="grid size-9 place-items-center rounded-xl bg-brand-signal text-brand-ink">
                   <ServiceIcon name={service.icon} className="size-5" />
                 </span>
                 {servicePage.eyebrow}
               </p>
-              <h1 className="intro-delay-1 animate-intro font-display text-hero text-brand-deep">{service.name}</h1>
+              <h1 className="intro-delay-1 animate-intro font-display text-hero text-brand-night">{service.name}</h1>
               <p className="intro-delay-2 animate-intro text-lead font-medium text-brand-night/75">{service.text}</p>
               <div className="intro-delay-3 flex animate-intro flex-wrap items-center gap-x-6 gap-y-3">
                 <Button href={servicios.ctaHref} label={servicios.cta} variant="signal" icon="whatsapp" size="lg" cursor={servicios.cursor} />
@@ -79,14 +79,14 @@ export function ServicePage({ service }: { service: Service }) {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             <div className="flex flex-col gap-4 lg:col-span-4">
               <Label>{service.name}</Label>
-              <h2 id="incluye" data-reveal="lines" className="font-display text-title text-brand-deep">
+              <h2 id="incluye" data-reveal="lines" className="font-display text-title text-brand-night">
                 {servicios.includesLabel}
               </h2>
             </div>
             <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-8">
               {service.includes.map((inc, i) => (
                 <li key={inc} data-reveal="rise" data-reveal-delay={i * 0.05} className="flex items-start gap-4 rounded-3xl bg-white p-5 font-semibold text-brand-deep shadow-soft ring-1 ring-brand-deep/10 md:p-6 md:text-lg">
-                  <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-brand-signal text-white">
+                  <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-brand-signal text-brand-ink">
                     <Check className="size-3.5" />
                   </span>
                   {inc}
@@ -103,7 +103,7 @@ export function ServicePage({ service }: { service: Service }) {
             {proceso.title.text}
           </h2>
           <ol className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
-            {proceso.stages.map((stage, i) => (
+            {[...proceso.stages, proceso.monthly].map((stage, i) => (
               <li key={stage.name} data-reveal="rise" data-reveal-delay={i * 0.06} className="flex flex-col gap-3 rounded-3xl bg-brand-night/35 p-6 ring-1 ring-white/10">
                 <p className="font-label text-label text-brand-haze">{stage.when}</p>
                 <p className="font-display text-2xl">{stage.name}</p>
@@ -119,7 +119,7 @@ export function ServicePage({ service }: { service: Service }) {
             <>
               <div className="flex flex-col gap-4">
                 <Label>{blog.eyebrow}</Label>
-                <h2 data-reveal="lines" className="font-display text-title text-brand-deep">
+                <h2 data-reveal="lines" className="font-display text-title text-brand-night">
                   {servicePage.related} {service.name}
                 </h2>
               </div>
@@ -139,14 +139,14 @@ export function ServicePage({ service }: { service: Service }) {
               {others.map((s) => (
                 <li key={s.slug} data-reveal="rise">
                   <a href={`/servicios/${s.slug}`} className="group flex items-center gap-4 rounded-3xl bg-white p-4 ring-1 ring-brand-deep/10 transition duration-500 ease-expo hover:-translate-y-1 hover:shadow-lift md:p-5">
-                    <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-signal text-white">
+                    <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-signal text-brand-ink">
                       <ServiceIcon name={s.icon} className="size-6" />
                     </span>
                     <span className="flex-1">
                       <span className="block font-display text-xl text-brand-deep">{s.name}</span>
                       <span className="line-clamp-1 text-sm text-brand-night/65">{s.text}</span>
                     </span>
-                    <Arrow className="size-5 text-brand-signal transition-transform duration-500 ease-expo group-hover:rotate-45" />
+                    <Arrow className="size-5 text-brand-flame transition-transform duration-500 ease-expo group-hover:rotate-45" />
                   </a>
                 </li>
               ))}

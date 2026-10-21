@@ -114,7 +114,7 @@ export function Navbar({ menuOpen, onToggle, toggleRef, isHome }: NavbarProps) {
           }}
           className="invisible relative mr-0.5 shrink-0 text-white transition-transform duration-500 ease-expo hover:scale-105 sm:mr-1 md:mr-8"
         >
-          <Logo className="w-20 sm:w-24 md:w-28" />
+          <Logo className="h-9 w-auto md:h-10" />
         </a>
 
         <SectionLink id={sections.planes} label={nav.plansLabel} isHome={isHome} />
@@ -131,13 +131,13 @@ export function Navbar({ menuOpen, onToggle, toggleRef, isHome }: NavbarProps) {
           onMouseLeave={() => setHoverCta(false)}
           onFocus={() => setHoverCta(true)}
           onBlur={() => setHoverCta(false)}
-          className="group invisible relative flex h-10 items-center gap-2 overflow-hidden rounded-full bg-brand-signal p-1 text-sm font-bold text-white transition-transform duration-300 ease-expo active:scale-97 sm:pl-4 md:h-11 md:pl-5"
+          className="group invisible relative flex h-10 items-center gap-2 overflow-hidden rounded-full bg-brand-signal p-1 text-sm font-bold text-brand-ink transition-transform duration-300 ease-expo active:scale-97 sm:pl-4 md:h-11 md:pl-5"
         >
           <span aria-hidden="true" className="absolute inset-0 translate-y-full rounded-full bg-white transition-transform duration-500 ease-expo group-hover:translate-y-0" />
           <span className="relative hidden transition-colors duration-300 group-hover:text-brand-night sm:inline">
             <RollText text={nav.ctaLabel} active={hoverCta} />
           </span>
-          <span className="relative grid size-8 place-items-center rounded-full bg-white text-brand-signal transition duration-500 ease-expo group-hover:-rotate-12 group-hover:bg-brand-signal group-hover:text-white md:size-9">
+          <span className="relative grid size-8 place-items-center rounded-full bg-white text-brand-flame transition duration-500 ease-expo group-hover:-rotate-12 group-hover:bg-brand-signal group-hover:text-brand-ink md:size-9">
             <Icon name="whatsapp" className="size-4" />
           </span>
         </a>

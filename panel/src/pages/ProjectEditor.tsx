@@ -231,7 +231,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
   return (
     <div className="flex flex-col gap-6 max-lg:pb-24">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <button type="button" onClick={back} className="text-sm font-bold text-brand-deep hover:text-brand-signal">
+        <button type="button" onClick={back} className="text-sm font-bold text-brand-deep hover:text-brand-ember">
           ← Proyectos
         </button>
         <p className="text-sm font-semibold text-brand-night/50">{dirty ? 'Cambios sin guardar' : editing ? 'Sin cambios' : ''}</p>
@@ -420,7 +420,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
                   type="button"
                   disabled={project.process.length >= L.steps}
                   onClick={() => set('process', [...project.process, { title: '', text: '', image: null }])}
-                  className="rounded-2xl border-2 border-dashed border-brand-deep/20 p-4 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-signal disabled:opacity-40"
+                  className="rounded-2xl border-2 border-dashed border-brand-deep/20 p-4 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-ember disabled:opacity-40"
                 >
                   + Agregar paso
                 </button>
@@ -466,7 +466,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
                   type="button"
                   disabled={adding || project.gallery.length >= L.gallery}
                   onClick={() => gallery.current?.click()}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-brand-deep/20 p-4 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-signal disabled:opacity-40"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-brand-deep/20 p-4 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-ember disabled:opacity-40"
                 >
                   {adding && <Spinner />}+ Agregar imágenes
                 </button>

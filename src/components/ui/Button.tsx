@@ -6,13 +6,13 @@ import { RollText } from './RollText'
 
 type Variant = 'signal' | 'night' | 'white' | 'onSignal'
 
-// cara · relleno que sube al hover · círculo del ícono
+// cara · relleno que sube al hover · círculo del ícono. Sobre naranja el texto va en tinta (contraste AA).
 const STYLES: Record<Variant, { face: string; fill: string; badge: string }> = {
-  signal: { face: 'bg-brand-signal text-white', fill: 'bg-brand-night', badge: 'bg-white text-brand-signal' },
-  night: { face: 'bg-brand-night text-white shadow-soft', fill: 'bg-brand-signal', badge: 'bg-brand-signal text-white' },
-  white: { face: 'bg-white text-brand-night shadow-soft group-hover:text-white', fill: 'bg-brand-signal', badge: 'bg-brand-night text-white' },
-  // sobre fondo azul señal: el relleno del hover no puede ser del mismo azul
-  onSignal: { face: 'bg-white text-brand-night shadow-soft group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-signal text-white' },
+  signal: { face: 'bg-brand-signal text-brand-ink group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-ink text-white group-hover:bg-brand-signal group-hover:text-brand-ink' },
+  night: { face: 'bg-brand-night text-white shadow-soft group-hover:text-brand-ink', fill: 'bg-brand-signal', badge: 'bg-brand-signal text-brand-ink group-hover:bg-brand-ink group-hover:text-white' },
+  white: { face: 'bg-white text-brand-night shadow-soft group-hover:text-brand-ink', fill: 'bg-brand-signal', badge: 'bg-brand-night text-white' },
+  // sobre fondo naranja: el relleno del hover no puede ser del mismo naranja
+  onSignal: { face: 'bg-white text-brand-night shadow-soft group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-signal text-brand-ink' },
 }
 
 interface ButtonProps {
@@ -30,7 +30,7 @@ interface ButtonProps {
 /**
  * Botón pastilla: texto + círculo con ícono.
  * Hover: el color sube desde abajo, roll de letras y la flecha se endereza. Press: scale 0.97.
- * Clic: una onda sale desde el punto exacto del puntero (la firma "by Clic" del preloader).
+ * Clic: una onda sale desde el punto exacto del puntero (la firma del clic del preloader).
  */
 export function Button({ href, label, variant = 'signal', size = 'md', icon = 'arrow', cursor, className = '', onClick }: ButtonProps) {
   const [active, setActive] = useState(false)

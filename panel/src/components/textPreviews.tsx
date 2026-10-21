@@ -12,12 +12,12 @@ import { Check, Eyebrow, PlansPreview } from './previews'
 const Title = ({ children, dark = false }: { children: ReactNode; dark?: boolean }) => (
   <p className={`mt-2 font-display text-2xl leading-tight ${dark ? 'text-white' : 'text-brand-deep'}`}>{children}</p>
 )
-const Em = ({ children, haze = false }: { children: ReactNode; haze?: boolean }) => <span className={haze ? 'text-brand-haze' : 'text-brand-signal'}>{children}</span>
+const Em = ({ children, haze = false, dark = false }: { children: ReactNode; haze?: boolean; dark?: boolean }) => <span className={haze ? 'italic text-white' : dark ? 'italic text-brand-signal' : 'italic text-brand-flame'}>{children}</span>
 
 /** Botón como los de la web: pastilla con el círculo del ícono. */
 function Pill({ children, tone = 'signal' }: { children: ReactNode; tone?: 'signal' | 'white' | 'night' }) {
-  const face = { signal: 'bg-brand-signal text-white', white: 'bg-white text-brand-night', night: 'bg-brand-night text-white' }[tone]
-  const badge = { signal: 'bg-white text-brand-signal', white: 'bg-brand-night text-white', night: 'bg-brand-signal text-white' }[tone]
+  const face = { signal: 'bg-brand-signal text-brand-ink', white: 'bg-white text-brand-night', night: 'bg-brand-night text-white' }[tone]
+  const badge = { signal: 'bg-brand-ink text-white', white: 'bg-brand-night text-white', night: 'bg-brand-signal text-brand-ink' }[tone]
   return (
     <span className={`inline-flex items-center gap-3 rounded-full py-1 pr-1 pl-4 text-xs font-bold ${face}`}>
       {children}
@@ -38,7 +38,7 @@ const Steps = ({ items, dark = false }: { items: string[]; dark?: boolean }) => 
   <ul className="mt-2 flex flex-col gap-1.5">
     {items.map((s, i) => (
       <li key={i} className={`flex items-start gap-2 text-[0.7rem] leading-snug font-medium ${dark ? 'text-white' : 'text-brand-night'}`}>
-        <Check className={dark ? 'bg-brand-signal text-white' : 'bg-brand-signal/10 text-brand-signal'} />
+        <Check className={dark ? 'bg-brand-signal text-brand-ink' : 'bg-brand-signal/10 text-brand-ember'} />
         {s}
       </li>
     ))}
@@ -71,13 +71,13 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
     case 'hero':
       return (
         <div className="bg-brand-paper px-5 py-7">
-          <Eyebrow>Marketing para marcas, profesionales y emprendimientos</Eyebrow>
-          <p className="mt-3 font-display text-3xl leading-none text-brand-deep">
+          <p className="font-display text-3xl leading-none text-brand-night">
             Agencia de marketing digital y <Em>redes sociales.</Em>
           </p>
           <p className="mt-3 text-xs text-brand-night/75">Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.</p>
-          <div className="mt-4">
+          <div className="mt-4 flex items-center gap-4">
             <Pill>Hablemos por WhatsApp</Pill>
+            <span className="text-[0.7rem] font-bold text-brand-night underline">Ver planes ↓</span>
           </div>
         </div>
       )
@@ -104,7 +104,7 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
               <Pill tone="white">{tx.get('servicios.cta')}</Pill>
             </div>
           </div>
-          <p className="mt-2 text-[0.65rem] text-brand-night/55">La misma lista aparece en la página del servicio.</p>
+          <p className="mt-2 text-[0.65rem] text-brand-night/55">Esta lista se ve en la página del servicio; en el inicio va solo el nombre y una frase.</p>
         </div>
       )
     }
@@ -116,40 +116,41 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
           <Title dark>
             Marcas que ya <Em>confiaron en nosotros.</Em>
           </Title>
-          <p className="mt-2 text-xs text-brand-haze">{tx.get('proyectos.text')}</p>
           <div className="mt-3">
             <Pill tone="white">{tx.get('proyectos.all')}</Pill>
           </div>
-          <div className="mt-4 rounded-3xl border-2 border-dashed border-white/20 bg-brand-navy/40 p-4">
-            <p className="font-display text-lg">Tu marca puede ser la próxima.</p>
-            <p className="mt-1 text-[0.7rem] text-brand-haze">{tx.get('proyectos.next.text')}</p>
-            <div className="mt-3">
-              <Pill>{tx.get('proyectos.next.cta')}</Pill>
+          <div className="mt-4 grid grid-cols-5 overflow-hidden rounded-3xl bg-brand-navy ring-1 ring-white/10">
+            <div className="col-span-3 min-h-24 bg-white/10" />
+            <div className="col-span-2 p-3">
+              <p className="font-display text-base">Caso</p>
+              <p className="mt-1 text-[0.65rem] text-brand-haze">Los casos se cargan en Proyectos.</p>
             </div>
-            <Bubble text={tx.get('proyectos.next.message')} />
           </div>
+          <p className="mt-3 text-[0.65rem] text-brand-haze">Página de proyectos: {tx.get('proyectos.text')}</p>
         </div>
       )
 
     case 'proceso':
       return (
-        <div className="bg-brand-deep px-5 py-7 text-white">
+        <div className="bg-brand-night px-5 py-7 text-white">
           <Eyebrow dark>Cómo trabajamos</Eyebrow>
           <Title dark>
-            Tu primer mes, en <Em haze>tres etapas.</Em>
+            Tu primer mes, en <Em dark>tres etapas.</Em>
           </Title>
-          <ol className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {STAGES.map((s, i) => (
+          <ol className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            {STAGES.slice(0, 3).map((s, i) => (
               <li key={s.key} className={`rounded-2xl bg-brand-night/35 p-3 ring-1 ${i === group ? 'ring-brand-haze' : 'ring-white/10'}`}>
                 <p className="font-label text-[0.6rem] text-brand-haze">{s.when}</p>
                 <p className="font-display text-base">{s.name}</p>
                 <p className="mt-1 text-[0.7rem] text-brand-haze">{tx.get(`proceso.${s.key}.text`)}</p>
-                <Steps items={tx.list(`proceso.${s.key}.steps`)} dark />
               </li>
             ))}
           </ol>
+          <p className={`mt-2 rounded-2xl bg-brand-navy p-3 text-[0.7rem] text-brand-haze ring-1 ${group === 3 ? 'ring-brand-haze' : 'ring-white/10'}`}>
+            <b className="text-white">Cada mes · Desde el mes 2</b> {tx.get('proceso.mensual.text')}
+          </p>
           <div className="mt-4">
-            <Pill tone="white">{tx.get('proceso.cta')}</Pill>
+            <Pill>{tx.get('proceso.cta')}</Pill>
           </div>
         </div>
       )
@@ -208,33 +209,22 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
         <div className="flex flex-col gap-3 bg-brand-paper px-5 py-7">
           <div className="rounded-3xl bg-white p-4 ring-1 ring-brand-deep/10">
             <Eyebrow>Asesoría 1:1</Eyebrow>
-            <p className="mt-2 text-[0.7rem] font-semibold text-brand-night/60">{tx.get('asesoria.kicker')}</p>
             <p className="font-display text-xl text-brand-deep">
               Una asesoría 1:1, <Em>100% personalizada.</Em>
             </p>
             <p className="mt-2 text-[0.7rem] text-brand-night/75">{tx.get('asesoria.text')}</p>
-            <ol className="mt-3 flex flex-col gap-1.5">
-              {tx.list('asesoria.points').map((p, i) => (
-                <li key={i} className="flex gap-2 rounded-xl bg-brand-paper px-3 py-2 text-[0.7rem] font-bold text-brand-deep">
-                  <span className="text-brand-signal">0{i + 1}</span>
-                  {p}
-                </li>
-              ))}
-            </ol>
             <div className="mt-3">
               <Pill>{tx.get('asesoria.cta')}</Pill>
             </div>
             {group === 0 && <Bubble text={tx.get('asesoria.message')} />}
           </div>
-          <div className="rounded-3xl bg-brand-deep p-4 text-white">
-            <Eyebrow dark>También hacemos</Eyebrow>
-            <p className="mt-1 font-display text-lg">Proyectos fuera de los planes</p>
+          <div className="rounded-3xl bg-white p-4 ring-1 ring-brand-deep/10">
+            <Eyebrow>También hacemos</Eyebrow>
             <ul className="mt-3 flex flex-col gap-2">
               {extras.map((e) => (
-                <li key={e.key} className={`rounded-2xl bg-brand-night/35 p-3 ring-1 ${focusExtra?.key === e.key ? 'ring-brand-haze' : 'ring-white/10'}`}>
-                  <p className="text-xs font-bold">{e.name}</p>
-                  <p className="mt-0.5 text-[0.7rem] text-brand-haze">{tx.get(`extras.${e.key}.text`)}</p>
-                  <p className="mt-1 text-[0.7rem] font-bold">{tx.get('extras.cta')} ↗</p>
+                <li key={e.key} className={`flex items-center justify-between rounded-2xl bg-brand-paper p-3 ring-1 ${focusExtra?.key === e.key ? 'ring-brand-deep' : 'ring-transparent'}`}>
+                  <p className="text-xs font-bold text-brand-night">{e.name}</p>
+                  <p className="text-[0.7rem] font-bold text-brand-deep">{tx.get('extras.cta')} ↗</p>
                 </li>
               ))}
             </ul>
@@ -246,16 +236,15 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
 
     case 'preguntas':
       return (
-        <div className="bg-brand-paper px-5 py-7">
-          <Eyebrow>Preguntas frecuentes</Eyebrow>
-          <Title>
-            Lo que siempre <Em>nos preguntan.</Em>
+        <div className="bg-brand-night px-5 py-7 text-white">
+          <Eyebrow dark>Preguntas frecuentes</Eyebrow>
+          <Title dark>
+            Lo que siempre <Em dark>nos preguntan.</Em>
           </Title>
-          <p className="mt-2 text-xs text-brand-night/75">{tx.get('faq.text')}</p>
           <div className="mt-3">
-            <Pill>{tx.get('faq.cta')}</Pill>
+            <Pill tone="white">{tx.get('faq.cta')}</Pill>
           </div>
-          <p className="mt-4 rounded-2xl bg-white p-3 text-[0.7rem] text-brand-night/55 ring-1 ring-brand-deep/10">Las preguntas y respuestas se editan en la sección Preguntas del panel.</p>
+          <p className="mt-4 rounded-2xl bg-brand-navy p-3 text-[0.7rem] text-brand-haze ring-1 ring-white/10">Las preguntas y respuestas se editan en la sección Preguntas del panel.</p>
         </div>
       )
 
@@ -266,13 +255,6 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
           <Title dark>
             Construimos marcas que <Em>venden más.</Em>
           </Title>
-          <ul className="mt-3 flex flex-col gap-1.5">
-            {tx.list('nosotros.points').map((p, i) => (
-              <li key={i} className="border-t border-white/10 pt-1.5 text-[0.7rem] text-brand-haze">
-                {p}
-              </li>
-            ))}
-          </ul>
           <blockquote className="mt-4 rounded-2xl bg-brand-navy p-3 text-xs font-semibold">“{tx.get('nosotros.quote')}”</blockquote>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <Pill>{tx.get('nosotros.cta')}</Pill>
@@ -293,7 +275,7 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
             </div>
           </div>
           <div className="bg-brand-night px-5 py-4">
-            <p className="text-xl font-black tracking-tight text-white uppercase">Marketing by Clic</p>
+            <p className="text-2xl font-bold tracking-tight text-white">clic<span className="font-normal text-brand-haze">studio</span></p>
             <p className="mt-2 border-t border-white/10 pt-2 text-[0.7rem] font-bold text-white">{tx.get('footer.line')}</p>
           </div>
           <div className="grid grid-cols-1 gap-2 bg-brand-paper p-4 sm:grid-cols-2">

@@ -56,9 +56,10 @@ const PLAN_LOOK: Record<PlanId, { name: string; tone: 'light' | 'signal' | 'nigh
 }
 
 const TONE = {
-  light: { card: 'bg-white text-brand-night ring-1 ring-brand-deep/10 shadow-soft', muted: 'text-brand-night/70', price: 'text-brand-deep', label: 'text-brand-deep', rule: 'border-brand-deep/10', check: 'bg-brand-signal/10 text-brand-signal', button: 'bg-brand-night text-white' },
-  signal: { card: 'bg-brand-signal text-white shadow-lift', muted: 'text-white', price: 'text-white', label: 'text-white', rule: 'border-white/25', check: 'bg-white text-brand-signal', button: 'bg-white text-brand-night' },
-  night: { card: 'bg-brand-night text-white ring-1 ring-white/10 shadow-soft', muted: 'text-brand-haze', price: 'text-white', label: 'text-brand-haze', rule: 'border-white/15', check: 'bg-brand-signal text-white', button: 'bg-white text-brand-night' },
+  // como en la web (manual Clic Studio): Inicial naranja, Plus azul Clic, Premium azul noche
+  light: { card: 'bg-brand-signal text-brand-ink shadow-soft', muted: 'text-brand-ink', price: 'text-brand-ink', label: 'text-brand-ink', rule: 'border-brand-ink/15', check: 'bg-brand-ink text-white', button: 'bg-white text-brand-night' },
+  signal: { card: 'bg-brand-deep text-white shadow-lift', muted: 'text-white', price: 'text-white', label: 'text-white', rule: 'border-white/25', check: 'bg-white text-brand-deep', button: 'bg-white text-brand-night' },
+  night: { card: 'bg-brand-night text-white ring-1 ring-white/10 shadow-soft', muted: 'text-brand-haze', price: 'text-white', label: 'text-brand-haze', rule: 'border-white/15', check: 'bg-brand-signal text-brand-ink', button: 'bg-white text-brand-night' },
 }
 
 /** Precio vacío o inválido: se marca para que se note antes de guardar. */
@@ -78,7 +79,7 @@ export function PlansPreview({ prices, highlight, texts }: { prices: PricesInput
     <div className="@container bg-brand-paper px-4 py-6 sm:px-6">
       <Eyebrow>Planes</Eyebrow>
       <p className="mt-2 font-display text-2xl text-brand-deep sm:text-3xl">
-        Hagamos <span className="text-brand-signal">crecer</span> tus redes.
+        Hagamos <span className="text-brand-flame italic">crecer</span> tus redes.
       </p>
       <div ref={track} className="no-scrollbar relative -mx-4 mt-4 flex items-center gap-3 overflow-x-auto px-4 py-5 sm:mx-0 sm:px-0 @xl:grid @xl:grid-cols-13 @xl:overflow-visible">
         {(['inicial', 'plus', 'premium'] as const).map((id) => {
@@ -94,18 +95,18 @@ export function PlansPreview({ prices, highlight, texts }: { prices: PricesInput
             <article
               key={id}
               data-plan={id}
-              className={`relative flex shrink-0 flex-col rounded-3xl transition @xl:w-auto ${t.card} ${featured ? 'z-10 w-64 p-5 ring-4 ring-brand-signal/15 @xl:col-span-5 @xl:py-8' : 'w-56 p-4 @xl:col-span-4'} ${highlight === id ? 'outline-3 outline-offset-3 outline-brand-signal/50' : ''}`}
+              className={`relative flex shrink-0 flex-col rounded-3xl transition @xl:w-auto ${t.card} ${featured ? 'z-10 w-64 p-5 ring-4 ring-brand-deep/15 @xl:col-span-5 @xl:py-8' : 'w-56 p-4 @xl:col-span-4'} ${highlight === id ? 'outline-3 outline-offset-3 outline-brand-signal/50' : ''}`}
             >
               <header className="flex items-center justify-between gap-2">
                 <span className={`font-label ${t.label}`}>{plan.name}</span>
-                {featured && <span className="rounded-full bg-white px-2 py-0.5 text-[0.6rem] font-bold text-brand-signal">{tx.get('planes.badge')}</span>}
+                {featured && <span className="rounded-full bg-brand-signal px-2 py-0.5 text-[0.6rem] font-bold text-brand-ink">{tx.get('planes.badge')}</span>}
               </header>
               <p className="mt-3 flex items-end gap-1.5">
                 <span className={`font-display ${featured ? 'text-5xl' : 'text-4xl'} ${t.price}`}>{shownPrice(prices.plans[id])}</span>
                 <span className={`pb-1 text-[0.65rem] font-semibold ${t.muted}`}>{prices.currency} por mes</span>
               </p>
               <p className={`mt-1.5 text-[0.7rem] font-medium ${t.muted}`}>{plan.for}</p>
-              {plan.highlight && <p className="mt-3 rounded-xl bg-brand-signal px-2.5 py-2 text-[0.7rem] font-bold text-white">★ {plan.highlight}</p>}
+              {plan.highlight && <p className="mt-3 rounded-xl bg-brand-signal px-2.5 py-2 text-[0.7rem] font-bold text-brand-ink">★ {plan.highlight}</p>}
               <ul className={`mt-3 flex flex-1 flex-col gap-1.5 border-t pt-3 ${t.rule}`}>
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2 text-[0.65rem] leading-snug font-medium">
@@ -134,7 +135,7 @@ export function AsesoriaPreview({ price, detail, currency, texts }: { price: str
         <div className="col-span-2 flex flex-col gap-2 py-2 pr-2">
           <Eyebrow>Asesoría 1:1</Eyebrow>
           <p className="font-display text-lg text-brand-deep">
-            Una asesoría 1:1, <span className="text-brand-signal">100% personalizada.</span>
+            Una asesoría 1:1, <span className="text-brand-flame italic">100% personalizada.</span>
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-brand-signal px-3 py-1.5 text-[0.7rem] font-bold text-white">{tx.get('asesoria.cta')}</span>
@@ -203,7 +204,7 @@ export function FaqPreview({ items, focus }: { items: FaqItem[]; focus?: number 
     <div className="bg-brand-paper px-4 py-6 sm:px-6">
       <Eyebrow>Preguntas frecuentes</Eyebrow>
       <p className="mt-2 font-display text-2xl text-brand-deep sm:text-3xl">
-        Lo que siempre <span className="text-brand-signal">nos preguntan.</span>
+        Lo que siempre <span className="text-brand-flame italic">nos preguntan.</span>
       </p>
       {visible.length === 0 ? (
         <p className="mt-6 rounded-2xl bg-white p-6 text-center text-sm text-brand-night/60 ring-1 ring-brand-deep/10">Sin preguntas: la sección no se muestra.</p>
@@ -215,8 +216,8 @@ export function FaqPreview({ items, focus }: { items: FaqItem[]; focus?: number 
             return (
               <li key={i} className="border-b border-brand-deep/15">
                 <button type="button" onClick={() => setOpen(on ? -1 : i)} className="flex w-full items-center justify-between gap-4 py-3 text-left">
-                  <span className={`text-sm font-bold ${on ? 'text-brand-signal' : 'text-brand-deep'} ${item.q.trim() ? '' : 'opacity-40'}`}>{item.q.trim() || 'Falta la pregunta'}</span>
-                  <span aria-hidden="true" className={`grid size-6 shrink-0 place-items-center rounded-full text-sm leading-none transition ${on ? 'rotate-45 bg-brand-signal text-white' : 'bg-white text-brand-deep ring-1 ring-brand-deep/15'}`}>
+                  <span className={`text-sm font-bold ${on ? 'text-brand-deep' : 'text-brand-night'} ${item.q.trim() ? '' : 'opacity-40'}`}>{item.q.trim() || 'Falta la pregunta'}</span>
+                  <span aria-hidden="true" className={`grid size-6 shrink-0 place-items-center rounded-full text-sm leading-none transition ${on ? 'rotate-45 bg-brand-signal text-brand-ink' : 'bg-white text-brand-deep ring-1 ring-brand-deep/15'}`}>
                     +
                   </span>
                 </button>
@@ -263,7 +264,7 @@ export function ProjectCardPreview({ project, resolve }: { project: ProjectInput
         {metaOf(project) && <p className="text-xs font-semibold text-brand-night/60">{metaOf(project)}</p>}
         <p className="font-display text-xl text-brand-deep">{project.brand || 'Nombre de la marca'}</p>
         {project.title && <p className="line-clamp-2 text-sm text-brand-night/70">{project.title}</p>}
-        <p className="mt-1 text-xs font-bold text-brand-signal">Ver el proyecto ↗</p>
+        <p className="mt-1 text-xs font-bold text-brand-deep">Ver el proyecto ↗</p>
       </div>
     </div>
   )
@@ -295,7 +296,7 @@ export function ProjectPagePreview({ project, resolve }: { project: ProjectInput
           {project.services.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {project.services.map((s) => (
-                <Chip key={s} className="bg-brand-signal text-white">
+                <Chip key={s} className="bg-brand-signal text-brand-ink">
                   {s}
                 </Chip>
               ))}

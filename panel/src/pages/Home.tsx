@@ -19,7 +19,7 @@ function Card({ title, href, stat, detail, action, onAction, className = '' }: {
   return (
     <section className={`group flex flex-col justify-between gap-6 rounded-3xl bg-white p-6 ring-1 ring-brand-deep/10 transition hover:shadow-lift ${className}`}>
       <div className="flex flex-col gap-2">
-        <a href={href} className="flex items-center justify-between gap-3 text-xs font-bold tracking-widest text-brand-deep/60 uppercase hover:text-brand-signal">
+        <a href={href} className="flex items-center justify-between gap-3 text-xs font-bold tracking-widest text-brand-deep/60 uppercase hover:text-brand-ember">
           {title}
           <span aria-hidden="true" className="text-base transition group-hover:translate-x-1">
             →

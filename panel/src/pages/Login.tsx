@@ -25,7 +25,7 @@ export function Login({ onLogin }: { onLogin: () => void }) {
   return (
     <div className="grid min-h-svh place-items-center bg-brand-night px-4 py-10">
       <form onSubmit={submit} className="w-full max-w-sm rounded-3xl bg-white p-7 shadow-lift sm:p-8">
-        <span role="img" aria-label="Marketing by Clic" className="logo h-8 text-brand-deep" />
+        <img src="/logo-clic-studio.svg" alt="Clic Studio" className="h-14 w-auto" />
         <h1 className="mt-8 text-2xl font-extrabold tracking-tight text-brand-deep">Panel de la web</h1>
         <p className="mt-1 text-sm text-brand-night/60">Blog, proyectos, precios y preguntas frecuentes.</p>
 

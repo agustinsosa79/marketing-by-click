@@ -11,8 +11,8 @@ import type { TextValues } from '../../shared/texts'
 type Area = 'planes' | 'asesoria' | 'sesion'
 
 const SWATCH: Record<PlanId, string> = {
-  inicial: 'bg-white ring-1 ring-brand-deep/20',
-  plus: 'bg-brand-signal',
+  inicial: 'bg-brand-signal',
+  plus: 'bg-brand-deep',
   premium: 'bg-brand-night',
 }
 

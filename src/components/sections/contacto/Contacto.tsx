@@ -6,22 +6,18 @@ import { gsap, useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
 import { deferSetup } from '../../../lib/schedule'
 import { Button } from '../../ui/Button'
-import { Icon } from '../../ui/Icon'
-import { Pointer } from '../../ui/Pointer'
+import { Bubble, Icon } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
 import { Label } from '../../ui/Title'
 
 /**
  * Contacto sobre azul Clic: "¿Hablamos?" de borde a borde (letra por letra) y la invitación a la videollamada.
- * Cierre de la firma "by Clic": el mismo cursor del preloader entra y hace clic sobre el botón (una vez, al llegar).
+ * Burbujas del patrón de marca (manual Clic Studio) en dos esquinas, con un poco de parallax.
  * El footer se descubre por debajo.
  */
 export function Contacto() {
   const ref = useRef<HTMLElement>(null)
   const word = useRef<HTMLHeadingElement>(null)
-  const cta = useRef<HTMLDivElement>(null)
-  const cursor = useRef<HTMLDivElement>(null)
-  const ring = useRef<HTMLSpanElement>(null)
   const reduced = useReducedMotion()
 
   useFitText(word, 1)
@@ -31,29 +27,12 @@ export function Contacto() {
       deferSetup(
         contextSafe!(() => {
           setupReveals(ref.current!)
-          if (reduced || !window.matchMedia('(min-width: 768px)').matches) return
-          gsap.set(cursor.current!.querySelector('svg'), { xPercent: -12.5, yPercent: -8.33 })
-          gsap.set(ring.current, { xPercent: -50, yPercent: -50, scale: 0 })
-
-          // Punto del clic: un poco a la izquierda del centro del botón, relativo a la sección
-          const point = () => {
-            const s = ref.current!.getBoundingClientRect()
-            const b = cta.current!.getBoundingClientRect()
-            return { x: b.left - s.left + b.width * 0.4, y: b.top - s.top + b.height * 0.55, w: s.width, h: s.height }
-          }
-
-          gsap
-            .timeline({ scrollTrigger: { trigger: cta.current, start: 'top 70%', once: true }, delay: 0.6 })
-            .call(() => {
-              const p = point()
-              gsap.set([cursor.current, ring.current], { x: p.x, y: p.y })
-            })
-            .fromTo(cursor.current, { autoAlpha: 0, xPercent: 520, yPercent: 360, rotate: 14 }, { autoAlpha: 1, xPercent: 0, yPercent: 0, rotate: 0, duration: 1, ease: 'power3.inOut' })
-            .to(cursor.current, { scale: 0.78, duration: 0.11, ease: 'power2.in' })
-            .to(cursor.current, { scale: 1, duration: 0.55, ease: 'elastic.out(1, 0.45)' })
-            .fromTo(ring.current, { scale: 0, autoAlpha: 1 }, { scale: 3, autoAlpha: 0, duration: 0.8, ease: 'power2.out' }, '<-0.05')
-            .fromTo(cta.current, { scale: 1 }, { scale: 1.04, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out' }, '<')
-            .to(cursor.current, { autoAlpha: 0, y: '+=24', duration: 0.5, ease: 'power2.in' }, '+=0.5')
+          if (reduced) return
+          // las burbujas flotan a distinta velocidad mientras la sección pasa
+          gsap.utils.toArray<HTMLElement>('[data-bubble]', ref.current).forEach((el) => {
+            const speed = Number(el.dataset.bubble)
+            gsap.fromTo(el, { yPercent: speed, rotate: speed / 10 }, { yPercent: -speed, rotate: -speed / 10, ease: 'none', scrollTrigger: { trigger: ref.current, start: 'top bottom', end: 'bottom top', scrub: true } })
+          })
         }),
       ),
     { scope: ref, dependencies: [reduced] },
@@ -61,6 +40,16 @@ export function Contacto() {
 
   return (
     <Section id={sections.contacto} ref={ref} bg="deep" className="flex min-h-svh flex-col justify-center overflow-hidden px-5 pt-20 pb-8 md:px-10 md:pt-28 md:pb-14">
+      {/* patrón de marca: naranja arriba a la derecha, azul noche abajo a la izquierda (detrás del contenido) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div data-bubble="12" className="absolute top-14 -right-20 w-3/5 sm:w-1/2 md:-top-24 md:-right-24 lg:w-2/5 short:-top-32">
+          <Bubble flip className="w-full fill-brand-signal" />
+        </div>
+        <div data-bubble="18" className="absolute -bottom-20 -left-16 w-1/2 sm:w-1/3 lg:w-1/4">
+          <Bubble className="w-full fill-brand-night" />
+        </div>
+      </div>
+
       <div className="relative">
         <Label tone="deep">{contacto.eyebrow}</Label>
 
@@ -71,12 +60,12 @@ export function Contacto() {
         </h2>
 
         <div className="mt-8 grid grid-cols-1 items-end gap-8 md:mt-12 lg:grid-cols-12">
-          <p data-reveal="lines" className="text-lead font-medium text-brand-haze lg:col-span-6">
+          <p data-reveal="lines" className="text-lead font-medium text-white lg:col-span-6">
             {contacto.text}
           </p>
 
           <div className="flex flex-col items-start gap-6 lg:col-span-5 lg:col-start-8 lg:items-end">
-            <div ref={cta} data-reveal="cta" className="w-full md:w-auto">
+            <div data-reveal className="w-full md:w-auto">
               <Button href={contacto.button.href} label={contacto.button.label} size="lg" variant="white" icon="whatsapp" cursor={contacto.cursor} className="w-full md:w-auto" />
             </div>
             <ul data-reveal="rise" className="flex flex-wrap gap-x-8 gap-y-3 text-sm font-semibold">
@@ -96,11 +85,6 @@ export function Contacto() {
         </div>
       </div>
 
-      {/* firma "by Clic": cursor + onda (solo desktop, una vez) */}
-      <span ref={ring} aria-hidden="true" className="pointer-events-none absolute top-0 left-0 block size-20 scale-0 rounded-full border-2 border-white" />
-      <div ref={cursor} aria-hidden="true" className="pointer-events-none invisible absolute top-0 left-0 w-14">
-        <Pointer className="block w-full overflow-visible" />
-      </div>
     </Section>
   )
 }

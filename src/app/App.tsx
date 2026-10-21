@@ -9,6 +9,7 @@ import { Navbar } from '../components/nav/Navbar'
 import { Hero } from '../components/sections/hero/Hero'
 import { ServicePage } from '../components/services/ServicePage'
 import { Cursor } from '../components/ui/Cursor'
+import { MobileCta } from '../components/ui/MobileCta'
 import { nav, servicios } from '../data/content'
 import { useHydrated } from '../hooks/useHydrated'
 import type { Post } from '../lib/blog'
@@ -97,6 +98,7 @@ export function App({ route, post = null }: AppProps) {
       <Page menuOpen={menuOpen} pageRef={pageRef}>
         {content}
       </Page>
+      <MobileCta hidden={menuOpen} />
       <Cursor />
     </LenisProvider>
   )

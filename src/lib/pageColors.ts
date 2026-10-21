@@ -14,16 +14,19 @@ export const SECTION_TEXT: Record<PageBg, string> = {
   deep: 'text-white',
 }
 
-/** Énfasis de los títulos: solo color, nunca cursiva. Sobre azul Clic el señal no contrasta: va bruma. */
+/**
+ * Énfasis de los títulos: bold italic (manual de marca) + color.
+ * Naranja sobre claro y sobre noche; sobre el azul Clic el naranja no contrasta: va en blanco, solo con la itálica.
+ */
 export const EMPHASIS: Record<PageBg, string> = {
-  paper: 'text-brand-signal',
-  night: 'text-brand-signal',
-  deep: 'text-brand-haze',
+  paper: 'italic text-brand-flame',
+  night: 'italic text-brand-signal',
+  deep: 'italic text-white',
 }
 
-/** Texto secundario de cada fondo. */
+/** Texto secundario de cada fondo (sobre el azul Clic la bruma no llega a AA: va blanco). */
 export const MUTED: Record<PageBg, string> = {
-  paper: 'text-brand-night/70',
+  paper: 'text-brand-night/75',
   night: 'text-brand-haze',
-  deep: 'text-brand-haze',
+  deep: 'text-white',
 }

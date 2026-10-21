@@ -10,7 +10,7 @@ import { Icon } from '../../ui/Icon'
 
 /**
  * Footer mínimo con revelado tipo telón: queda sticky debajo de <main> (desktop) y aparece cuando
- * la última sección sube. El wordmark "MARKETING BY CLIC" entra letra por letra.
+ * la última sección sube. El wordmark "clicstudio" (como el logo) entra letra por letra.
  */
 export function Footer() {
   const ref = useRef<HTMLElement>(null)
@@ -75,7 +75,8 @@ export function Footer() {
         <p className="sr-only">{brand.name}</p>
         <p ref={wordmark} aria-hidden="true" className="font-wordmark leading-none whitespace-nowrap">
           <span data-fit-line className="inline-block">
-            {brand.wordmark.join(' ')}
+            <span className="font-bold">{brand.wordmark[0]}</span>
+            <span className="font-normal text-brand-haze">{brand.wordmark[1]}</span>
           </span>
         </p>
 
@@ -111,7 +112,7 @@ export function Footer() {
               <span>{footer.copyright}</span>
               <button type="button" onClick={() => scrollTo(0, { duration: 2.2 })} className="group flex items-center gap-2 font-semibold whitespace-nowrap transition-colors duration-300 hover:text-white">
                 <span className="link-underline">{footer.backToTop}</span>
-                <span className="grid size-8 place-items-center rounded-full bg-white/10 transition duration-500 ease-expo group-hover:-translate-y-1 group-hover:bg-brand-signal">
+                <span className="grid size-8 place-items-center rounded-full bg-white/10 transition duration-500 ease-expo group-hover:-translate-y-1 group-hover:bg-brand-signal group-hover:text-brand-ink">
                   <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-none stroke-current stroke-2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 19V5M6 11l6-6 6 6" />
                   </svg>

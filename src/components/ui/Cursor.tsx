@@ -15,6 +15,7 @@ export function Cursor() {
   const dot = useRef<HTMLDivElement>(null)
   const ring = useRef<HTMLDivElement>(null)
   const bubble = useRef<HTMLDivElement>(null)
+  const layer = useRef<HTMLDivElement>(null)
   const [label, setLabel] = useState('')
 
   useGSAP(
@@ -22,6 +23,24 @@ export function Cursor() {
       if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
       const root = document.documentElement
       root.classList.add('has-cursor')
+
+      // El cursor vive en la capa superior del navegador (popover): así queda por encima de las ventanas (<dialog>),
+      // que también se dibujan ahí. Cada vez que se abre una ventana, se vuelve a subir para quedar arriba de ella.
+      const top = layer.current
+      const raise = () => {
+        if (!top?.showPopover) return
+        try {
+          if (top.matches(':popover-open')) top.hidePopover()
+          top.showPopover()
+        } catch {
+          // navegador sin popover: el cursor queda en la página (debajo de las ventanas)
+        }
+      }
+      raise()
+      const watchDialogs = new MutationObserver((records) => {
+        if (records.some((r) => r.target instanceof HTMLDialogElement && r.target.open)) raise()
+      })
+      watchDialogs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] })
 
       const follow = (el: HTMLElement | null, duration: number) => ({
         x: gsap.quickTo(el, 'x', { duration, ease: 'power3' }),
@@ -104,6 +123,7 @@ export function Cursor() {
 
       return () => {
         root.classList.remove('has-cursor')
+        watchDialogs.disconnect()
         window.removeEventListener('pointermove', onMove)
         document.removeEventListener('pointerover', onOver)
         root.removeEventListener('pointerleave', onLeaveWindow)
@@ -116,7 +136,7 @@ export function Cursor() {
   )
 
   return (
-    <>
+    <div ref={layer} popover="manual" aria-hidden="true" className="pointer-events-none fixed inset-0 m-0 size-full overflow-visible border-0 bg-transparent p-0">
       <div ref={ring} aria-hidden="true" className="pointer-events-none invisible fixed top-0 left-0 z-100 hidden will-change-transform md:block">
         <div className="size-11 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-brand-signal bg-brand-signal/15 ring-1 ring-white/70" />
       </div>
@@ -124,10 +144,10 @@ export function Cursor() {
         <div className="size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-signal ring-2 ring-white" />
       </div>
       <div ref={bubble} aria-hidden="true" className="pointer-events-none fixed top-0 left-0 z-100 hidden scale-0 will-change-transform md:block">
-        <div className="grid size-22 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-brand-signal text-sm font-bold text-white ring-2 ring-white">
+        <div className="grid size-22 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-brand-signal text-sm font-bold text-brand-ink ring-2 ring-white">
           {label}
         </div>
       </div>
-    </>
+    </div>
   )
 }

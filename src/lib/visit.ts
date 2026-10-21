@@ -7,3 +7,4 @@
 export function cameFromSite() {
   return typeof document !== 'undefined' && document.documentElement.hasAttribute('data-from-site')
 }
+

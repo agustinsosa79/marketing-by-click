@@ -139,7 +139,7 @@ export function App() {
       <header className="sticky top-0 z-30 border-b border-brand-deep/10 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <a href="#/" onClick={guard} className="flex shrink-0 items-center gap-3">
-            <span role="img" aria-label="Marketing by Clic" className="logo h-7 text-brand-deep" />
+            <img src="/logo-clic-studio.svg" alt="Clic Studio" className="h-9 w-auto" />
             <span className="hidden border-l border-brand-deep/15 pl-3 text-sm font-bold text-brand-deep lg:inline">Panel</span>
           </a>
           <nav aria-label="Secciones del panel" className="hidden items-center gap-1 lg:flex">

@@ -75,9 +75,9 @@ export function BlogIndex() {
                 <span aria-hidden="true" className="block h-0.5 w-6 rounded-full bg-brand-signal" />
                 {blog.eyebrow}
               </p>
-              <h1 className="intro-delay-1 mt-5 animate-intro font-display text-hero text-brand-deep">
+              <h1 className="intro-delay-1 mt-5 animate-intro font-display text-hero text-brand-night">
                 {before}
-                <span className="text-brand-signal">{em}</span>
+                <span className="italic text-brand-flame">{em}</span>
                 {after}
               </h1>
             </div>
@@ -99,11 +99,11 @@ export function BlogIndex() {
               </a>
               <div className="flex flex-col items-start gap-4 px-3 pb-4 lg:col-span-5 lg:px-0 lg:pr-8 lg:pb-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <CategoryChip className="bg-brand-signal text-white">{blog.featured}</CategoryChip>
+                  <CategoryChip className="bg-brand-signal text-brand-ink">{blog.featured}</CategoryChip>
                   <CategoryChip className="bg-brand-paper text-brand-deep">{featured.category}</CategoryChip>
                 </div>
-                <h2 className="font-display text-big text-brand-deep">
-                  <a href={postUrl(featured.slug)} className="transition-colors duration-500 hover:text-brand-signal">
+                <h2 className="font-display text-big text-brand-night">
+                  <a href={postUrl(featured.slug)} className="transition-colors duration-500 hover:text-brand-flame">
                     {featured.title}
                   </a>
                 </h2>

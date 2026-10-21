@@ -31,9 +31,9 @@ export function PostCard({ post, headingLevel: Heading = 'h3' }: { post: PostMet
         </div>
         <div className="flex flex-col gap-3">
           <PostMetaLine post={post} className="text-brand-night/60" />
-          <Heading className="font-display text-2xl text-brand-deep transition-colors duration-500 group-hover:text-brand-signal md:text-3xl">{post.title}</Heading>
+          <Heading className="font-display text-2xl text-brand-deep transition-colors duration-500 group-hover:text-brand-flame md:text-3xl">{post.title}</Heading>
           <p className="line-clamp-2 text-base text-brand-night/70">{post.description}</p>
-          <span className="flex items-center gap-2 text-sm font-bold text-brand-signal">
+          <span className="flex items-center gap-2 text-sm font-bold text-brand-deep">
             {blog.read}
             <Arrow className="size-4 transition-transform duration-500 ease-expo group-hover:rotate-45" />
           </span>

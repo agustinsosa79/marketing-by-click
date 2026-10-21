@@ -13,9 +13,9 @@ export function NotFound() {
     <>
       <main id="contenido" className="relative isolate z-10 flex min-h-svh flex-col justify-center bg-brand-paper px-5 pt-32 pb-20 md:px-10">
         <p className="animate-intro font-wordmark text-wordmark text-brand-deep/10 md:text-wordmark-wide">404</p>
-        <h1 className="intro-delay-1 mt-4 animate-intro font-display text-title text-brand-deep lg:w-2/3">
+        <h1 className="intro-delay-1 mt-4 animate-intro font-display text-title text-brand-night lg:w-2/3">
           {before}
-          <span className="text-brand-signal">{em}</span>
+          <span className="italic text-brand-flame">{em}</span>
           {after}
         </h1>
         <p className="intro-delay-2 mt-5 animate-intro text-lead font-medium text-brand-night/75">{blog.notFound.text}</p>

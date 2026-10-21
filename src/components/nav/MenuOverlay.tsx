@@ -66,7 +66,7 @@ export function MenuOverlay({ open, onClose, pageRef, toggleRef, isHome }: MenuO
 
       {/* la navbar se va al abrir: acá quedan la marca y el botón de cerrar */}
       <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-5 pt-5 md:px-10 md:pt-7">
-        <Logo data-menu-secondary className="w-28 text-white md:w-32" />
+        <Logo data-menu-secondary className="h-12 w-auto md:h-14" />
         <button
           data-menu-secondary
           type="button"
@@ -75,7 +75,7 @@ export function MenuOverlay({ open, onClose, pageRef, toggleRef, isHome }: MenuO
           className="group flex items-center gap-3 rounded-full bg-white/10 py-1.5 pr-1.5 pl-5 text-sm font-bold ring-1 ring-white/15 transition duration-300 ease-expo hover:bg-white hover:text-brand-night"
         >
           {nav.closeLabel}
-          <span className="grid size-9 place-items-center rounded-full bg-brand-signal text-white transition-transform duration-500 ease-expo group-hover:rotate-90">
+          <span className="grid size-9 place-items-center rounded-full bg-brand-signal text-brand-ink transition-transform duration-500 ease-expo group-hover:rotate-90">
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-none stroke-current stroke-2" strokeLinecap="round">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>

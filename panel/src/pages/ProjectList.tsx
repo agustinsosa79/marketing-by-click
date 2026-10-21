@@ -73,7 +73,7 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
 
       <p className="rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-brand-night/70 ring-1 ring-brand-deep/10">
         <b className="text-brand-deep">El orden de esta lista es el orden en la web.</b> Los {HOME_LIMIT} primeros publicados aparecen en la página principal (
-        <span className="font-bold text-brand-signal">★ En el inicio</span>); todos se ven en la página de proyectos. Para destacar uno, tocá <b className="text-brand-deep">Al principio</b>.
+        <span className="font-bold text-brand-ember">★ En el inicio</span>); todos se ven en la página de proyectos. Para destacar uno, tocá <b className="text-brand-deep">Al principio</b>.
       </p>
 
       {error && <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">{error}</p>}
@@ -148,7 +148,7 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
                       </Badge>
                     ))}
                   </div>
-                  <a href={editHash} className="line-clamp-2 text-base leading-snug font-extrabold tracking-tight text-brand-deep hover:text-brand-signal sm:text-lg">
+                  <a href={editHash} className="line-clamp-2 text-base leading-snug font-extrabold tracking-tight text-brand-deep hover:text-brand-ember sm:text-lg">
                     {p.brand}
                   </a>
                   {p.title && <p className="line-clamp-1 text-sm text-brand-night/60 max-sm:hidden">{p.title}</p>}

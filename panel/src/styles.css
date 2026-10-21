@@ -1,16 +1,44 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-brand-night: #0b1435;
-  --color-brand-navy: #16224f;
-  --color-brand-deep: #223a8d;
-  --color-brand-signal: #3d5ef5;
-  --color-brand-haze: #c9d3f5;
-  --color-brand-paper: #f4f6fc;
-  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  /* Paleta Clic Studio (la misma de la web: src/styles/index.css) */
+  --color-brand-ink: #052b52;
+  --color-brand-night: #063c73;
+  --color-brand-navy: #0c4a87;
+  --color-brand-deep: #2673bf;
+  --color-brand-signal: #f2750e;
+  --color-brand-flame: #e0660a;
+  --color-brand-ember: #a15a1f;
+  --color-brand-haze: #d3e4f6;
+  --color-brand-paper: #f5f8fc;
+  --font-sans: 'Carlito', 'Calibri', ui-sans-serif, system-ui, sans-serif;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
   --shadow-soft: 0 0.0625rem 0.125rem rgb(0 0 0 / 0.05), 0 0.5rem 1.5rem -0.75rem rgb(0 0 0 / 0.12);
   --shadow-lift: 0 0.125rem 0.25rem rgb(0 0 0 / 0.06), 0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.22);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Carlito (= Calibri del manual de marca), alojada en el panel */
+@font-face {
+  font-family: 'Carlito';
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/carlito-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Carlito';
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/carlito-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Carlito';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/carlito-700-italic.woff2') format('woff2');
 }
 
 @layer base {
@@ -32,8 +60,8 @@
 @layer components {
   /* Títulos como en el sitio: Montserrat ExtraBold, tracking cerrado (vistas previas) */
   .font-display {
-    font-weight: 800;
-    letter-spacing: -0.035em;
+    font-weight: 700;
+    letter-spacing: -0.025em;
     line-height: 1.04;
     text-wrap: balance;
   }
@@ -52,13 +80,6 @@
     display: none;
   }
 
-  /* Logo como máscara: toma el color del texto (igual que en el sitio) */
-  .logo {
-    display: block;
-    aspect-ratio: 640 / 178;
-    background: currentColor;
-    mask: url('/logo.webp') no-repeat center / contain;
-  }
 
   /* Vista previa de la nota: mismos estilos que el cuerpo de las notas en el sitio */
   .prose {

@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs'
 
 const out = process.env.TEMP.split(String.fromCharCode(92)).join('/') + '/qa'
 const base = process.argv[2] ?? 'http://localhost:4173'
-const T = [0.5, 1.2, 1.6, 1.95, 2.2, 2.6, 3.2, 3.9, 4.3, 4.7, 5.3, 6.5]
+const T = [0.5, 1.2, 1.8, 2.1, 2.35, 2.6, 2.9, 3.3, 3.9, 4.6, 5.0, 6.5]
 const b = await chromium.launch()
 const rows = []
 for (const [w, h, pre] of [[1440, 900, 'd'], [390, 844, 'm']]) {

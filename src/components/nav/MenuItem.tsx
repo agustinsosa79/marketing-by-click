@@ -26,7 +26,7 @@ export function MenuItem({ label, href, inPage, active, dimmed, onHover, onSelec
       onFocus={onHover}
       className={`group flex items-center gap-4 py-0.5 transition duration-500 ease-expo focus-visible:outline-offset-8 md:gap-6 ${dimmed ? 'opacity-50' : 'opacity-100'} ${active ? 'translate-x-2 md:translate-x-4' : ''}`}
     >
-      <span className={`grid size-9 shrink-0 place-items-center rounded-full bg-brand-signal text-white transition-transform duration-500 ease-expo md:size-12 ${active ? 'scale-100 rotate-0' : 'scale-0 -rotate-90'}`}>
+      <span className={`grid size-9 shrink-0 place-items-center rounded-full bg-brand-signal text-brand-ink transition-transform duration-500 ease-expo md:size-12 ${active ? 'scale-100 rotate-0' : 'scale-0 -rotate-90'}`}>
         <Arrow className="size-4 md:size-6" />
       </span>
       <span className={`font-display text-menu transition-transform duration-500 ease-expo ${active ? 'translate-x-0' : '-translate-x-13 md:-translate-x-18'}`}>

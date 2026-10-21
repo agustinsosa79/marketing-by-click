@@ -1,17 +1,66 @@
 import type { ComponentProps } from 'react'
 import type { Service } from '../../data/content'
+import { LOGO } from './logoPaths'
 
 /** Íconos dibujados a mano de la marca, como máscara: toman el color del texto. */
 export function Icon({ name, className = '' }: { name: 'instagram' | 'whatsapp'; className?: string }) {
   return <span aria-hidden="true" className={`icon-mask icon-${name} ${className}`} />
 }
 
-export function Logo({ className = '', ...rest }: ComponentProps<'span'>) {
-  return <span aria-hidden="true" className={`icon-mask logo-mask block ${className}`} {...rest} />
+type MarkProps = ComponentProps<'svg'> & {
+  /** Relleno de la burbuja (clase fill-*). Por defecto naranja, como sobre azul noche en el manual. */
+  bubble?: string
+  /** Relleno de las letras (clase fill-*). */
+  letters?: string
 }
 
-export function Isotipo({ className = '', ...rest }: ComponentProps<'span'>) {
-  return <span aria-hidden="true" className={`icon-mask isotipo-mask block ${className}`} {...rest} />
+/** Logo completo (manual Clic Studio): burbuja con "clic / studio" adentro. */
+export function Logo({ bubble = 'fill-brand-signal', letters = 'fill-white', className = '', ...rest }: MarkProps) {
+  return (
+    <svg viewBox={LOGO.full.viewBox} aria-hidden="true" className={`block ${className}`} {...rest}>
+      <path data-logo-bubble d={LOGO.full.bubble} className={bubble} />
+      <path data-logo-letters d={LOGO.full.text} className={letters} />
+    </svg>
+  )
+}
+
+/**
+ * Isotipo: burbuja con la "C". `rays` agrega las tres líneas del clic (variante secundaria del manual,
+ * "uso en animaciones").
+ */
+export function Isotipo({ bubble = 'fill-brand-signal', letters = 'fill-white', rays = false, className = '', ...rest }: MarkProps & { rays?: boolean }) {
+  return (
+    <svg viewBox={LOGO.iso.viewBox} aria-hidden="true" className={`block overflow-visible ${className}`} {...rest}>
+      <path data-logo-bubble d={LOGO.iso.bubble} className={bubble} />
+      <path data-logo-letters d={LOGO.iso.text} className={letters} />
+      {rays && (
+        <g data-logo-rays className={`stroke-current ${letters.replace('fill-', 'text-')}`} strokeWidth="26" strokeLinecap="round" fill="none">
+          <path d="M432 196L472 160" />
+          <path d="M452 276H506" />
+          <path d="M432 356L472 392" />
+        </g>
+      )}
+    </svg>
+  )
+}
+
+/** Burbuja sola: forma del patrón de marca (manual). Decorativa; toma el color con una clase fill-*. */
+export function Bubble({ className = '', flip = false, ...rest }: ComponentProps<'svg'> & { flip?: boolean }) {
+  return (
+    <svg viewBox={LOGO.full.viewBox} aria-hidden="true" className={`block ${flip ? '-scale-x-100' : ''} ${className}`} {...rest}>
+      <path d={LOGO.full.bubble} />
+    </svg>
+  )
+}
+
+/** Wordmark en línea "clicstudio": "clic" bold + "studio" regular (versión reducida del manual). */
+export function Wordmark({ className = '', ...rest }: ComponentProps<'svg'>) {
+  return (
+    <svg viewBox={LOGO.wordmark.viewBox} aria-hidden="true" className={`block fill-current ${className}`} {...rest}>
+      <path d={LOGO.wordmark.clic} />
+      <path d={LOGO.wordmark.studio} />
+    </svg>
+  )
 }
 
 /** Íconos de línea de los servicios (24×24, trazo redondeado, color del texto). */

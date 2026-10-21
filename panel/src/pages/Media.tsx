@@ -181,7 +181,7 @@ function ImageCard({ slot, value, version, onSaved, onDirty, notify }: CardProps
         )}
         <figure className={large ? 'flex-1' : 'mx-auto w-full max-w-60'}>
           <img src={shown} alt="" className={`w-full bg-brand-paper object-cover ring-1 ring-brand-deep/10 ${slot.aspect} ${slot.round ? 'rounded-full' : 'rounded-2xl'} ${large ? 'ring-2 ring-brand-signal' : ''}`} />
-          {large && <figcaption className="mt-1 text-center text-[0.65rem] font-bold text-brand-signal">Nueva · {large.width}×{large.height}</figcaption>}
+          {large && <figcaption className="mt-1 text-center text-[0.65rem] font-bold text-brand-ember">Nueva · {large.width}×{large.height}</figcaption>}
         </figure>
       </div>
       <p className="text-xs leading-relaxed text-brand-night/60">{slot.hint}</p>

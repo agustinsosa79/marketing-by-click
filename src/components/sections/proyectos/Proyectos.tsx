@@ -2,86 +2,107 @@ import { useRef } from 'react'
 import { proyectos, sections } from '../../../data/content'
 import { useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
-import { HOME_LIMIT, homeProjects } from '../../../lib/projects'
+import { homeProjects, projectUrl, type Project } from '../../../lib/projects'
 import { deferSetup } from '../../../lib/schedule'
-import { ProjectCard } from '../../projects/ProjectCard'
+import { CategoryChip } from '../../blog/PostCard'
 import { Button } from '../../ui/Button'
+import { Arrow } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
 import { Label, Title } from '../../ui/Title'
 
-/** Acceso al portfolio completo: siempre visible, es la salida principal de la sección. */
-function AllProjectsButton() {
-  return <Button href="/proyectos" label={proyectos.all} variant="white" cursor={proyectos.cursor} />
-}
-
-/** Completa la grilla mientras haya menos proyectos que lugares: invita a ser el próximo. */
-function NextProjectCard() {
+/** Un caso: foto grande y, al lado, la marca, qué se hizo y el acceso al proyecto. Toda la tarjeta es un link. */
+function CaseCard({ project, solo }: { project: Project; solo: boolean }) {
   return (
-    <article className="flex h-full min-h-72 flex-col justify-between gap-8 rounded-4xl border-2 border-dashed border-white/20 bg-brand-navy/40 p-6 md:p-8">
-      <span aria-hidden="true" className="grid size-14 place-items-center rounded-2xl bg-white/10 font-display text-3xl text-brand-haze">
-        +
-      </span>
-      <div className="flex flex-col items-start gap-4">
-        <h3 className="font-display text-3xl text-white md:text-4xl">{proyectos.next.title}</h3>
-        <p className="text-base text-brand-haze md:text-lg">{proyectos.next.text}</p>
-        <Button href={proyectos.next.cta.href} label={proyectos.next.cta.label} variant="signal" icon="whatsapp" cursor="Escribinos" />
+    <a
+      href={projectUrl(project.slug)}
+      data-cursor={proyectos.cursor}
+      className={`group grid shrink-0 snap-start grid-cols-1 overflow-hidden rounded-4xl bg-brand-navy ring-1 ring-white/10 transition duration-500 ease-expo hover:ring-white/30 lg:grid-cols-12 ${solo ? 'w-full' : 'w-11/12 md:w-4/5 lg:w-3/4'}`}
+    >
+      <div className="relative aspect-4/3 overflow-hidden bg-brand-night lg:col-span-7 lg:aspect-auto lg:min-h-96 short:min-h-80">
+        <img
+          src={project.cover.src}
+          alt={project.cover.alt}
+          width={project.cover.width}
+          height={project.cover.height}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 size-full object-cover transition-transform duration-1000 ease-expo group-hover:scale-105"
+        />
       </div>
-    </article>
+      <div className="flex flex-col gap-4 p-6 md:p-8 lg:col-span-5 lg:justify-center lg:p-10">
+        {project.services.length > 0 && (
+          <ul className="flex flex-wrap gap-1.5">
+            {project.services.map((s) => (
+              <li key={s}>
+                <CategoryChip className="bg-white text-brand-deep">{s}</CategoryChip>
+              </li>
+            ))}
+          </ul>
+        )}
+        <h3 className="font-display text-big text-white">{project.brand}</h3>
+        {project.title && <p className="text-lg text-brand-haze">{project.title}</p>}
+        <span className="mt-2 flex items-center gap-2 font-bold text-white">
+          <span className="link-underline">{proyectos.view}</span>
+          <Arrow className="size-4 transition-transform duration-500 ease-expo group-hover:rotate-45" />
+        </span>
+      </div>
+    </a>
   )
 }
 
-// Proporción de las portadas según cuántas columnas hay (la sección entra en una pantalla)
-const IMAGE: Record<number, string> = {
-  2: 'aspect-4/3 lg:aspect-2/1 short:aspect-5/2',
-  3: 'aspect-4/3 lg:aspect-3/2 short:aspect-2/1',
-}
-
 /**
- * Proyectos (inicio): portfolio en tarjetas. Los primeros del orden elegido en el panel (hasta HOME_LIMIT),
- * cada uno en su tarjeta, + el botón al portfolio completo. Si todavía hay menos proyectos que lugares,
- * la grilla se completa con una tarjeta para ser el próximo (nunca queda un hueco).
+ * Proyectos (inicio): una tira horizontal de casos con foto grande (los primeros del orden elegido en el panel).
+ * Con un solo proyecto, el caso ocupa todo el ancho; con más, se desliza con snap (dedo, trackpad o las flechas)
+ * y el siguiente asoma a la derecha. Arriba, una frase y el acceso al portfolio completo.
  */
 export function Proyectos() {
   const ref = useRef<HTMLElement>(null)
+  const track = useRef<HTMLDivElement>(null)
   useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
 
   if (homeProjects.length === 0) return null
-  const withNext = homeProjects.length < HOME_LIMIT
-  const columns = Math.min(HOME_LIMIT, homeProjects.length + (withNext ? 1 : 0))
+  const solo = homeProjects.length === 1
+
+  const move = (dir: 1 | -1) => {
+    const el = track.current
+    if (!el) return
+    const card = el.firstElementChild as HTMLElement | null
+    el.scrollBy({ left: dir * ((card?.offsetWidth ?? el.clientWidth) + 20), behavior: 'smooth' })
+  }
 
   return (
-    <Section id={sections.proyectos} ref={ref} bg="night" className="flex min-h-svh flex-col justify-center overflow-hidden px-5 pt-20 pb-8 md:px-10 md:pt-28 md:pb-14 short:pt-20 short:pb-8">
-      <div className="grid grid-cols-1 items-end gap-5 lg:grid-cols-12 lg:gap-10">
-        <div className="flex flex-col gap-4 lg:col-span-7">
+    <Section id={sections.proyectos} ref={ref} bg="night" className="flex min-h-svh flex-col justify-center overflow-hidden pt-20 pb-10 md:pt-28 md:pb-16 short:pt-20 short:pb-8">
+      <div className="flex flex-col gap-5 px-5 md:px-10 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+        <div className="flex flex-col gap-4">
           <Label tone="night">{proyectos.eyebrow}</Label>
           <Title title={proyectos.title} tone="night" />
         </div>
-        <div className="flex flex-col items-start gap-5 lg:col-span-5">
-          <p data-reveal="rise" className="text-base font-medium text-brand-haze md:text-lead">
-            {proyectos.text}
-          </p>
-          <div data-reveal="cta">
-            <AllProjectsButton />
-          </div>
+        <div data-reveal className="flex shrink-0 items-center gap-3">
+          <Button href="/proyectos" label={proyectos.all} variant="white" cursor={proyectos.cursor} />
+          {!solo && (
+            <div className="hidden gap-2 lg:flex">
+              {([-1, 1] as const).map((dir) => (
+                <button
+                  key={dir}
+                  type="button"
+                  onClick={() => move(dir)}
+                  aria-label={dir < 0 ? 'Proyecto anterior' : 'Proyecto siguiente'}
+                  className="grid size-12 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/15 transition duration-300 ease-expo hover:bg-white hover:text-brand-night active:scale-95"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className={`size-5 fill-none stroke-current stroke-2 ${dir < 0 ? 'rotate-180' : ''}`} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      <ul className={`mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:mt-6 short:mt-5 ${columns === 3 ? 'lg:grid-cols-3' : ''}`}>
-        {homeProjects.map((p, i) => (
-          <li key={p.slug} data-reveal="fade" data-reveal-delay={i * 0.08}>
-            <ProjectCard project={p} tone="night" boxed imageClass={IMAGE[columns] ?? IMAGE[2]} />
-          </li>
+      <div ref={track} data-reveal className="no-scrollbar mt-8 flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 md:mt-10 md:scroll-px-10 md:px-10 short:mt-6">
+        {homeProjects.map((p) => (
+          <CaseCard key={p.slug} project={p} solo={solo} />
         ))}
-        {withNext && (
-          <li data-reveal="fade" data-reveal-delay={homeProjects.length * 0.08}>
-            <NextProjectCard />
-          </li>
-        )}
-      </ul>
-
-      {/* Celular: las tarjetas van una debajo de otra; el acceso al portfolio también queda al final */}
-      <div className="mt-8 md:hidden">
-        <AllProjectsButton />
       </div>
     </Section>
   )

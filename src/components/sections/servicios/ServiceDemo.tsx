@@ -93,13 +93,13 @@ export function ServiceDemo({ name, active }: { name: Service['icon']; active: b
                 ))}
               </div>
             </div>
-            <span data-heart className="absolute -top-4 -right-5 grid size-11 place-items-center rounded-full bg-white text-brand-signal shadow-lift">
+            <span data-heart className="absolute -top-4 -right-5 grid size-11 place-items-center rounded-full bg-white text-brand-flame shadow-lift">
               <svg viewBox="0 0 24 24" className="size-5 fill-current">
                 <path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2 0 3.6 1.1 5.3 3 1.7-1.9 3.3-3 5.3-3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z" />
               </svg>
             </span>
             <span data-badge className="absolute -bottom-3 -left-12 flex items-center gap-2 rounded-full bg-white py-1.5 pr-3 pl-1.5 text-xs font-bold text-brand-deep shadow-lift">
-              <span className="grid size-6 place-items-center rounded-full bg-brand-signal text-white">
+              <span className="grid size-6 place-items-center rounded-full bg-brand-signal text-brand-ink">
                 <svg viewBox="0 0 24 24" className="size-3 translate-x-px fill-current">
                   <path d="M7 4v16l13-8z" />
                 </svg>
@@ -136,10 +136,10 @@ export function ServiceDemo({ name, active }: { name: Service['icon']; active: b
               <span data-guide className="absolute inset-8 rounded-full border border-white/25" />
               <span data-axis-x className="absolute inset-x-0 top-1/2 h-px bg-white/30" />
               <span data-axis-y className="absolute inset-y-0 left-1/2 w-px bg-white/30" />
-              <Isotipo data-mark className="relative w-20 text-white md:w-24" />
+              <Isotipo data-mark rays className="relative w-20 md:w-24" />
             </div>
             <div className="hidden gap-2 md:flex">
-              {['bg-brand-night', 'bg-brand-deep ring-1 ring-white/40', 'bg-brand-signal', 'bg-brand-haze', 'bg-brand-paper'].map((c) => (
+              {['bg-brand-signal', 'bg-brand-ember', 'bg-brand-night ring-1 ring-white/40', 'bg-brand-deep ring-1 ring-white/40', 'bg-brand-paper'].map((c) => (
                 <span key={c} data-swatch className={`size-8 rounded-full ${c}`} />
               ))}
             </div>

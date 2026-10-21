@@ -47,11 +47,11 @@ function TextFieldEditor({ field, value, onChange, onRestore }: FieldProps) {
     <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
       <label htmlFor={field.kind === 'list' ? undefined : id} className="flex items-center gap-2 text-sm font-bold text-brand-deep">
         {field.label}
-        {modified && <span className="rounded-full bg-brand-signal/10 px-2 py-0.5 text-[0.65rem] font-bold text-brand-signal">Editado</span>}
+        {modified && <span className="rounded-full bg-brand-signal/10 px-2 py-0.5 text-[0.65rem] font-bold text-brand-ember">Editado</span>}
       </label>
       <div className="flex items-center gap-3">
         {modified && (
-          <button type="button" onClick={onRestore} className="text-xs font-bold text-brand-deep underline-offset-2 hover:text-brand-signal hover:underline">
+          <button type="button" onClick={onRestore} className="text-xs font-bold text-brand-deep underline-offset-2 hover:text-brand-ember hover:underline">
             Restaurar original
           </button>
         )}
@@ -116,7 +116,7 @@ function TextFieldEditor({ field, value, onChange, onRestore }: FieldProps) {
             type="button"
             disabled={items.length >= field.maxItems}
             onClick={() => set([...items, ''])}
-            className="rounded-full border-2 border-dashed border-brand-deep/20 px-4 py-2 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-signal disabled:opacity-40"
+            className="rounded-full border-2 border-dashed border-brand-deep/20 px-4 py-2 text-sm font-bold text-brand-deep transition hover:border-brand-signal hover:text-brand-ember disabled:opacity-40"
           >
             + Agregar ítem
           </button>
@@ -296,7 +296,7 @@ export function Texts({ notify }: { notify: (t: ToastData) => void }) {
             >
               {s.groups.length === 0 && <Lock />}
               {s.label}
-              {n > 0 && <span className={`rounded-full px-1.5 text-xs ${on ? 'bg-white/20' : 'bg-brand-signal/10 text-brand-signal'}`}>{n}</span>}
+              {n > 0 && <span className={`rounded-full px-1.5 text-xs ${on ? 'bg-white/20' : 'bg-brand-signal/10 text-brand-ember'}`}>{n}</span>}
             </button>
           )
         })}

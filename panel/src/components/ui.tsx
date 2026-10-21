@@ -3,7 +3,7 @@ import { useEffect, useRef, type ButtonHTMLAttributes, type ReactNode } from 're
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger'
 
 const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-brand-signal text-white hover:bg-brand-deep',
+  primary: 'bg-brand-signal text-brand-ink hover:bg-brand-night hover:text-white',
   secondary: 'bg-white text-brand-night ring-1 ring-brand-deep/15 hover:ring-brand-deep/40',
   ghost: 'text-brand-deep hover:bg-brand-deep/5',
   danger: 'bg-red-700 text-white hover:bg-red-800',
@@ -147,7 +147,7 @@ export function Toast({ toast, onClose }: { toast: ToastData | null; onClose: ()
     // aviso emergente arriba al centro: entra con un "pop" y, si es una confirmación, se va solo (barra de tiempo)
     <div role="status" className="pointer-events-none fixed inset-x-4 top-20 z-50 flex justify-center sm:top-24">
       <div key={toast.title} className={`toast-pop pointer-events-auto relative flex w-full max-w-md gap-3 overflow-hidden rounded-2xl p-4 shadow-lift ring-1 ${ok ? 'bg-brand-night text-white ring-white/10' : 'bg-white text-red-800 ring-red-200'}`}>
-        <span aria-hidden="true" className={`toast-check grid size-9 shrink-0 place-items-center rounded-full text-base font-black ${ok ? 'bg-brand-signal' : 'bg-red-100'}`}>
+        <span aria-hidden="true" className={`toast-check grid size-9 shrink-0 place-items-center rounded-full text-base font-black ${ok ? 'bg-brand-signal text-brand-ink' : 'bg-red-100'}`}>
           {ok ? '✓' : '!'}
         </span>
         {ok && <span aria-hidden="true" className="toast-timer absolute inset-x-0 bottom-0 h-1 origin-left bg-brand-signal" />}

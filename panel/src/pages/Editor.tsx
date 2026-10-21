@@ -140,7 +140,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
   return (
     <div className="flex flex-col gap-6 max-lg:pb-24">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <button type="button" onClick={back} className="text-sm font-bold text-brand-deep hover:text-brand-signal">
+        <button type="button" onClick={back} className="text-sm font-bold text-brand-deep hover:text-brand-ember">
           ← Notas
         </button>
         <p className="text-sm font-semibold text-brand-night/50">{dirty ? 'Cambios sin guardar' : editing ? 'Sin cambios' : ''}</p>

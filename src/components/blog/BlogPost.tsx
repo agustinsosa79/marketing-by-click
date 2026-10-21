@@ -157,7 +157,7 @@ export function BlogPost({ post }: { post: Post }) {
                   <CategoryChip className="bg-brand-deep text-white">{meta.category}</CategoryChip>
                   <PostMetaLine post={meta} className="text-brand-night/60" />
                 </div>
-                <h1 className="intro-delay-1 animate-intro font-display text-title text-brand-deep">{meta.title}</h1>
+                <h1 className="intro-delay-1 animate-intro font-display text-title text-brand-night">{meta.title}</h1>
                 <p className="intro-delay-2 animate-intro text-lead font-medium text-brand-night/75 lg:w-5/6">{meta.description}</p>
                 <div className="intro-delay-3 flex animate-intro items-center gap-3">
                   <img src={blog.author.photo} alt="" width={600} height={800} className="size-11 rounded-full object-cover object-top" />
@@ -208,7 +208,7 @@ export function BlogPost({ post }: { post: Post }) {
                 <div className="flex flex-col gap-1">
                   <p className="font-display text-xl text-brand-deep">{meta.author}</p>
                   <p className="text-sm text-brand-night/70">{blog.author.role}</p>
-                  <a href={blog.author.instagram.href} target="_blank" rel="noopener noreferrer" className="group mt-1 flex items-center gap-2 text-sm font-bold text-brand-signal">
+                  <a href={blog.author.instagram.href} target="_blank" rel="noopener noreferrer" className="group mt-1 flex items-center gap-2 text-sm font-bold text-brand-deep">
                     <Icon name="instagram" className="size-4 transition-transform duration-500 ease-expo group-hover:-rotate-12" />
                     <span className="link-underline">{blog.author.instagram.label}</span>
                   </a>
@@ -229,11 +229,11 @@ export function BlogPost({ post }: { post: Post }) {
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div className="flex flex-col gap-4">
                 <Label>{blog.eyebrow}</Label>
-                <h2 id="seguir-leyendo" data-reveal="lines" className="font-display text-title text-brand-deep">
+                <h2 id="seguir-leyendo" data-reveal="lines" className="font-display text-title text-brand-night">
                   {blog.related}
                 </h2>
               </div>
-              <a href="/blog" className="group flex items-center gap-2 font-bold text-brand-signal">
+              <a href="/blog" className="group flex items-center gap-2 font-bold text-brand-deep">
                 <span className="link-underline">{blog.back}</span>
               </a>
             </div>
