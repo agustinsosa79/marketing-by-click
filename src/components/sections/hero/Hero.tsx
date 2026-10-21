@@ -116,7 +116,7 @@ export function Hero() {
           />
 
           <figcaption data-hero-item className="absolute top-4 left-4 flex items-center gap-2 rounded-3xl rounded-bl-md bg-white py-1.5 pr-4 pl-1.5 text-sm font-bold text-brand-night shadow-soft md:top-5 md:left-5">
-            <a href={nosotros.instagram.href} target="_blank" rel="noopener noreferrer" aria-label={nosotros.instagram.label} className="grid size-7 place-items-center rounded-full bg-brand-signal text-brand-ink transition-transform duration-500 ease-expo hover:-rotate-12">
+            <a href={nosotros.instagram.href} target="_blank" rel="noopener noreferrer" aria-label={nosotros.instagram.label} className="grid size-7 place-items-center rounded-full bg-brand-deep text-white transition-transform duration-500 ease-expo hover:-rotate-12">
               <Icon name="instagram" className="size-3.5" />
             </a>
             {hero.founderTag}

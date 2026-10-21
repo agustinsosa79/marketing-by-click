@@ -162,6 +162,7 @@ export function SesionPreview({ price, detail, currency }: { price: string; deta
   const rows = [
     { name: 'Sitio web / e-commerce', price: '' },
     { name: 'Sesión de fotos y videos', price: text },
+    { name: 'Branding', price: '' },
     { name: 'Soluciones a medida', price: '' },
   ]
   return (

@@ -103,7 +103,7 @@ export function ProjectsIndex() {
               <div className="flex flex-col items-start gap-4 px-3 pb-4 lg:col-span-5 lg:px-0 lg:pr-8 lg:pb-0">
                 <div className="flex flex-wrap items-center gap-2">
                   {featured.services.map((s) => (
-                    <CategoryChip key={s} className="bg-brand-paper text-brand-deep">
+                    <CategoryChip key={s} className="bg-brand-mist text-brand-deep">
                       {s}
                     </CategoryChip>
                   ))}

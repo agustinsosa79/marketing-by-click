@@ -36,6 +36,7 @@ const EMPTY: ProjectInput = {
   gallery: [],
   order: 0,
   draft: false,
+  home: false,
 }
 
 const nameOf = (src: string) => (src.startsWith(`${PROJECTS_MEDIA_URL}/`) ? src.slice(PROJECTS_MEDIA_URL.length + 1) : '')
@@ -131,11 +132,11 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
     }
   }
 
-  // ¿Se ve en el inicio? Los primeros publicados de la lista (uno nuevo va al final)
+  // ¿Se ve en el inicio? Misma regla que la web: los marcados (o, si no hay ninguno, los primeros publicados)
   const inHome = Boolean(
     project &&
       !project.draft &&
-      homeSlugs([...others, { slug: project.slug || 'nuevo', draft: false, order: editing ? project.order : Infinity }].sort((a, b) => a.order - b.order)).has(project.slug || 'nuevo'),
+      homeSlugs([...others, { slug: project.slug || 'nuevo', draft: false, home: project.home, order: editing ? project.order : Infinity }].sort((a, b) => a.order - b.order)).has(project.slug || 'nuevo'),
   )
 
   const back = () => leaveTo('#/proyectos')
@@ -502,10 +503,8 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
               {project.draft
                 ? 'Los borradores no se muestran en la web.'
                 : inHome
-                  ? `Está entre los ${HOME_LIMIT} primeros de la lista de proyectos.`
-                  : editing
-                    ? `En el inicio se ven los ${HOME_LIMIT} primeros de la lista. Para mostrarlo, tocá "Al principio" en la lista de proyectos.`
-                    : `Un proyecto nuevo se suma al final de la lista. En el inicio se ven los ${HOME_LIMIT} primeros: para mostrarlo, tocá "Al principio" en la lista.`}
+                  ? `Es uno de los ${HOME_LIMIT} proyectos de la página principal.`
+                  : `En la página principal se ven hasta ${HOME_LIMIT} proyectos. Para elegirlo, tocá "☆ Mostrar en el inicio" en la lista de proyectos.`}
             </p>
             <div className="flex flex-col gap-3 max-lg:hidden">
               {errorBox}

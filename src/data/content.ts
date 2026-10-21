@@ -67,7 +67,7 @@ export const shareImage = heroPhoto.src
 export const contact = {
   whatsapp: { label: '+54 9 2944 12-6756', href: WHATSAPP },
   whatsappMessage: WHATSAPP_MESSAGE,
-  instagram: { label: '@marketingbyclic', href: 'https://www.instagram.com/marketingbyclic/' },
+  instagram: { label: '@clicstd', href: 'https://www.instagram.com/clicstd/' },
   founderInstagram: { label: '@ianmarketer', href: 'https://www.instagram.com/ianmarketer' },
 } as const
 
@@ -373,12 +373,18 @@ export const extras = {
       href: whatsappWith(txt('extras.sesion.message')),
     },
     {
+      icon: 'branding',
+      name: 'Branding',
+      price: '',
+      href: whatsappWith(txt('extras.branding.message')),
+    },
+    {
       icon: 'custom',
       name: 'Soluciones a medida',
       price: '',
       href: whatsappWith(txt('extras.medida.message')),
     },
-  ] as { icon: 'web' | 'camera' | 'custom'; name: string; price: string; href: string }[],
+  ] as { icon: 'web' | 'camera' | 'branding' | 'custom'; name: string; price: string; href: string }[],
 }
 
 /**

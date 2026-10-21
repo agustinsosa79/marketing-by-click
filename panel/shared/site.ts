@@ -19,8 +19,8 @@ export const TEXTS_FILE = 'content/textos.json'
 /** Servicios que se pueden marcar en un proyecto (los mismos del sitio). */
 export const SERVICES = ['Estrategia', 'Contenido', 'Meta Ads', 'Branding'] as const
 
-/** Cuántos proyectos se muestran en el inicio del sitio: los primeros publicados de la lista. */
-export const HOME_LIMIT = 3
+/** Cuántos proyectos se muestran en el inicio del sitio (los marcados "En el inicio"). */
+export const HOME_LIMIT = 4
 
 export const PROJECT_LIMITS = {
   brand: { min: 2, max: 80 },
@@ -63,6 +63,8 @@ export interface ProjectInput {
   gallery: ProjectImage[]
   order: number
   draft: boolean
+  /** Elegido para el inicio (hasta HOME_LIMIT). */
+  home: boolean
 }
 
 export interface ProjectSummary {
@@ -73,18 +75,23 @@ export interface ProjectSummary {
   cover: string
   order: number
   draft: boolean
+  home: boolean
 }
 
 export const projectUrl = (slug: string) => `${SITE_URL}/proyectos/${slug}`
 
-/** Los que se ven en el inicio: los primeros publicados, en el orden de la lista. */
-export const homeSlugs = (projects: { slug: string; draft: boolean }[]) =>
-  new Set(
-    projects
-      .filter((p) => !p.draft)
-      .slice(0, HOME_LIMIT)
-      .map((p) => p.slug),
-  )
+/**
+ * Los que se ven en el inicio (misma regla que src/lib/projects.ts): los publicados marcados "En el inicio",
+ * en el orden de la lista y hasta HOME_LIMIT. Si no hay ninguno marcado, los primeros publicados.
+ */
+export const homeSlugs = (projects: { slug: string; draft: boolean; home?: boolean }[]) => {
+  const published = projects.filter((p) => !p.draft)
+  const marked = published.filter((p) => p.home)
+  return new Set((marked.length ? marked : published).slice(0, HOME_LIMIT).map((p) => p.slug))
+}
+
+/** Cuántos hay marcados para el inicio (publicados). */
+export const markedCount = (projects: { draft: boolean; home?: boolean }[]) => projects.filter((p) => !p.draft && p.home).length
 
 /** "A", "A y B", "A, B y C" */
 export const listNames = (names: string[]) => (names.length < 2 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} y ${names[names.length - 1]}`)

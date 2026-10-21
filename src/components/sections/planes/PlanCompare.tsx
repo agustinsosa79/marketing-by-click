@@ -43,7 +43,7 @@ export function PlanCompare() {
                 {C.price}
               </th>
               {PLANS.map((p) => (
-                <td key={p.id} className="bg-brand-paper px-4 py-3">
+                <td key={p.id} className="bg-brand-mist px-4 py-3">
                   <span className="font-display text-4xl">{p.price}</span> <span className="text-sm font-bold text-brand-night/70">{planes.currency}</span>
                 </td>
               ))}
@@ -54,7 +54,7 @@ export function PlanCompare() {
                   {C.rows[row] ?? C.rows[C.rows.length - 1]}
                 </th>
                 {PLANS.map((p) => (
-                  <td key={p.id} className="border-t border-brand-deep/10 bg-brand-paper px-4 py-3 align-top font-medium">
+                  <td key={p.id} className="border-t border-brand-deep/10 bg-brand-mist px-4 py-3 align-top font-medium">
                     {p.features[row] ?? <span className="text-brand-night/40">{C.none}</span>}
                   </td>
                 ))}
@@ -65,7 +65,7 @@ export function PlanCompare() {
                 {PLANS.find((p) => p.highlight)?.highlight?.title}
               </th>
               {PLANS.map((p) => (
-                <td key={p.id} className="rounded-b-2xl border-t border-brand-deep/10 bg-brand-paper px-4 py-3">
+                <td key={p.id} className="rounded-b-2xl border-t border-brand-deep/10 bg-brand-mist px-4 py-3">
                   {p.highlight ? (
                     <span className="grid size-7 place-items-center rounded-full bg-brand-signal text-brand-ink">
                       <Check className="size-3.5" />

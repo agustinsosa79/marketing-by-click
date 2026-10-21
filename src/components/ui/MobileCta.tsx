@@ -13,7 +13,12 @@ export function MobileCta({ hidden }: { hidden: boolean }) {
   const [modal, setModal] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setPast(window.scrollY > window.innerHeight * 0.75)
+    // solo avisa a React cuando cruza el umbral (no en cada evento de scroll)
+    let was: boolean | null = null
+    const onScroll = () => {
+      const now = window.scrollY > window.innerHeight * 0.75
+      if (now !== was) setPast((was = now))
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
 

@@ -100,7 +100,7 @@ export function BlogIndex() {
               <div className="flex flex-col items-start gap-4 px-3 pb-4 lg:col-span-5 lg:px-0 lg:pr-8 lg:pb-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <CategoryChip className="bg-brand-signal text-brand-ink">{blog.featured}</CategoryChip>
-                  <CategoryChip className="bg-brand-paper text-brand-deep">{featured.category}</CategoryChip>
+                  <CategoryChip className="bg-brand-mist text-brand-deep">{featured.category}</CategoryChip>
                 </div>
                 <h2 className="font-display text-big text-brand-night">
                   <a href={postUrl(featured.slug)} className="transition-colors duration-500 hover:text-brand-flame">

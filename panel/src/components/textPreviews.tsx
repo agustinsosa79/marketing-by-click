@@ -202,9 +202,10 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
       const extras = [
         { key: 'web', name: 'Sitio web / e-commerce' },
         { key: 'sesion', name: 'Sesión de fotos y videos' },
+        { key: 'branding', name: 'Branding' },
         { key: 'medida', name: 'Soluciones a medida' },
       ]
-      const focusExtra = group >= 1 && group <= 3 ? extras[group - 1] : null
+      const focusExtra = group >= 1 && group <= 4 ? extras[group - 1] : null
       return (
         <div className="flex flex-col gap-3 bg-brand-paper px-5 py-7">
           <div className="rounded-3xl bg-white p-4 ring-1 ring-brand-deep/10">

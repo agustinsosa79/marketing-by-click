@@ -1,5 +1,6 @@
 import { SLUG_RE, LIMITS, type NewImage } from '../shared/blog.js'
 import {
+  HOME_LIMIT,
   PROJECT_LIMITS as L,
   PROJECTS_DIR,
   PROJECTS_MEDIA_DIR,
@@ -68,6 +69,7 @@ function toInput(slug: string, source: string): ProjectInput | null {
       .filter((i): i is ProjectImage => i !== null),
     order: Number(raw.order) || 0,
     draft: raw.draft === true,
+    home: raw.home === true,
   }
 }
 
@@ -90,6 +92,7 @@ const summary = (p: ProjectInput): ProjectSummary => ({
   cover: p.cover?.src ?? '',
   order: p.order,
   draft: p.draft,
+  home: p.home,
 })
 
 export async function listProjects(): Promise<ProjectSummary[]> {
@@ -137,6 +140,7 @@ function validate(raw: ProjectInput): ProjectInput {
     gallery: [],
     order: Math.round(Number(raw.order)) || 0,
     draft: raw.draft === true,
+    home: false,
   }
   if (!SLUG_RE.test(p.slug) || p.slug.length > LIMITS.slug.max) throw new UserError('La dirección del proyecto no es válida.')
   if (p.brand.length < L.brand.min || p.brand.length > L.brand.max) throw new UserError(`El nombre de la marca tiene que tener entre ${L.brand.min} y ${L.brand.max} caracteres.`)
@@ -192,6 +196,8 @@ export async function saveProject(raw: ProjectInput, images: NewImage[], mode: '
 
   // El orden lo maneja la lista (subir/bajar): uno nuevo va al final
   project.order = before ? before.order : Math.max(0, ...all.map((p) => p.order)) + 1
+  // "En el inicio" se elige desde la lista (setHome): el editor no lo cambia
+  project.home = before ? before.home : false
 
   // Toda imagen que use el proyecto tiene que existir o venir en este guardado
   const available = new Set((await storage.list(PROJECTS_MEDIA_DIR)).map((f) => f.split('/').pop()!))
@@ -251,4 +257,22 @@ export async function moveProject(slug: string, to: 'up' | 'down' | 'top') {
     changed.map((p) => ({ path: projectPath(p.slug), content: serialize(p) })),
     `Proyectos (panel): ${verb} «${moved.brand}» en el orden`,
   )
+}
+
+/**
+ * Marca o desmarca un proyecto para el inicio. Solo los publicados, y hasta HOME_LIMIT a la vez:
+ * para sumar uno cuando ya hay HOME_LIMIT, primero hay que sacar otro.
+ */
+export async function setHome(slug: string, on: boolean) {
+  const storage = getStorage()
+  const all = await readAll(storage)
+  const project = all.find((p) => p.slug === slug)
+  if (!project) throw new UserError('Proyecto inexistente.', 404)
+  if (project.home === on) return
+  if (on) {
+    if (project.draft) throw new UserError('Para mostrarlo en el inicio, primero publicalo.')
+    if (all.filter((p) => !p.draft && p.home).length >= HOME_LIMIT) throw new UserError(`Ya hay ${HOME_LIMIT} proyectos en el inicio. Sacá uno para sumar este.`, 409)
+  }
+  project.home = on
+  await storage.commit([{ path: projectPath(slug), content: serialize(project) }], `Proyectos (panel): ${on ? 'muestra' : 'saca'} «${project.brand}» ${on ? 'en' : 'del'} inicio`)
 }

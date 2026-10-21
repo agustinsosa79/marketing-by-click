@@ -169,19 +169,32 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
           .to(cursor, { autoAlpha: 0, scale: 0.6, duration: 0.3, ease: 'power2.in' }, 'click+=0.5')
 
           // Mensaje sobre la burbuja
-          .addLabel('message', 'click+=0.8')
+          .addLabel('message', 'click+=0.7')
           .set(refs.caption.current, { autoAlpha: 1 }, 'message')
           .to(captionInner, { yPercent: 0, duration: 0.6 }, 'message')
           .set(stage, { autoAlpha: 0 }, 'message+=0.4')
 
           // La burbuja se achica hasta el CTA del hero mientras entra el inicio
-          .addLabel('collapse', 'message+=0.85')
+          .addLabel('collapse', 'message+=0.7')
           .to(captionInner, { yPercent: -110, duration: 0.4, ease: 'power3.in' }, 'collapse-=0.2')
           .set(refs.caption.current, { autoAlpha: 0 }, 'collapse+=0.2')
           .to(fill, { x: cx, y: cy, scale: 0, duration: 0.85, ease: 'power3.inOut' }, 'collapse')
           .addLabel('handoff', 'collapse+=0.1')
           .call(start, undefined, 'handoff')
         revealHero(tl, 'handoff')
+
+        // Quien no quiere esperar la intro: con un clic, toque, rueda o tecla, la animación se acelera y termina
+        // (la intro es parte de la marca, pero nunca un muro). Se quita sola al terminar.
+        const events = ['pointerdown', 'wheel', 'touchstart', 'keydown'] as const
+        const skip = () => {
+          tl.timeScale(5)
+          events.forEach((e) => window.removeEventListener(e, skip))
+        }
+        if (!debug) events.forEach((e) => window.addEventListener(e, skip, { passive: true }))
+        tl.eventCallback('onComplete', () => {
+          events.forEach((e) => window.removeEventListener(e, skip))
+          finish()
+        })
 
         if (debug || import.meta.env.DEV) (window as unknown as { __preloaderTl: gsap.core.Timeline }).__preloaderTl = tl
         if (debug) tl.pause()

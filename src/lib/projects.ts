@@ -33,10 +33,12 @@ export interface Project {
   gallery: ProjectImage[]
   order: number
   draft: boolean
+  /** Elegido en el panel para la sección del inicio. */
+  home: boolean
 }
 
-/** Cuántos proyectos entran en la sección del inicio. */
-export const HOME_LIMIT = 3
+/** Cuántos proyectos entran en la sección del inicio (los elige el cliente en el panel). */
+export const HOME_LIMIT = 4
 
 const str = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
 
@@ -73,6 +75,7 @@ function normalize(raw: Record<string, unknown>): Project | null {
     gallery: Array.isArray(raw.gallery) ? raw.gallery.map(image).filter((i): i is ProjectImage => i !== null) : [],
     order: Number(raw.order) || 0,
     draft: raw.draft === true,
+    home: raw.home === true,
   }
 }
 
@@ -84,8 +87,13 @@ export const projects: Project[] = Object.values(modules)
   .filter((p): p is Project => p !== null && !p.draft)
   .sort((a, b) => a.order - b.order || a.brand.localeCompare(b.brand))
 
-/** Los del inicio: los primeros del orden elegido en el panel. */
-export const homeProjects: Project[] = projects.slice(0, HOME_LIMIT)
+/**
+ * Los del inicio: los marcados "En el inicio" en el panel (hasta HOME_LIMIT, en el orden de la lista).
+ * Si no hay ninguno marcado, los primeros publicados: la sección nunca queda vacía.
+ * Misma regla que panel/shared/site.ts → homeSlugs.
+ */
+const marked = projects.filter((p) => p.home)
+export const homeProjects: Project[] = (marked.length ? marked : projects).slice(0, HOME_LIMIT)
 
 const SERVICE_ORDER = ['Estrategia', 'Contenido', 'Meta Ads', 'Branding']
 const rank = (s: string) => (SERVICE_ORDER.includes(s) ? SERVICE_ORDER.indexOf(s) : SERVICE_ORDER.length)
