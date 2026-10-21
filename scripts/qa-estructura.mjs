@@ -49,20 +49,18 @@ await p.waitForTimeout(500)
 check('comparar: Escape cierra y Lenis vuelve', (await p.locator('dialog[open]').count()) === 0 && !(await p.evaluate(() => window.__lenis.isStopped)))
 
 await p.click('button:has-text("¿No sabés cuál elegir?")')
-await p.waitForTimeout(700)
+await p.waitForTimeout(1800)
+check('"¿No sabés cuál elegir?" baja a la sección', await p.evaluate(() => Math.abs(document.getElementById('diagnostico').getBoundingClientRect().top) < 200))
 for (let i = 0; i < 3; i++) {
-  await p.locator('dialog[open] ul button').last().click()
+  await p.locator('#diagnostico ul button').last().click()
   await p.waitForTimeout(700)
 }
-check('diagnóstico: llega al resultado (Premium)', await p.locator('dialog[open]:has-text("Te recomendamos el plan"):has-text("Premium")').isVisible())
-check('diagnóstico: WhatsApp con el plan', ((await p.locator('dialog[open] a[href*="wa.me"], dialog[open] a[href*="whatsapp"]').first().getAttribute('href')) ?? '').includes('Premium'))
+check('diagnóstico: llega al resultado (Premium)', await p.locator('#diagnostico:has-text("Te recomendamos el plan"):has-text("Premium")').isVisible())
+check('diagnóstico: WhatsApp con el plan', ((await p.locator('#diagnostico a[href*="wa.me"], #diagnostico a[href*="whatsapp"]').first().getAttribute('href')) ?? '').includes('Premium'))
 await p.screenshot({ path: `${out}/es-diagnostico.png` })
-await p.click('dialog[open] button:has-text("Ver los planes")')
-await p.waitForTimeout(500)
-check('diagnóstico: "Ver los planes" cierra', (await p.locator('dialog[open]').count()) === 0)
 
 // anclas que siguen existiendo (navbar y menú)
-for (const id of ['asesoria', 'preguntas', 'nosotros', 'proceso', 'contacto']) check(`ancla #${id}`, (await p.locator(`#${id}`).count()) === 1)
+for (const id of ['diagnostico', 'asesoria', 'preguntas', 'nosotros', 'proceso', 'contacto']) check(`ancla #${id}`, (await p.locator(`#${id}`).count()) === 1)
 await ctx.close()
 
 // --- Segunda visita: sin preloader

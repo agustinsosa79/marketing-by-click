@@ -1,3 +1,5 @@
+import { AsesoriaSection } from '../components/sections/asesoria/Asesoria'
+import { DiagnosticoSection } from '../components/sections/diagnostico/Diagnostico'
 import { Contacto } from '../components/sections/contacto/Contacto'
 import { Faq } from '../components/sections/faq/Faq'
 import { Footer } from '../components/sections/footer/Footer'
@@ -13,7 +15,7 @@ import { Servicios } from '../components/sections/servicios/Servicios'
  * así que estas secciones llegan a tiempo sin que se note.
  * Orden y fondos: cada sección se distingue de la siguiente (región común, Gestalt), alternando
  * blanco · azul Clic · azul noche: inicio (blanco) → servicios (azul Clic) → proyectos (noche)
- * → cómo trabajamos (azul Clic) → planes con asesoría y extras (blanco) → nosotros (noche)
+ * → cómo trabajamos (azul Clic) → planes (blanco) → diagnóstico (azul Clic) → asesoría y extras (blanco) → nosotros (noche)
  * → preguntas (blanco) → contacto (azul Clic con burbujas).
  */
 export function BelowFoldSections() {
@@ -23,6 +25,8 @@ export function BelowFoldSections() {
       <Proyectos />
       <Proceso />
       <Planes />
+      <DiagnosticoSection />
+      <AsesoriaSection />
       <Nosotros />
       <Faq />
       <Contacto />

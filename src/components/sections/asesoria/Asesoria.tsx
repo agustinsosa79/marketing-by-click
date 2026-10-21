@@ -1,10 +1,15 @@
 import { asesoria, extras, sections } from '../../../data/content'
 import { splitHeadline } from '../../../lib/headline'
+import { useRef } from 'react'
+import { useGSAP } from '../../../lib/gsap'
+import { setupReveals } from '../../../lib/motion'
+import { deferSetup } from '../../../lib/schedule'
 import { Button } from '../../ui/Button'
+import { Section } from '../../ui/Section'
 import { Arrow, ExtraIcon } from '../../ui/Icon'
 
 /**
- * Fuera de los planes, como una fila debajo de ellos (dentro de la sección Planes): pesa menos que los planes
+ * Fuera de los planes, en su sección blanca después del diagnóstico: pesa menos que los planes
  * pero se ve a la primera. Mantiene el ancla #asesoria (la usa el navbar).
  *   izquierda → la asesoría 1:1: foto, título, una frase, precio y WhatsApp
  *   derecha   → "También hacemos": web, sesión de fotos y a medida, cada uno con su WhatsApp ya escrito
@@ -73,5 +78,16 @@ export function Asesoria() {
         </ul>
       </aside>
     </div>
+  )
+}
+
+/** Sección blanca de la asesoría y los extras, después del diagnóstico. */
+export function AsesoriaSection() {
+  const ref = useRef<HTMLElement>(null)
+  useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
+  return (
+    <Section ref={ref} bg="paper" className="px-5 pt-20 pb-20 md:px-10 md:pt-28 md:pb-28">
+      <Asesoria />
+    </Section>
   )
 }

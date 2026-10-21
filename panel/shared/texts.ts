@@ -137,14 +137,14 @@ export const TEXT_SECTIONS: TextSection[] = [
   {
     id: 'diagnostico',
     label: 'Diagnóstico',
-    path: '/#planes',
-    intro: 'Las tres preguntas que recomiendan un plan. Se abren en una ventana desde Planes, con el botón “¿No sabés cuál elegir?”. Se editan los textos; qué plan recomienda cada respuesta queda fijo.',
+    path: '/#diagnostico',
+    intro: 'Las tres preguntas que recomiendan un plan, en su sección después de Planes. Se editan los textos; qué plan recomienda cada respuesta queda fijo.',
     locked: [
       { label: 'Título', value: '¿No sabés qué plan elegir?' },
       { label: 'Qué plan recomienda cada respuesta', value: 'Más anuncios, más redes o llamadas semanales → plan más completo', reason: 'Es la lógica del diagnóstico: cambiarla requiere ajustar el código.' },
     ],
     groups: [
-      { fields: [area('diagnostico.text', 'Texto antes de la primera pregunta', 'Respondé tres preguntas y te decimos cuál te conviene. Toma menos de un minuto.', 30, 150)] },
+      { fields: [area('diagnostico.text', 'Texto de la sección', 'Respondé tres preguntas y te decimos cuál te conviene. Toma menos de un minuto.', 30, 150)] },
       {
         title: 'Pregunta 1',
         fields: [text('diagnostico.q1', 'Pregunta', '¿Querés sumar anuncios en Instagram y Facebook?', 10, 80), text('diagnostico.q1.o1', 'Respuesta → plan Inicial', 'Por ahora no, solo contenido', 2, 40), text('diagnostico.q1.o2', 'Respuesta → plan Plus', 'Sí, algunas campañas', 2, 40), text('diagnostico.q1.o3', 'Respuesta → plan Premium', 'Sí, varias al mismo tiempo', 2, 40)],

@@ -3,13 +3,19 @@ import { diagnostico, planes } from '../../../data/content'
 import { useReducedMotion } from '../../../hooks/useReducedMotion'
 import { gsap, useGSAP } from '../../../lib/gsap'
 import { Button } from '../../ui/Button'
+import { Section } from '../../ui/Section'
+import { Label, Title } from '../../ui/Title'
+import { useLenis } from '../../../hooks/useLenis'
+import { setupReveals } from '../../../lib/motion'
+import { deferSetup } from '../../../lib/schedule'
+import { sections } from '../../../data/content'
 import { Check } from '../../ui/Icon'
 
 const QUESTIONS = diagnostico.questions
 const LETTERS = ['A', 'B', 'C']
 
 /**
- * Diagnóstico rápido (va dentro de una ventana que se abre desde Planes): tres preguntas, una por vez.
+ * Diagnóstico rápido (sección propia, después de Planes): tres preguntas, una por vez.
  * El plan recomendado es el más alto que pida alguna respuesta (anuncios → Plus o Premium, canales → Plus o Premium,
  * llamadas 1:1 semanales → Premium; todo según los planes reales). El resultado abre WhatsApp con el mensaje armado.
  */
@@ -54,7 +60,7 @@ export function Diagnostico({ onSeePlans }: { onSeePlans: () => void }) {
       {!done ? (
         <div key={step} className="flex flex-col gap-4">
           <p data-step-part className="text-brand-night/70">
-            {step === 0 ? diagnostico.text : `${diagnostico.step} ${step + 1} ${diagnostico.of} ${QUESTIONS.length}`}
+            {`${diagnostico.step} ${step + 1} ${diagnostico.of} ${QUESTIONS.length}`}
           </p>
           <h3 data-step-part className="font-display text-3xl md:text-4xl">
             {QUESTIONS[step].text}
@@ -117,5 +123,36 @@ export function Diagnostico({ onSeePlans }: { onSeePlans: () => void }) {
         </div>
       )}
     </div>
+  )
+}
+
+/**
+ * Sección del diagnóstico, después de los planes y antes de la asesoría: sobre el azul Clic,
+ * título y bajada a la izquierda; las preguntas en una tarjeta blanca a la derecha.
+ */
+export function DiagnosticoSection() {
+  const ref = useRef<HTMLElement>(null)
+  const { scrollTo } = useLenis()
+  useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
+  return (
+    <Section id={sections.diagnostico} ref={ref} bg="deep" className="px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-28">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
+        <div className="flex flex-col gap-4 lg:col-span-5 lg:gap-6">
+          <Label tone="deep">{diagnostico.eyebrow}</Label>
+          <Title title={diagnostico.title} tone="deep" />
+          <p data-reveal className="text-lead text-white">
+            {diagnostico.text}
+          </p>
+        </div>
+        <div data-reveal className="rounded-4xl bg-white p-5 text-brand-night shadow-lift md:p-8 lg:col-span-7">
+          <Diagnostico
+            onSeePlans={() => {
+              const target = document.getElementById(sections.planes)
+              if (target) scrollTo(target, { duration: 1.4 })
+            }}
+          />
+        </div>
+      </div>
+    </Section>
   )
 }

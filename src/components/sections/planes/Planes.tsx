@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { diagnostico, planes, sections, type Plan, type PlanTone } from '../../../data/content'
+import { useLenis } from '../../../hooks/useLenis'
 import { useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
 import { deferSetup } from '../../../lib/schedule'
@@ -7,8 +8,6 @@ import { Button } from '../../ui/Button'
 import { Check } from '../../ui/Icon'
 import { Modal } from '../../ui/Modal'
 import { Section } from '../../ui/Section'
-import { Asesoria } from '../asesoria/Asesoria'
-import { Diagnostico } from '../diagnostico/Diagnostico'
 import { PlanCompare } from './PlanCompare'
 import { Label, Title } from '../../ui/Title'
 
@@ -118,15 +117,15 @@ function PlanCard({ plan }: { plan: Plan }) {
 }
 
 /**
- * Planes: tres tarjetas (carrusel con snap en mobile) y, debajo, dos ayudas para decidir en ventanas
- * (comparar lado a lado · diagnóstico de tres preguntas). Cierra con la fila de lo que va fuera de los planes
- * (asesoría 1:1 y extras), así todo lo que tiene precio queda en un mismo bloque claro.
+ * Planes: tres tarjetas (carrusel con snap en mobile) y, debajo, dos ayudas para decidir:
+ * comparar lado a lado (ventana) y "¿No sabés cuál elegir?", que baja a la sección del diagnóstico.
  */
 export function Planes() {
   const ref = useRef<HTMLElement>(null)
   const track = useRef<HTMLDivElement>(null)
   const [current, setCurrent] = useState(1)
-  const [open, setOpen] = useState<'compare' | 'quiz' | null>(null)
+  const [open, setOpen] = useState<'compare' | null>(null)
+  const { scrollTo } = useLenis()
 
   useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
 
@@ -186,7 +185,10 @@ export function Planes() {
             </span>
             {planes.compare.open}
           </button>
-          <button type="button" onClick={() => setOpen('quiz')} className={help}>
+          <button type="button" onClick={() => {
+              const target = document.getElementById(sections.diagnostico)
+              if (target) scrollTo(target, { duration: 1.4 })
+            }} className={help}>
             <span className={helpIcon} aria-hidden="true">
               ?
             </span>
@@ -196,15 +198,8 @@ export function Planes() {
         <p className="text-sm text-brand-night/70">{planes.note}</p>
       </div>
 
-      <div className="mt-12 px-5 md:mt-16 md:px-10">
-        <Asesoria />
-      </div>
-
       <Modal open={open === 'compare'} onClose={() => setOpen(null)} title={planes.compare.title} label={planes.compare.label} size="xl">
         <PlanCompare />
-      </Modal>
-      <Modal open={open === 'quiz'} onClose={() => setOpen(null)} title={diagnostico.title.text} label={diagnostico.eyebrow}>
-        {open === 'quiz' && <Diagnostico onSeePlans={() => setOpen(null)} />}
       </Modal>
     </Section>
   )
