@@ -5,6 +5,13 @@
       "alt": "Ian, fundador de Clic Studio",
       "width": 600,
       "height": 800
+    },
+    "hero.photo": {
+      "src": "/media/sitio/hero-photo-e75359.webp",
+      "alt": "Ian, fundador de Clic Studio",
+      "width": 853,
+      "height": 1844,
+      "srcSm": "/media/sitio/hero-photo-e75359-sm.webp"
     }
   }
 }
