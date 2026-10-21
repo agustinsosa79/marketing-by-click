@@ -8,14 +8,14 @@ export function Icon({ name, className = '' }: { name: 'instagram' | 'whatsapp';
 }
 
 type MarkProps = ComponentProps<'svg'> & {
-  /** Relleno de la burbuja (clase fill-*). Por defecto naranja, como sobre azul noche en el manual. */
+  /** Relleno de la burbuja (clase fill-*). Por defecto el azul Clic (celeste del manual): el naranja queda para las acciones. */
   bubble?: string
   /** Relleno de las letras (clase fill-*). */
   letters?: string
 }
 
 /** Logo completo (manual Clic Studio): burbuja con "clic / studio" adentro. */
-export function Logo({ bubble = 'fill-brand-signal', letters = 'fill-white', className = '', ...rest }: MarkProps) {
+export function Logo({ bubble = 'fill-brand-deep', letters = 'fill-white', className = '', ...rest }: MarkProps) {
   return (
     <svg viewBox={LOGO.full.viewBox} aria-hidden="true" className={`block ${className}`} {...rest}>
       <path data-logo-bubble d={LOGO.full.bubble} className={bubble} />
@@ -28,7 +28,7 @@ export function Logo({ bubble = 'fill-brand-signal', letters = 'fill-white', cla
  * Isotipo: burbuja con la "C". `rays` agrega las tres líneas del clic (variante secundaria del manual,
  * "uso en animaciones").
  */
-export function Isotipo({ bubble = 'fill-brand-signal', letters = 'fill-white', rays = false, className = '', ...rest }: MarkProps & { rays?: boolean }) {
+export function Isotipo({ bubble = 'fill-brand-deep', letters = 'fill-white', rays = false, className = '', ...rest }: MarkProps & { rays?: boolean }) {
   return (
     <svg viewBox={LOGO.iso.viewBox} aria-hidden="true" className={`block overflow-visible ${className}`} {...rest}>
       <path data-logo-bubble d={LOGO.iso.bubble} className={bubble} />
@@ -86,7 +86,9 @@ export function ServiceIcon({ name, className = '' }: { name: Service['icon']; c
 }
 
 /** Íconos de los servicios fuera de los planes (mismo trazo que los de servicios). */
-const EXTRA_PATHS: Record<'web' | 'camera' | 'custom', string[]> = {
+const EXTRA_PATHS: Record<'web' | 'camera' | 'branding' | 'custom', string[]> = {
+  // pluma de diseño (la misma del servicio de branding)
+  branding: ['M12 3l6 7-6 11-6-11z', 'M12 10v4', 'M6 10h12'],
   // ventana de navegador
   web: ['M3.5 6.5A1.5 1.5 0 0 1 5 5h14a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5z', 'M3.5 9h17', 'M6.5 7h.01', 'M9 7h.01'],
   // cámara

@@ -8,12 +8,10 @@ import { Icon } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
 import { Label, Title } from '../../ui/Title'
 import { VideoPlayer } from '../../ui/VideoPlayer'
-import { Faq } from '../faq/Faq'
 
 /**
- * Nosotros + preguntas frecuentes, en un solo bloque oscuro (quiénes somos y lo que la gente quiere saber
- * antes de escribir). Arriba, el video de Ian con sonido es el protagonista; al lado, el título, su frase y
- * las dos formas de contacto. Abajo, el acordeón de preguntas.
+ * Nosotros, sobre azul noche: el video de Ian con sonido es el protagonista; al lado, el título,
+ * su frase y las dos formas de contacto. Las preguntas frecuentes van en su propia sección (blanca) debajo.
  */
 export function Nosotros() {
   const ref = useRef<HTMLElement>(null)
@@ -55,9 +53,6 @@ export function Nosotros() {
         </figure>
       </div>
 
-      <div className="mt-20 border-t border-white/10 pt-16 md:mt-28 md:pt-24">
-        <Faq />
-      </div>
     </Section>
   )
 }

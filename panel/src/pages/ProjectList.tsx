@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { HOME_LIMIT, homeSlugs, projectUrl, type ProjectSummary } from '../../shared/site'
+import { HOME_LIMIT, homeSlugs, markedCount, projectUrl, type ProjectSummary } from '../../shared/site'
 import { api, ApiError, mediaSrc } from '../api'
 import { Badge, Button, ConfirmDialog, Spinner, type ToastData } from '../components/ui'
 import { go } from '../lib/nav'
 
 const round = 'grid size-8 place-items-center rounded-full font-bold text-brand-deep ring-1 ring-brand-deep/15 hover:bg-brand-deep/5 disabled:opacity-25'
 
-/** Portfolio: el orden de la lista es el orden en la web. Los primeros publicados van en el inicio. */
+/** Portfolio: el orden de la lista es el orden en la web. Se eligen hasta HOME_LIMIT para la página principal. */
 export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
   const [projects, setProjects] = useState<ProjectSummary[] | null>(null)
   const [error, setError] = useState('')
@@ -26,6 +26,24 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
   const published = projects?.filter((p) => !p.draft).length ?? 0
   const drafts = projects?.filter((p) => p.draft).length ?? 0
   const onHome = homeSlugs(projects ?? [])
+  const marked = markedCount(projects ?? [])
+
+  const toggleHome = async (p: ProjectSummary) => {
+    setBusy(p.slug)
+    try {
+      await api.projectAction(p.slug, p.home ? 'unhome' : 'home')
+      await load()
+      notify({
+        tone: 'ok',
+        title: p.home ? `${p.brand} ya no está en el inicio` : `${p.brand} se muestra en el inicio`,
+        text: 'La web se actualiza sola en 1 o 2 minutos.',
+      })
+    } catch (e) {
+      notify({ tone: 'error', title: 'No se pudo cambiar', text: e instanceof ApiError ? e.message : undefined })
+    } finally {
+      setBusy(null)
+    }
+  }
 
   const move = async (p: ProjectSummary, to: 'up' | 'down' | 'top') => {
     setBusy(p.slug)
@@ -72,8 +90,8 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
       </div>
 
       <p className="rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-brand-night/70 ring-1 ring-brand-deep/10">
-        <b className="text-brand-deep">El orden de esta lista es el orden en la web.</b> Los {HOME_LIMIT} primeros publicados aparecen en la página principal (
-        <span className="font-bold text-brand-ember">★ En el inicio</span>); todos se ven en la página de proyectos. Para destacar uno, tocá <b className="text-brand-deep">Al principio</b>.
+        <b className="text-brand-deep">Elegí hasta {HOME_LIMIT} proyectos para la página principal</b> con <b className="text-brand-deep">☆ Mostrar en el inicio</b> ({marked} de {HOME_LIMIT} elegidos
+        {marked === 0 ? '; mientras no elijas ninguno, se muestran los primeros de la lista' : ''}). Todos se ven en la página de proyectos, en el orden de esta lista.
       </p>
 
       {error && <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">{error}</p>}
@@ -116,6 +134,19 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
               </button>
             </div>
           )
+          const full = !p.home && marked >= HOME_LIMIT
+          const homeButton = !p.draft && (
+            <button
+              type="button"
+              onClick={() => toggleHome(p)}
+              disabled={Boolean(busy) || full}
+              title={full ? `Ya hay ${HOME_LIMIT} en el inicio: sacá uno para sumar este` : undefined}
+              aria-pressed={p.home}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition disabled:opacity-35 ${p.home ? 'bg-brand-deep text-white ring-brand-deep hover:bg-brand-night' : 'text-brand-deep ring-brand-deep/15 hover:ring-brand-deep/40'}`}
+            >
+              <span aria-hidden="true">{p.home ? '★' : '☆'}</span> {p.home ? 'En el inicio' : 'Mostrar en el inicio'}
+            </button>
+          )
           const actions = (
             <div className="flex items-center gap-1.5">
               <Button variant="secondary" onClick={() => go(editHash)} className="py-2">
@@ -132,7 +163,7 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
             </div>
           )
           return (
-            <li key={p.slug} className={`rounded-2xl bg-white p-3 ring-1 transition ${home ? 'ring-2 ring-brand-signal/40' : 'ring-brand-deep/10'} ${working ? 'opacity-60' : ''}`}>
+            <li key={p.slug} className={`rounded-2xl bg-white p-3 ring-1 transition ${home ? 'ring-2 ring-brand-deep/40' : 'ring-brand-deep/10'} ${working ? 'opacity-60' : ''}`}>
               <div className="flex gap-3 sm:gap-4 lg:items-center">
                 <a href={editHash} className="block aspect-4/3 w-24 shrink-0 self-start overflow-hidden rounded-xl bg-brand-paper sm:w-32 lg:self-center">
                   {p.cover ? <img src={mediaSrc(p.cover)} alt="" loading="lazy" className="size-full object-cover" /> : <span className="grid size-full place-items-center text-xs text-brand-night/40">Sin portada</span>}
@@ -155,12 +186,14 @@ export function ProjectList({ notify }: { notify: (t: ToastData) => void }) {
                 </div>
                 {/* computadora: todo en una línea */}
                 <div className="hidden shrink-0 items-center gap-3 lg:flex">
+                  {homeButton}
                   {position}
                   {actions}
                 </div>
               </div>
               {/* celular y tablet: posición a la izquierda, acciones a la derecha, en una barra debajo */}
               <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-brand-deep/10 pt-3 lg:hidden">
+                {homeButton}
                 {position}
                 {actions}
               </div>

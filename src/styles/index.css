@@ -38,7 +38,8 @@ html.lenis.lenis-stopped {
   --color-brand-flame: #e0660a; /* Naranja para texto/foco sobre claro (mismo tono, AA texto grande) */
   --color-brand-ember: #a15a1f; /* Marrón (manual): hover del naranja, detalles cálidos */
   --color-brand-haze: #d3e4f6; /* Bruma: bordes y texto secundario sobre noche */
-  --color-brand-paper: #f5f8fc; /* Nube: fondo claro */
+  --color-brand-paper: #ffffff; /* Fondo claro de las secciones: blanco puro (pedido del cliente) */
+  --color-brand-mist: #eaf2fb; /* Celeste muy suave: solo rellenos chicos (chips, celdas, botones de ícono) sobre blanco */
 
   /* Escala tipográfica (fluida). Carlito (= Calibri) es más angosta y de x-height más baja que la
      tipografía anterior: los textos suben un escalón para leerse igual. */

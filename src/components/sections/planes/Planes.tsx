@@ -151,7 +151,7 @@ export function Planes() {
   }, [])
 
   const help = 'group flex items-center gap-2.5 rounded-full bg-white py-2 pr-5 pl-2 font-bold text-brand-night shadow-soft ring-1 ring-brand-deep/10 transition duration-300 ease-expo hover:-translate-y-0.5 hover:ring-brand-deep/30'
-  const helpIcon = 'grid size-8 place-items-center rounded-full bg-brand-paper text-brand-deep transition-colors duration-300 group-hover:bg-brand-signal group-hover:text-brand-ink'
+  const helpIcon = 'grid size-8 place-items-center rounded-full bg-brand-mist text-brand-deep transition-colors duration-300 group-hover:bg-brand-signal group-hover:text-brand-ink'
 
   return (
     <Section id={sections.planes} ref={ref} bg="paper" className="pt-20 pb-20 md:pt-28 md:pb-28 short:pt-20">
@@ -171,7 +171,7 @@ export function Planes() {
 
       <div aria-hidden="true" className="flex justify-center gap-2 lg:hidden">
         {planes.plans.map((plan, i) => (
-          <span key={plan.name} className={`size-2 rounded-full transition duration-500 ease-expo ${i === current ? 'scale-125 bg-brand-signal' : 'bg-brand-deep/20'}`} />
+          <span key={plan.name} className={`size-2 rounded-full transition duration-500 ease-expo ${i === current ? 'scale-125 bg-brand-deep' : 'bg-brand-deep/20'}`} />
         ))}
       </div>
 

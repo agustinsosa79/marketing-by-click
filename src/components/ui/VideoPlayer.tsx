@@ -230,7 +230,7 @@ export function VideoPlayer({ src, fallback, poster, label, labels, listenGlobal
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-label={label}
           data-cursor={mode === 'playing' ? labels.cursorPause : labels.cursorPlay}
           onClick={toggle}

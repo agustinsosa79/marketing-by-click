@@ -15,7 +15,8 @@ const ITEMS = servicios.items
 /**
  * Servicios: un servicio a la vez.
  *  - izquierda: los cuatro servicios (click o flechas del teclado para cambiar)
- *  - derecha: panel azul Clic con la mini animación del servicio, una frase y dos salidas (WhatsApp o su página)
+ *  Sección sobre el azul Clic (celeste del manual), entre el inicio blanco y Proyectos en azul noche.
+ *  - derecha: panel azul noche con la mini animación del servicio, una frase y dos salidas (WhatsApp o su página)
  * El detalle de qué incluye cada uno vive en su página (/servicios/<slug>).
  */
 export function Servicios() {
@@ -51,12 +52,12 @@ export function Servicios() {
   }
 
   return (
-    <Section id={sections.servicios} ref={ref} bg="paper" className="flex min-h-svh flex-col justify-center px-5 pt-20 pb-8 md:px-10 md:pt-28 md:pb-14">
+    <Section id={sections.servicios} ref={ref} bg="deep" className="flex min-h-svh flex-col justify-center px-5 pt-20 pb-8 md:px-10 md:pt-28 md:pb-14">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-10">
         <div className="flex flex-col gap-5 lg:col-span-5 lg:gap-6">
           <div className="flex flex-col gap-4">
-            <Label>{servicios.eyebrow}</Label>
-            <Title title={servicios.title} tone="paper" />
+            <Label tone="deep">{servicios.eyebrow}</Label>
+            <Title title={servicios.title} tone="deep" />
           </div>
 
           <div role="tablist" aria-label={servicios.listAria} onKeyDown={onKey} className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0">
@@ -73,14 +74,14 @@ export function Servicios() {
                   tabIndex={on ? 0 : -1}
                   onClick={() => setActive(i)}
                   className={`group flex shrink-0 items-center gap-3 rounded-full py-2 pr-4 pl-2 text-left transition duration-500 ease-expo lg:rounded-3xl lg:py-2 lg:pr-5 lg:pl-2 ${
-                    on ? 'bg-white shadow-soft ring-1 ring-brand-deep/10' : 'hover:bg-white/60'
+                    on ? 'bg-white shadow-soft' : 'hover:bg-white/10'
                   }`}
                 >
-                  <span className={`grid size-9 shrink-0 place-items-center rounded-2xl transition duration-500 ease-expo lg:size-11 ${on ? 'bg-brand-signal text-brand-ink' : 'bg-brand-deep/5 text-brand-deep'}`}>
+                  <span className={`grid size-9 shrink-0 place-items-center rounded-2xl transition duration-500 ease-expo lg:size-11 ${on ? 'bg-brand-deep text-white' : 'bg-white/15 text-white'}`}>
                     <ServiceIcon name={s.icon} className="size-4 lg:size-6" />
                   </span>
-                  <span className={`font-display text-base whitespace-nowrap transition-colors duration-500 lg:flex-1 lg:text-xl ${on ? 'text-brand-deep' : 'text-brand-deep/75 group-hover:text-brand-deep'}`}>{s.name}</span>
-                  <Arrow className={`hidden size-5 text-brand-flame transition duration-500 ease-expo lg:block ${on ? 'rotate-45 opacity-100' : 'opacity-0'}`} />
+                  <span className={`font-display text-base whitespace-nowrap transition-colors duration-500 lg:flex-1 lg:text-xl ${on ? 'text-brand-deep' : 'text-white'}`}>{s.name}</span>
+                  <Arrow className={`hidden size-5 text-brand-deep transition duration-500 ease-expo lg:block ${on ? 'rotate-45 opacity-100' : 'opacity-0'}`} />
                 </button>
               )
             })}
@@ -93,9 +94,9 @@ export function Servicios() {
           role="tabpanel"
           aria-labelledby={`servicio-tab-${item.slug}`}
           data-reveal="fade"
-          className="flex flex-col gap-4 rounded-4xl bg-brand-deep p-3 text-white md:gap-5 md:p-4 lg:col-span-7 lg:h-panel"
+          className="flex flex-col gap-4 rounded-4xl bg-brand-night p-3 text-white shadow-lift md:gap-5 md:p-4 lg:col-span-7 lg:h-panel"
         >
-          <div className="h-44 shrink-0 overflow-hidden rounded-3xl bg-brand-night/40 md:h-64 lg:h-auto lg:flex-1">
+          <div className="h-44 shrink-0 overflow-hidden rounded-3xl bg-white/5 md:h-64 lg:h-auto lg:flex-1">
             {ITEMS.map((s, i) => (
               <div key={s.slug} className={i === active ? 'size-full' : 'hidden'}>
                 <ServiceDemo name={s.icon} active={i === active} />
@@ -113,7 +114,7 @@ export function Servicios() {
               </p>
             </div>
             <div data-panel-part className="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3 lg:flex-col lg:items-end">
-              <Button href={servicios.ctaHref} label={servicios.cta} variant="white" icon="whatsapp" cursor={servicios.cursor} />
+              <Button href={servicios.ctaHref} label={servicios.cta} variant="signal" icon="whatsapp" cursor={servicios.cursor} />
               <a href={`/servicios/${item.slug}`} className="group flex items-center gap-2 text-sm font-bold">
                 <span className="link-underline">{servicios.more}</span>
                 <Arrow className="size-4 transition-transform duration-500 ease-expo group-hover:rotate-45" />

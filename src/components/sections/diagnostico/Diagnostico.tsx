@@ -46,7 +46,7 @@ export function Diagnostico({ onSeePlans }: { onSeePlans: () => void }) {
       <div className="flex items-center gap-2" aria-hidden="true">
         {QUESTIONS.map((_, i) => (
           <span key={i} className="h-1.5 flex-1 overflow-hidden rounded-full bg-brand-deep/10">
-            <span className={`block h-full origin-left rounded-full bg-brand-signal transition-transform duration-700 ease-expo ${i < step || done ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span className={`block h-full origin-left rounded-full bg-brand-deep transition-transform duration-700 ease-expo ${i < step || done ? 'scale-x-100' : 'scale-x-0'}`} />
           </span>
         ))}
       </div>
@@ -65,7 +65,7 @@ export function Diagnostico({ onSeePlans }: { onSeePlans: () => void }) {
                 <button
                   type="button"
                   onClick={() => setAnswers((a) => [...a, option.level])}
-                  className="group flex w-full items-center gap-4 rounded-2xl bg-brand-paper p-3 text-left text-lg font-bold ring-1 ring-brand-deep/10 transition duration-300 ease-expo hover:bg-brand-night hover:text-white active:scale-99 md:p-4"
+                  className="group flex w-full items-center gap-4 rounded-2xl bg-brand-mist p-3 text-left text-lg font-bold ring-1 ring-brand-deep/10 transition duration-300 ease-expo hover:bg-brand-night hover:text-white active:scale-99 md:p-4"
                 >
                   <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-sm text-brand-deep transition-colors duration-300 group-hover:bg-brand-signal group-hover:text-brand-ink">
                     {LETTERS[i]}

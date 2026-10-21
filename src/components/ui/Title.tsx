@@ -26,10 +26,10 @@ export function Title({ title, tone, as: Tag = 'h2', className = '' }: TitleProp
   )
 }
 
-/** Antetítulo: trazo corto en azul señal + etiqueta. */
+/** Antetítulo: trazo corto + etiqueta. El trazo va en azul (el naranja queda para las acciones); sobre el azul Clic, todo en blanco. */
 export function Label({ children, tone = 'paper', className = '' }: { children: ReactNode; tone?: PageBg; className?: string }) {
-  const color = tone === 'paper' ? 'text-brand-deep' : 'text-brand-haze'
-  const line = tone === 'deep' ? 'bg-brand-haze' : 'bg-brand-signal'
+  const color = tone === 'paper' ? 'text-brand-deep' : tone === 'deep' ? 'text-white' : 'text-brand-haze'
+  const line = tone === 'paper' ? 'bg-brand-deep' : tone === 'deep' ? 'bg-white' : 'bg-brand-deep'
   return (
     <p data-reveal="rise" className={`flex items-center gap-3 font-label text-label ${color} ${className}`}>
       <span aria-hidden="true" className={`block h-0.5 w-6 rounded-full ${line}`} />

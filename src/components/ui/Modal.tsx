@@ -55,7 +55,7 @@ export function Modal({ open, onClose, title, label, size = 'md', children }: Mo
             type="button"
             onClick={() => ref.current?.close()}
             aria-label="Cerrar"
-            className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-paper text-brand-night transition duration-300 ease-expo hover:rotate-90 hover:bg-brand-signal hover:text-brand-ink"
+            className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-mist text-brand-night transition duration-300 ease-expo hover:rotate-90 hover:bg-brand-signal hover:text-brand-ink"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4 fill-none stroke-current stroke-2" strokeLinecap="round">
               <path d="M6 6l12 12M18 6L6 18" />

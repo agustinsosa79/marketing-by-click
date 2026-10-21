@@ -205,7 +205,7 @@ export const TEXT_SECTIONS: TextSection[] = [
     intro: 'La asesoría 1:1 y los servicios fuera de los planes, en la fila de abajo de los planes. Los precios se cambian en la sección Precios.',
     locked: [
       { label: 'Título de la asesoría', value: 'Una asesoría 1:1, 100% personalizada.' },
-      { label: 'Nombres de los extras', value: 'Sitio web / e-commerce · Sesión de fotos y videos · Soluciones a medida' },
+      { label: 'Nombres de los extras', value: 'Sitio web / e-commerce · Sesión de fotos y videos · Branding · Soluciones a medida' },
     ],
     groups: [
       {
@@ -218,6 +218,7 @@ export const TEXT_SECTIONS: TextSection[] = [
       },
       { title: 'Sitio web / e-commerce', fields: [message('extras.web.message', 'Hola! Quiero consultar por un sitio web.')] },
       { title: 'Sesión de fotos y videos', fields: [message('extras.sesion.message', 'Hola! Quiero consultar por una sesión de fotos y videos.')] },
+      { title: 'Branding', fields: [message('extras.branding.message', 'Hola! Quiero consultar por branding para mi marca.')] },
       { title: 'Soluciones a medida', fields: [message('extras.medida.message', 'Hola! Necesito algo a medida para mi marca.')] },
       { title: 'Textos comunes', fields: [text('extras.cta', 'Acción de cada extra', 'Consultar', 4, 16)] },
     ],

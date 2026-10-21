@@ -58,12 +58,12 @@ export function Asesoria() {
           {extras.items.map((item) => (
             <li key={item.name} className="flex-1 border-b border-brand-deep/10 last:border-b-0">
               <a href={item.href} target="_blank" rel="noopener noreferrer" data-cursor={extras.cta} className="group flex h-full items-center gap-4 py-3">
-                <span className="grid size-11 shrink-0 place-items-center rounded-2xl rounded-bl-md bg-brand-paper text-brand-deep transition duration-500 ease-expo group-hover:bg-brand-signal group-hover:text-brand-ink">
+                <span className="grid size-11 shrink-0 place-items-center rounded-2xl rounded-bl-md bg-brand-mist text-brand-deep transition duration-500 ease-expo group-hover:bg-brand-signal group-hover:text-brand-ink">
                   <ExtraIcon name={item.icon} className="size-5" />
                 </span>
                 <span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="font-bold text-brand-night md:text-lg">{item.name}</span>
-                  {item.price && <span className="rounded-full bg-brand-paper px-2.5 py-0.5 text-xs font-bold text-brand-deep">{item.price}</span>}
+                  {item.price && <span className="rounded-full bg-brand-mist px-2.5 py-0.5 text-xs font-bold text-brand-deep">{item.price}</span>}
                 </span>
                 <Arrow className="size-5 shrink-0 text-brand-deep transition-transform duration-500 ease-expo group-hover:rotate-45" />
                 <span className="sr-only">: {extras.cta} por WhatsApp</span>

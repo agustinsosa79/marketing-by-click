@@ -1,14 +1,14 @@
 import type { NewImage } from '../shared/blog.js'
 import type { ProjectInput } from '../shared/site.js'
 import { guarded, json, readJson, UserError } from '../server/http.js'
-import { deleteProject, getProject, moveProject, saveProject } from '../server/projects.js'
+import { deleteProject, getProject, moveProject, saveProject, setHome } from '../server/projects.js'
 
 /**
  * /api/project
  *   GET    ?slug=…                          → el proyecto completo
  *   POST   { project, images }              → crea
  *   PUT    { project, images }              → edita
- *   PATCH  ?slug=… { action }               → "up" | "down" | "top" (posición en el portfolio)
+ *   PATCH  ?slug=… { action }               → "up" | "down" | "top" (posición) · "home" | "unhome" (inicio)
  *   DELETE ?slug=…                          → elimina
  */
 const slugParam = (request: Request) => {
@@ -40,6 +40,7 @@ export function PATCH(request: Request) {
     const slug = slugParam(request)
     const { action } = await readJson<{ action?: string }>(request, 1_000)
     if (action === 'up' || action === 'down' || action === 'top') await moveProject(slug, action)
+    else if (action === 'home' || action === 'unhome') await setHome(slug, action === 'home')
     else throw new UserError('Acción inválida.')
     return json({ ok: true })
   })

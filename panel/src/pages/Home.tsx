@@ -78,7 +78,7 @@ export function Home() {
           title="Proyectos"
           href="#/proyectos"
           stat={projects ? plural(projects.filter((p) => !p.draft).length, 'proyecto publicado', 'proyectos publicados') : loading}
-          detail={projects && `En el inicio (los ${HOME_LIMIT} primeros): ${listNames(projects.filter((p) => homeSlugs(projects).has(p.slug)).map((p) => p.brand)) || 'ninguno'}`}
+          detail={projects && `En el inicio (hasta ${HOME_LIMIT}): ${listNames(projects.filter((p) => homeSlugs(projects).has(p.slug)).map((p) => p.brand)) || 'ninguno'}`}
           action="+ Nuevo proyecto"
           onAction={() => go('#/proyectos/nuevo')}
         />

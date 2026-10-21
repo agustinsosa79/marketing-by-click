@@ -56,7 +56,7 @@ export const api = {
   project: (slug: string) => request<{ project: ProjectInput }>(`/api/project?slug=${encodeURIComponent(slug)}`),
   createProject: (project: ProjectInput, images: NewImage[]) => request<{ slug: string }>('/api/project', { method: 'POST', body: JSON.stringify({ project, images }) }),
   updateProject: (project: ProjectInput, images: NewImage[]) => request<{ slug: string }>('/api/project', { method: 'PUT', body: JSON.stringify({ project, images }) }),
-  projectAction: (slug: string, action: 'up' | 'down' | 'top') =>
+  projectAction: (slug: string, action: 'up' | 'down' | 'top' | 'home' | 'unhome') =>
     request<{ ok: true }>(`/api/project?slug=${encodeURIComponent(slug)}`, { method: 'PATCH', body: JSON.stringify({ action }) }),
   removeProject: (slug: string) => request<{ ok: true }>(`/api/project?slug=${encodeURIComponent(slug)}`, { method: 'DELETE' }),
 
