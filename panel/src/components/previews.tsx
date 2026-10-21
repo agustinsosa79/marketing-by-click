@@ -156,30 +156,26 @@ export function AsesoriaPreview({ price, detail, currency, texts }: { price: str
   )
 }
 
-/** El bloque "También hacemos" (al lado de la asesoría), donde aparece la sesión de fotos con su precio. */
-export function SesionPreview({ price, detail, currency, texts }: { price: string; detail: string; currency: string; texts?: TextReader }) {
-  const tx = texts ?? textReader()
-  const text = [detail, /^\d{1,6}$/.test(price) ? `${price} ${currency}` : '—'].filter(Boolean).join(' · ')
+/** La fila "También hacemos" (debajo de los planes, al lado de la asesoría), donde aparece la sesión de fotos con su precio. */
+export function SesionPreview({ price, detail, currency }: { price: string; detail: string; currency: string; texts?: TextReader }) {
+  const text = [detail, /^d{1,6}$/.test(price) ? `${price} ${currency}` : '—'].filter(Boolean).join(' · ')
   const rows = [
-    { name: 'Sitio web / e-commerce', text: tx.get('extras.web.text'), price: '' },
-    { name: 'Sesión de fotos y videos', text: tx.get('extras.sesion.text'), price: text },
-    { name: 'Soluciones a medida', text: tx.get('extras.medida.text'), price: '' },
+    { name: 'Sitio web / e-commerce', price: '' },
+    { name: 'Sesión de fotos y videos', price: text },
+    { name: 'Soluciones a medida', price: '' },
   ]
   return (
     <div className="bg-brand-paper px-4 py-6 sm:px-6">
-      <div className="flex flex-col gap-3 rounded-3xl bg-brand-deep p-4 text-white">
-        <Eyebrow dark>También hacemos</Eyebrow>
-        <p className="font-display text-xl">Proyectos fuera de los planes</p>
+      <div className="flex flex-col gap-1 rounded-3xl bg-white p-4 shadow-soft ring-1 ring-brand-deep/10">
+        <Eyebrow>También hacemos</Eyebrow>
         {rows.map((row) => (
-          <div key={row.name} className={`flex items-center gap-3 rounded-2xl bg-brand-night/35 p-3 ring-1 ${row.price ? 'ring-brand-signal' : 'ring-white/10'}`}>
-            <span className="size-8 shrink-0 rounded-xl bg-brand-signal" />
-            <span className="flex min-w-0 flex-col gap-0.5">
-              <span className="flex flex-wrap items-center gap-2 text-sm font-bold">
-                {row.name}
-                {row.price && <span className="rounded-full bg-white px-2 py-0.5 text-[0.65rem] text-brand-deep">{row.price}</span>}
-              </span>
-              <span className="text-[0.7rem] text-brand-haze">{row.text}</span>
+          <div key={row.name} className={`flex items-center gap-3 rounded-2xl p-2.5 ring-1 ${row.price ? 'ring-brand-signal' : 'ring-transparent'}`}>
+            <span className="size-8 shrink-0 rounded-xl rounded-bl-sm bg-brand-paper" />
+            <span className="flex flex-1 flex-wrap items-center gap-2 text-sm font-bold text-brand-night">
+              {row.name}
+              {row.price && <span className="rounded-full bg-brand-paper px-2 py-0.5 text-[0.65rem] text-brand-deep">{row.price}</span>}
             </span>
+            <span className="text-sm font-bold text-brand-deep">↗</span>
           </div>
         ))}
       </div>
