@@ -183,9 +183,10 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
           .call(start, undefined, 'handoff')
         revealHero(tl, 'handoff')
 
-        // Quien no quiere esperar la intro: con un clic, toque, rueda o tecla, la animación se acelera y termina
+        // Quien no quiere esperar la intro: con un clic (o tap) o una tecla, la animación se acelera y termina.
+        // El scroll NO la controla: rueda y arrastre del dedo no la tocan (click no se dispara al arrastrar)
         // (la intro es parte de la marca, pero nunca un muro). Se quita sola al terminar.
-        const events = ['pointerdown', 'wheel', 'touchstart', 'keydown'] as const
+        const events = ['click', 'keydown'] as const
         const skip = () => {
           tl.timeScale(5)
           events.forEach((e) => window.removeEventListener(e, skip))
