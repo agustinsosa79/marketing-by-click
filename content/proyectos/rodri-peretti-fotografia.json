@@ -1,0 +1,43 @@
+{
+  "slug": "rodri-peretti-fotografia",
+  "brand": "Rodri Peretti Fotografía",
+  "title": "Una comunicación digital que refleja su sensibilidad y el valor de conservar momentos a través de la fotografía.",
+  "summary": "Acompañamos a Rodri en la comunicación de su trabajo fotográfico, buscando que sus redes transmitan la misma sensibilidad que sus imágenes. Desarrollamos contenido que permite conocer su mirada, conectar con las historias que retrata y entender el valor de conservar momentos a través de la fotografí",
+  "sector": "Fotografía profesional",
+  "location": "Santa Fe",
+  "year": "",
+  "services": [
+    "Estrategia",
+    "Contenido",
+    "Meta Ads"
+  ],
+  "cover": {
+    "src": "/media/proyectos/rodri-peretti-fotografia-portada-sb18wj.webp",
+    "alt": "Logotipo de Rodri Peretti",
+    "width": 1600,
+    "height": 1600
+  },
+  "challenge": "Rodri necesitaba que su comunicación digital transmitiera la sensibilidad que caracteriza a sus fotografías. Sus redes debían ayudar a conocer su mirada y el valor de las historias que retrata.\n\nEl desafío era comunicar la experiencia de trabajar con él y la importancia de conservar esos momentos.",
+  "process": [
+    {
+      "title": "Pusimos su mirada en el centro.",
+      "text": "Orientamos la comunicación hacia su sensibilidad, su estilo y su manera de registrar momentos.",
+      "image": null
+    },
+    {
+      "title": "Dimos contexto a sus fotografías.",
+      "text": "Acompañamos las imágenes con textos que ponen en valor los vínculos, las emociones y las historias de cada sesión.",
+      "image": null
+    },
+    {
+      "title": "Presentamos su propuesta fotográfica.",
+      "text": "Trabajamos una comunicación que permite conocer sus servicios y conectar con su forma de hacer fotografía.",
+      "image": null
+    }
+  ],
+  "result": "Una presencia digital que refleja su identidad como fotógrafo. Fotografías y textos que trabajan juntos para transmitir su sensibilidad y ayudar a quienes llegan a sus redes a conocer su propuesta.",
+  "gallery": [],
+  "order": 8,
+  "draft": false,
+  "home": false
+}
