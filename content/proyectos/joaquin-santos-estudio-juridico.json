@@ -1,0 +1,49 @@
+{
+  "slug": "joaquin-santos-estudio-juridico",
+  "brand": "Joaquín Santos Estudio Jurídico",
+  "title": "Construimos su presencia digital desde cero, integrando identidad visual, estrategia de contenidos y publicidad en Meta",
+  "summary": "Desarrollamos la identidad visual y la estrategia de comunicación digital de Joaquín Santos Estudio Jurídico.",
+  "sector": "Servicios jurídicos",
+  "location": "Buenos Aires",
+  "year": "",
+  "services": [
+    "Estrategia",
+    "Contenido",
+    "Meta Ads",
+    "Branding"
+  ],
+  "cover": {
+    "src": "/media/proyectos/joaquin-santos-estudio-juridico-portada-r3oy0f.webp",
+    "alt": "logotipo del estudio jurídico Joaquín Santos",
+    "width": 1600,
+    "height": 1112
+  },
+  "challenge": "El estudio necesitaba construir su presencia digital desde cero y presentar su propuesta profesional con claridad. La identidad visual, los contenidos y la publicidad debían trabajar en conjunto.\n\nEl desafío era desarrollar una comunicación coherente que permitiera conocer al estudio y sus servicios.",
+  "process": [
+    {
+      "title": "Desarrollamos la identidad visual.",
+      "text": "Construimos una base gráfica para dar coherencia y reconocimiento a la presentación del estudio.",
+      "image": null
+    },
+    {
+      "title": "Definimos la estrategia de comunicación.",
+      "text": "Organizamos el enfoque de los mensajes para presentar su propuesta profesional en redes sociales.",
+      "image": null
+    },
+    {
+      "title": "Desarrollamos contenido para redes.",
+      "text": "Aplicamos la identidad y la estrategia a piezas que acercan los servicios del estudio a su público.",
+      "image": null
+    },
+    {
+      "title": "Sumamos campañas de Meta Ads.",
+      "text": "Integramos publicidad a la estrategia para dar visibilidad al estudio y acercar su propuesta a potenciales clientes.",
+      "image": null
+    }
+  ],
+  "result": "Una presencia digital construida sobre una misma identidad y estrategia. El estudio cuenta con una presentación visual coherente, contenido para comunicar sus servicios y publicidad para ampliar su difusión.",
+  "gallery": [],
+  "order": 5,
+  "draft": false,
+  "home": false
+}
