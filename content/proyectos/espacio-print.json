@@ -1,0 +1,43 @@
+{
+  "slug": "espacio-print",
+  "brand": "Espacio Print",
+  "title": "Contenido para mostrar la variedad de soluciones gráficas y productos personalizados que crea esta empresa familiar.",
+  "summary": "Desarrollamos la comunicación en redes de Espacio Print, una empresa familiar de Plottier que trabaja para particulares, marcas y eventos. Pusimos el foco en mostrar sus soluciones gráficas, sus artículos personalizados y las distintas posibilidades de sus servicios, ayudando a que cada público pued",
+  "sector": "Impresión, soluciones gráficas y productos personalizados",
+  "location": "Neuquén",
+  "year": "2025",
+  "services": [
+    "Estrategia",
+    "Contenido",
+    "Meta Ads"
+  ],
+  "cover": {
+    "src": "/media/proyectos/espacio-print-portada-daop0f.webp",
+    "alt": "Logo Espacio Print",
+    "width": 1080,
+    "height": 1080
+  },
+  "challenge": "Espacio Print necesitaba mostrar la variedad de soluciones que ofrece esta empresa familiar de Plottier. Su comunicación debía ayudar a particulares, marcas y organizadores de eventos a reconocer qué podían resolver con sus servicios.\n\nEl desafío era hacer visible esa diversidad a través de contenido claro y concreto.",
+  "process": [
+    {
+      "title": "Organizamos la presentación de sus servicios.",
+      "text": "Trabajamos una comunicación que permite identificar sus soluciones gráficas y productos personalizados.\nImagen sugerida: pieza que reúna sus principales servicios.",
+      "image": null
+    },
+    {
+      "title": "Pusimos los trabajos en primer plano.",
+      "text": "Mostramos productos y aplicaciones para explicar las posibilidades de personalización.\nImagen sugerida: fotografías de trabajos realizados.",
+      "image": null
+    },
+    {
+      "title": "Conectamos las propuestas con sus públicos.",
+      "text": "Orientamos los mensajes hacia usos y necesidades de particulares, marcas y eventos.\nImagen sugerida: publicación de un producto aplicado a una ocasión concreta.",
+      "image": null
+    }
+  ],
+  "result": "Una comunicación en redes que muestra la amplitud de su oferta y sus posibilidades. Los trabajos realizados funcionan como ejemplos concretos para ayudar a cada público a encontrar una solución.",
+  "gallery": [],
+  "order": 3,
+  "draft": false,
+  "home": false
+}
