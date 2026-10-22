@@ -1,0 +1,43 @@
+{
+  "slug": "ohana-residencia-universitaria",
+  "brand": "Ohana Residencia Universitaria",
+  "title": "Comunicación y campañas de Meta Ads para acercar la residencia a estudiantes que buscan dónde vivir en Buenos Aires.",
+  "summary": "Gestionamos la comunicación digital y la publicidad de Ohana, mostrando su propuesta de alojamiento estudiantil, logrando una ocupación del 100% en una semana.",
+  "sector": "Residencia estudiantil",
+  "location": "Buenos Aires",
+  "year": "",
+  "services": [
+    "Estrategia",
+    "Contenido",
+    "Meta Ads"
+  ],
+  "cover": {
+    "src": "/media/proyectos/ohana-residencia-universitaria-portada-p3nla9.webp",
+    "alt": "Habitación de Ohana",
+    "width": 1284,
+    "height": 1704
+  },
+  "challenge": "Ohana necesitaba llegar a estudiantes que buscaban dónde vivir en Buenos Aires y comunicar su propuesta de alojamiento. Era necesario mostrar la residencia y facilitar el paso del interés a la consulta.\n\nEl objetivo era acompañar la captación de residentes y cubrir los lugares disponibles.",
+  "process": [
+    {
+      "title": "Comunicamos la propuesta de la residencia.",
+      "text": "Trabajamos mensajes orientados a quienes necesitan encontrar un lugar para vivir durante sus estudios.",
+      "image": null
+    },
+    {
+      "title": "Mostramos sus espacios.",
+      "text": "Desarrollamos contenido para acercar la residencia a potenciales residentes y ayudarles a conocerla.",
+      "image": null
+    },
+    {
+      "title": "Activamos campañas de Meta Ads.",
+      "text": "Complementamos el contenido con publicidad para dar visibilidad a la propuesta y generar consultas.",
+      "image": null
+    }
+  ],
+  "result": "La comunicación digital y las campañas de Meta Ads acompañaron la captación de residentes hasta alcanzar la ocupación total de Ohana.",
+  "gallery": [],
+  "order": 7,
+  "draft": false,
+  "home": false
+}
