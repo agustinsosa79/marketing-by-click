@@ -51,5 +51,6 @@
   "result": "Un manual de marca que define cómo se usa cada pieza, para que la comunicación del hostel sea coherente y reconocible, la haga quien la haga.",
   "gallery": [],
   "order": 1,
-  "draft": false
+  "draft": false,
+  "home": false
 }

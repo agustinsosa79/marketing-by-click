@@ -1,0 +1,43 @@
+{
+  "slug": "moniketa-musica",
+  "brand": "Moniketa Música",
+  "title": "Una comunicación que acerca su universo musical y sus propuestas a familias y espacios educativos.",
+  "summary": "Acompañamos a Moniketa en su comunicación digital y publicidad, dando visibilidad a su música, sus espectáculos y sus recursos de valor.",
+  "sector": "Música y entretenimiento infantil",
+  "location": "Entre Ríos",
+  "year": "",
+  "services": [
+    "Estrategia",
+    "Contenido",
+    "Meta Ads"
+  ],
+  "cover": {
+    "src": "/media/proyectos/moniketa-musica-portada-sjvddu.webp",
+    "alt": "Album Choque Los Cinco de Moniketa",
+    "width": 1600,
+    "height": 1429
+  },
+  "challenge": "Moniketa necesitaba acercar su universo musical a familias y centros educativos. La comunicación debía transmitir el carácter creativo de su propuesta y mostrar el valor de sus contenidos y recursos.\n\nEl desafío era conectar con las personas que eligen experiencias musicales para las infancias.",
+  "process": [
+    {
+      "title": "Comunicamos su universo musical.",
+      "text": "Trabajamos contenido que presenta la personalidad de Moniketa y acerca su propuesta a nuevos públicos.",
+      "image": null
+    },
+    {
+      "title": "Dimos espacio a sus recursos y contenidos.",
+      "text": "Integramos publicaciones de valor dirigidas a familias y espacios educativos.",
+      "image": null
+    },
+    {
+      "title": "Acompañamos con publicidad.",
+      "text": "Sumamos difusión para ampliar la visibilidad de su propuesta entre los públicos a los que se dirige.",
+      "image": null
+    }
+  ],
+  "result": "Una comunicación que reúne música, creatividad y recursos de valor. Una presentación de Moniketa que permite a familias y centros educativos conocer su propuesta y acercarse a su trabajo.",
+  "gallery": [],
+  "order": 4,
+  "draft": false,
+  "home": false
+}
