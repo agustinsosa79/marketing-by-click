@@ -1,25 +1,21 @@
 import { useRef } from 'react'
 import { brand, contact, footer, servicios } from '../../../data/content'
-import { fitText, useFitText } from '../../../hooks/useFitText'
 import { useLenis } from '../../../hooks/useLenis'
 import { useReducedMotion } from '../../../hooks/useReducedMotion'
-import { fontsReady } from '../../../lib/fonts'
-import { gsap, SplitText, useGSAP } from '../../../lib/gsap'
+import { gsap, useGSAP } from '../../../lib/gsap'
 import { deferSetup } from '../../../lib/schedule'
-import { Icon } from '../../ui/Icon'
+import { Icon, Wordmark } from '../../ui/Icon'
 
 /**
  * Footer mínimo con revelado tipo telón: queda sticky debajo de <main> (desktop) y aparece cuando
- * la última sección sube. El wordmark "clicstudio" (como el logo) entra letra por letra.
+ * la última sección sube. El logo tipográfico "clicstudio" (dibujo original) entra palabra por palabra.
  */
 export function Footer() {
   const ref = useRef<HTMLElement>(null)
   const inner = useRef<HTMLDivElement>(null)
-  const wordmark = useRef<HTMLParagraphElement>(null)
+  const wordmark = useRef<HTMLDivElement>(null)
   const { scrollTo } = useLenis()
   const reduced = useReducedMotion()
-
-  useFitText(wordmark, 1)
 
   useGSAP(
     (_, contextSafe) =>
@@ -46,18 +42,10 @@ export function Footer() {
           })
           gsap.fromTo(row, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'reveal', scrollTrigger: once })
 
-          let alive = true
-          const animate = contextSafe!(() => {
-            if (!alive || !wordmark.current) return
-            const { chars } = SplitText.create(wordmark.current, { type: 'lines,chars', mask: 'lines', linesClass: 'split-line', aria: 'none' })
-            fitText(wordmark.current, 1)
-            gsap.fromTo(chars, { yPercent: 110 }, { yPercent: 0, duration: 1.3, stagger: 0.035, ease: 'reveal', delay: 0.2, scrollTrigger: { ...once, start: 'bottom 70%' } })
-          })
-          fontsReady().then(animate)
-          return () => {
-            alive = false
-            mm.revert()
-          }
+          // las dos palabras del logo suben desde abajo de su máscara, una detrás de la otra
+          const words = wordmark.current!.querySelectorAll('path')
+          gsap.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 1.3, stagger: 0.12, ease: 'reveal', delay: 0.2, scrollTrigger: { ...once, start: 'bottom 70%' } })
+          return () => mm.revert()
         }),
       ),
     { scope: ref, dependencies: [reduced] },
@@ -73,12 +61,10 @@ export function Footer() {
     <footer ref={ref} className="relative z-0 overflow-hidden bg-brand-night text-white md:sticky md:bottom-0">
       <div ref={inner} className="px-5 pt-14 pb-6 md:px-10 md:pt-20">
         <p className="sr-only">{brand.name}</p>
-        <p ref={wordmark} aria-hidden="true" className="font-wordmark leading-none whitespace-nowrap">
-          <span data-fit-line className="inline-block">
-            <span className="font-bold">{brand.wordmark[0]}</span>
-            <span className="font-normal text-brand-haze">{brand.wordmark[1]}</span>
-          </span>
-        </p>
+        {/* logo tipográfico original (trazos del archivo del cliente): en blanco, como la versión del logo sobre azul */}
+        <div ref={wordmark} aria-hidden="true" className="overflow-hidden">
+          <Wordmark className="h-auto w-full" studioClass="fill-white" />
+        </div>
 
         <div data-footer-row className="mt-8 flex flex-col gap-6 border-t border-white/10 pt-6 text-sm md:mt-12">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">

@@ -8,14 +8,14 @@ export function Icon({ name, className = '' }: { name: 'instagram' | 'whatsapp';
 }
 
 type MarkProps = ComponentProps<'svg'> & {
-  /** Relleno de la burbuja (clase fill-*). Por defecto el azul Clic (celeste del manual): el naranja queda para las acciones. */
+  /** Relleno de la burbuja (clase fill-*). Por defecto el azul oscuro, color principal de la marca. */
   bubble?: string
   /** Relleno de las letras (clase fill-*). */
   letters?: string
 }
 
-/** Logo completo (manual Clic Studio): burbuja con "clic / studio" adentro. */
-export function Logo({ bubble = 'fill-brand-deep', letters = 'fill-white', className = '', ...rest }: MarkProps) {
+/** Logo completo (archivo original del cliente): burbuja con "clic / studio". La composición no se modifica. */
+export function Logo({ bubble = 'fill-brand-night', letters = 'fill-white', className = '', ...rest }: MarkProps) {
   return (
     <svg viewBox={LOGO.full.viewBox} aria-hidden="true" className={`block ${className}`} {...rest}>
       <path data-logo-bubble d={LOGO.full.bubble} className={bubble} />
@@ -25,26 +25,20 @@ export function Logo({ bubble = 'fill-brand-deep', letters = 'fill-white', class
 }
 
 /**
- * Isotipo: burbuja con la "C". `rays` agrega las tres líneas del clic (variante secundaria del manual,
- * "uso en animaciones").
+ * Isotipo reducido: burbuja con la "C". `rays` usa la variante secundaria del manual
+ * (la "C" con las líneas del clic, "uso en animaciones").
  */
-export function Isotipo({ bubble = 'fill-brand-deep', letters = 'fill-white', rays = false, className = '', ...rest }: MarkProps & { rays?: boolean }) {
+export function Isotipo({ bubble = 'fill-brand-night', letters = 'fill-white', rays = false, className = '', ...rest }: MarkProps & { rays?: boolean }) {
+  const mark = rays ? LOGO.isoRays : LOGO.iso
   return (
-    <svg viewBox={LOGO.iso.viewBox} aria-hidden="true" className={`block overflow-visible ${className}`} {...rest}>
-      <path data-logo-bubble d={LOGO.iso.bubble} className={bubble} />
-      <path data-logo-letters d={LOGO.iso.text} className={letters} />
-      {rays && (
-        <g data-logo-rays className={`stroke-current ${letters.replace('fill-', 'text-')}`} strokeWidth="26" strokeLinecap="round" fill="none">
-          <path d="M432 196L472 160" />
-          <path d="M452 276H506" />
-          <path d="M432 356L472 392" />
-        </g>
-      )}
+    <svg viewBox={mark.viewBox} aria-hidden="true" className={`block ${className}`} {...rest}>
+      <path data-logo-bubble d={mark.bubble} className={bubble} />
+      <path data-logo-letters d={mark.text} className={letters} />
     </svg>
   )
 }
 
-/** Burbuja sola: forma del patrón de marca (manual). Decorativa; toma el color con una clase fill-*. */
+/** Burbuja sola (la del logo completo): forma del patrón de marca. Decorativa; toma el color con una clase fill-*. */
 export function Bubble({ className = '', flip = false, ...rest }: ComponentProps<'svg'> & { flip?: boolean }) {
   return (
     <svg viewBox={LOGO.full.viewBox} aria-hidden="true" className={`block ${flip ? '-scale-x-100' : ''} ${className}`} {...rest}>
@@ -53,12 +47,29 @@ export function Bubble({ className = '', flip = false, ...rest }: ComponentProps
   )
 }
 
-/** Wordmark en línea "clicstudio": "clic" bold + "studio" regular (versión reducida del manual). */
-export function Wordmark({ className = '', ...rest }: ComponentProps<'svg'>) {
+/**
+ * Logo tipográfico "clicstudio" (archivo original): "clic" bold más grande y "studio" regular más chico.
+ * Va de un solo color, como en el manual; `studioClass` queda para casos puntuales.
+ */
+export function Wordmark({ className = '', studioClass = '', ...rest }: ComponentProps<'svg'> & { studioClass?: string }) {
   return (
     <svg viewBox={LOGO.wordmark.viewBox} aria-hidden="true" className={`block fill-current ${className}`} {...rest}>
       <path d={LOGO.wordmark.clic} />
-      <path d={LOGO.wordmark.studio} />
+      <path d={LOGO.wordmark.studio} className={studioClass} />
+    </svg>
+  )
+}
+
+/**
+ * Una sola palabra del logo tipográfico original ("clic" o "studio"), recortada del mismo dibujo y a la misma
+ * escala: dos piezas del mismo alto, una al lado de la otra, forman el logo exacto (sirve para animarlas por separado).
+ * El alto lo da la clase (h-*) o el estilo; el ancho sale solo de la proporción.
+ */
+const WORD_VIEWBOX = { clic: '1859.18 758.29 34.43 18.36', studio: '1893.61 758.29 49.54 18.36' } as const
+export function WordmarkPart({ part, className = '', ...rest }: ComponentProps<'svg'> & { part: 'clic' | 'studio' }) {
+  return (
+    <svg viewBox={WORD_VIEWBOX[part]} aria-hidden="true" className={`block w-auto fill-current ${className}`} {...rest}>
+      <path d={LOGO.wordmark[part]} />
     </svg>
   )
 }
@@ -86,7 +97,9 @@ export function ServiceIcon({ name, className = '' }: { name: Service['icon']; c
 }
 
 /** Íconos de los servicios fuera de los planes (mismo trazo que los de servicios). */
-const EXTRA_PATHS: Record<'web' | 'camera' | 'branding' | 'custom', string[]> = {
+const EXTRA_PATHS: Record<'person' | 'web' | 'camera' | 'branding' | 'custom', string[]> = {
+  // persona (asesoría 1:1)
+  person: ['M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', 'M4.5 20a7.5 7.5 0 0 1 15 0'],
   // pluma de diseño (la misma del servicio de branding)
   branding: ['M12 3l6 7-6 11-6-11z', 'M12 10v4', 'M6 10h12'],
   // ventana de navegador
@@ -119,6 +132,23 @@ export function Arrow({ className = '' }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={`fill-none stroke-current stroke-2 ${className}`} strokeLinecap="round" strokeLinejoin="round">
       <path d="M7 17L17 7M9 7h8v8" />
+    </svg>
+  )
+}
+
+/** Redes de terceros (portfolio y fundador): trazo simple que toma el color del texto. */
+const SOCIAL_PATHS: Record<'linkedin' | 'tiktok', string[]> = {
+  linkedin: ['M4 9h3.5v11H4z', 'M5.75 4.5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5z', 'M10 9h3.3v1.6c.5-.9 1.7-1.9 3.5-1.9 3.2 0 3.7 2.1 3.7 4.7V20H17v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V20H10z'],
+  tiktok: ['M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5', 'M14 3c.4 2.6 2.1 4.3 5 4.5'],
+}
+
+export function SocialIcon({ name, className = '' }: { name: keyof typeof SOCIAL_PATHS; className?: string }) {
+  const filled = name === 'linkedin'
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={`${filled ? 'fill-current' : 'fill-none stroke-current stroke-2'} ${className}`} strokeLinecap="round" strokeLinejoin="round">
+      {SOCIAL_PATHS[name].map((d) => (
+        <path key={d} d={d} />
+      ))}
     </svg>
   )
 }

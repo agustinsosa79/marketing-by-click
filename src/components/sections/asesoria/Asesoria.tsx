@@ -1,93 +1,146 @@
-import { asesoria, extras, sections } from '../../../data/content'
+import { useRef, useState, type KeyboardEvent } from 'react'
+import { extras, sections } from '../../../data/content'
+import { useLenis } from '../../../hooks/useLenis'
+import { useReducedMotion } from '../../../hooks/useReducedMotion'
+import { gsap, useGSAP } from '../../../lib/gsap'
 import { splitHeadline } from '../../../lib/headline'
-import { useRef } from 'react'
-import { useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
 import { deferSetup } from '../../../lib/schedule'
 import { Button } from '../../ui/Button'
+import { ExtraIcon } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
-import { Arrow, ExtraIcon } from '../../ui/Icon'
+import { Label, Title } from '../../ui/Title'
 
-/**
- * Fuera de los planes, en su sección blanca después del diagnóstico: pesa menos que los planes
- * pero se ve a la primera. Mantiene el ancla #asesoria (la usa el navbar).
- *   izquierda → la asesoría 1:1: foto, título, una frase, precio y WhatsApp
- *   derecha   → "También hacemos": web, sesión de fotos y a medida, cada uno con su WhatsApp ya escrito
- */
-export function Asesoria() {
-  const [before, em, after] = splitHeadline(asesoria.title)
+const ITEMS = extras.items
 
+function Chevron({ className = '' }: { className?: string }) {
   return (
-    <div id={sections.asesoria} className="grid scroll-mt-24 grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
-      <article data-reveal className="flex flex-col gap-5 rounded-4xl bg-white p-5 shadow-soft ring-1 ring-brand-deep/10 sm:flex-row sm:items-center md:p-6 lg:col-span-7">
-        <figure className="relative h-44 shrink-0 overflow-hidden rounded-3xl bg-brand-night sm:h-auto sm:w-40 sm:self-stretch">
-          <img
-            src={asesoria.image.src}
-            alt={asesoria.image.alt}
-            width={asesoria.image.width}
-            height={asesoria.image.height}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover object-center"
-          />
-          <span className="absolute top-3 left-3 rounded-full rounded-bl-sm bg-white px-3 py-1 font-display text-sm text-brand-deep">1:1</span>
-        </figure>
-
-        <div className="flex flex-col gap-3">
-          <p className="font-label text-label text-brand-deep">{asesoria.eyebrow}</p>
-          <h3 className="font-display text-3xl text-brand-night md:text-4xl">
-            {before}
-            {em && <span className="italic text-brand-flame">{em}</span>}
-            {after}
-          </h3>
-          <p className="text-brand-night/75">{asesoria.text}</p>
-          <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <Button href={asesoria.cta.href} label={asesoria.cta.label} variant="night" icon="whatsapp" cursor="Escribinos" />
-            {asesoria.price && (
-              <p className="flex items-baseline gap-2 text-brand-night">
-                <span className="font-display text-3xl">{asesoria.price.value}</span>
-                <span className="text-sm font-bold text-brand-night/70">
-                  {asesoria.price.currency} {asesoria.price.detail}
-                </span>
-              </p>
-            )}
-          </div>
-        </div>
-      </article>
-
-      <aside aria-labelledby="extras-title" data-reveal data-reveal-delay={0.08} className="flex flex-col gap-3 rounded-4xl bg-white p-5 shadow-soft ring-1 ring-brand-deep/10 md:p-6 lg:col-span-5">
-        <h3 id="extras-title" className="font-label text-label text-brand-deep">
-          {extras.eyebrow}
-        </h3>
-        <ul className="flex flex-1 flex-col">
-          {extras.items.map((item) => (
-            <li key={item.name} className="flex-1 border-b border-brand-deep/10 last:border-b-0">
-              <a href={item.href} target="_blank" rel="noopener noreferrer" data-cursor={extras.cta} className="group flex h-full items-center gap-4 py-3">
-                <span className="grid size-11 shrink-0 place-items-center rounded-2xl rounded-bl-md bg-brand-mist text-brand-deep transition duration-500 ease-expo group-hover:bg-brand-signal group-hover:text-brand-ink">
-                  <ExtraIcon name={item.icon} className="size-5" />
-                </span>
-                <span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
-                  <span className="font-bold text-brand-night md:text-lg">{item.name}</span>
-                  {item.price && <span className="rounded-full bg-brand-mist px-2.5 py-0.5 text-xs font-bold text-brand-deep">{item.price}</span>}
-                </span>
-                <Arrow className="size-5 shrink-0 text-brand-deep transition-transform duration-500 ease-expo group-hover:rotate-45" />
-                <span className="sr-only">: {extras.cta} por WhatsApp</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </aside>
-    </div>
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={`fill-none stroke-current stroke-2 ${className}`} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 6l6 6-6 6" />
+    </svg>
   )
 }
 
-/** Sección blanca de la asesoría y los extras, después del diagnóstico. */
-export function AsesoriaSection() {
+/**
+ * Servicios (después del diagnóstico, sobre blanco): la asesoría 1:1 y lo que se hace por proyecto.
+ * A la izquierda la lista (click o flechas del teclado); a la derecha el detalle del elegido: foto, qué es,
+ * precio si tiene y el WhatsApp con el mensaje ya escrito. Mantiene el ancla #asesoria para links viejos.
+ */
+export function ServiciosSection() {
   const ref = useRef<HTMLElement>(null)
+  const panel = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+  const reduced = useReducedMotion()
+  const { scrollTo } = useLenis()
+  const first = useRef(true)
+
+  // en el celular el detalle queda debajo de la lista: al elegir, la página baja hasta él
+  const choose = (i: number) => {
+    setActive(i)
+    if (window.matchMedia('(max-width: 1023px)').matches && panel.current) scrollTo(panel.current, { offset: -96, duration: 0.9 })
+  }
+  const item = ITEMS[active]
+  const [before, em, after] = splitHeadline(item.title)
+
   useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
+
+  // al cambiar de servicio, el detalle entra de nuevo (la misma subida corta del resto del sitio)
+  useGSAP(
+    () => {
+      if (first.current) {
+        first.current = false
+        return
+      }
+      const parts = panel.current!.querySelectorAll('[data-panel-part]')
+      if (reduced) gsap.fromTo(parts, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 })
+      else gsap.fromTo(parts, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.04, ease: 'reveal' })
+    },
+    { scope: ref, dependencies: [active] },
+  )
+
+  const onKey = (e: KeyboardEvent) => {
+    if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) return
+    e.preventDefault()
+    const next = (active + (e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : -1) + ITEMS.length) % ITEMS.length
+    setActive(next)
+    ref.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus()
+  }
+
   return (
-    <Section ref={ref} bg="paper" className="px-5 pt-20 pb-20 md:px-10 md:pt-28 md:pb-28">
-      <Asesoria />
+    <Section id={sections.servicios} ref={ref} bg="paper" className="px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-28">
+      <span id={sections.asesoria} aria-hidden="true" className="absolute top-0" />
+      <div className="flex flex-col gap-4">
+        <Label>{extras.eyebrow}</Label>
+        <Title title={extras.title} tone="paper" />
+      </div>
+
+      <div className="mt-10 grid grid-cols-1 gap-4 md:mt-14 lg:grid-cols-12 lg:gap-5">
+        {/* Lista */}
+        <div data-reveal className="rounded-4xl bg-white p-3 shadow-soft ring-1 ring-brand-deep/10 md:p-4 lg:col-span-4">
+          <div role="tablist" aria-label={extras.listAria} aria-orientation="vertical" onKeyDown={onKey} className="flex flex-col gap-1">
+            {ITEMS.map((s, i) => {
+              const on = i === active
+              return (
+                <button
+                  key={s.key}
+                  type="button"
+                  role="tab"
+                  id={`oferta-tab-${s.key}`}
+                  aria-selected={on}
+                  aria-controls="oferta-panel"
+                  tabIndex={on ? 0 : -1}
+                  onClick={() => choose(i)}
+                  className={`group flex items-center gap-3 rounded-2xl p-2.5 text-left transition duration-300 ease-expo ${on ? 'bg-brand-night text-white' : 'text-brand-night hover:bg-brand-mist'}`}
+                >
+                  <span className={`grid size-10 shrink-0 place-items-center rounded-xl transition-colors duration-300 ${on ? 'bg-white/15 text-white' : 'bg-brand-mist text-brand-deep'}`}>
+                    <ExtraIcon name={s.icon} className="size-5" />
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="font-bold md:text-lg">{s.name}</span>
+                    {s.price && <span className={`text-sm ${on ? 'text-brand-haze' : 'text-brand-night/70'}`}>{s.price}</span>}
+                  </span>
+                  <Chevron className={`size-5 shrink-0 transition-transform duration-300 ${on ? 'translate-x-0.5 text-white' : 'text-brand-deep/60 group-hover:translate-x-0.5'}`} />
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Detalle del elegido */}
+        <div
+          ref={panel}
+          id="oferta-panel"
+          role="tabpanel"
+          aria-labelledby={`oferta-tab-${item.key}`}
+          data-reveal
+          className="grid grid-cols-1 gap-5 rounded-4xl bg-white p-3 shadow-soft ring-1 ring-brand-deep/10 sm:grid-cols-5 md:p-4 lg:col-span-8"
+        >
+          <figure data-panel-part className="relative aspect-4/3 overflow-hidden rounded-3xl bg-brand-mist sm:col-span-2 sm:aspect-auto sm:min-h-72">
+            <img key={item.image.src} src={item.image.src} alt={item.image.alt} width={item.image.width} height={item.image.height} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover" />
+          </figure>
+          <div className="flex flex-col justify-center gap-4 px-2 pb-3 sm:col-span-3 sm:py-4 sm:pr-4">
+            <p data-panel-part className="font-label text-label text-brand-deep">
+              {item.name}
+            </p>
+            <h3 data-panel-part className="font-display text-big text-brand-night">
+              {before}
+              {em && <span className="italic text-brand-flame">{em}</span>}
+              {after}
+            </h3>
+            <p data-panel-part className="text-lg text-brand-night/75">
+              {item.text}
+            </p>
+            {item.price && (
+              <p data-panel-part className="font-bold text-brand-night">
+                {item.price}
+              </p>
+            )}
+            <div data-panel-part className="mt-1">
+              <Button href={item.cta.href} label={item.cta.label} variant="night" icon="whatsapp" cursor="Escribinos" />
+            </div>
+          </div>
+        </div>
+      </div>
     </Section>
   )
 }

@@ -66,7 +66,7 @@ export function MenuOverlay({ open, onClose, pageRef, toggleRef, isHome }: MenuO
 
       {/* la navbar se va al abrir: acá quedan la marca y el botón de cerrar */}
       <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-5 pt-5 md:px-10 md:pt-7">
-        <Logo data-menu-secondary className="h-12 w-auto md:h-14" />
+        <Logo data-menu-secondary bubble="fill-brand-deep" className="h-12 w-auto md:h-14" />
         <button
           data-menu-secondary
           type="button"

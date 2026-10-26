@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
-import { PLANS, PRICE_DETAIL_MAX, type PlanId, type PricesInput } from '../../shared/site'
+import { PLANS, PRICE_DETAIL_MAX, SERVICE_PRICES, type PlanId, type PricesInput, type ServicePriceId } from '../../shared/site'
 import { api, ApiError } from '../api'
-import { AsesoriaPreview, PlansPreview, PreviewFrame, SesionPreview } from '../components/previews'
+import { PlansPreview, PreviewFrame, ServicesPricePreview } from '../components/previews'
 import { Button, Field, MobileSaveBar, Spinner, inputClass, type ToastData } from '../components/ui'
 import { useLeaveGuard } from '../lib/nav'
 import { useSnapshot } from '../lib/snapshot'
 import { textReader } from '../lib/texts'
 import type { TextValues } from '../../shared/texts'
 
-type Area = 'planes' | 'asesoria' | 'sesion'
+type Area = 'planes' | 'servicios'
 
 const SWATCH: Record<PlanId, string> = {
   inicial: 'bg-brand-signal',
@@ -19,7 +19,7 @@ const SWATCH: Record<PlanId, string> = {
 const digits = (v: string) => v.replace(/\D/g, '').slice(0, 6)
 
 /** Campo de precio: solo números, con la moneda al lado. */
-function PriceInput({ id, value, onChange, onFocus, suffix }: { id: string; value: string; onChange: (v: string) => void; onFocus: () => void; suffix: string }) {
+function PriceInput({ id, value, onChange, onFocus, suffix, placeholder = '0' }: { id: string; value: string; onChange: (v: string) => void; onFocus: () => void; suffix: string; placeholder?: string }) {
   return (
     <div className="flex items-center overflow-hidden rounded-xl bg-white ring-1 ring-brand-deep/15 focus-within:ring-2 focus-within:ring-brand-signal">
       <input
@@ -30,14 +30,14 @@ function PriceInput({ id, value, onChange, onFocus, suffix }: { id: string; valu
         onChange={(e) => onChange(digits(e.target.value))}
         onFocus={onFocus}
         className="w-full min-w-0 bg-transparent px-4 py-3 text-2xl font-extrabold tracking-tight text-brand-deep outline-none"
-        placeholder="0"
+        placeholder={placeholder}
       />
       <span className="shrink-0 pr-4 text-sm font-semibold text-brand-night/55">{suffix}</span>
     </div>
   )
 }
 
-/** Precios de los planes, de la asesoría 1:1 y de la sesión de fotos, con vista previa de cómo quedan en la web. */
+/** Precios de los planes y de cada servicio (opcionales), con vista previa de cómo quedan en la web. */
 export function Prices({ notify }: { notify: (t: ToastData) => void }) {
   const [prices, setPrices] = useState<PricesInput | null>(null)
   const [version, setVersion] = useState('')
@@ -46,6 +46,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
   const [error, setError] = useState('')
   const [area, setArea] = useState<Area>('planes')
   const [focusPlan, setFocusPlan] = useState<PlanId | null>(null)
+  const [focusService, setFocusService] = useState<ServicePriceId>('asesoria')
 
   const { dirty, markSaved } = useSnapshot(prices)
   useLeaveGuard(dirty)
@@ -99,8 +100,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
 
   const tabs: { id: Area; label: string }[] = [
     { id: 'planes', label: 'Planes' },
-    { id: 'asesoria', label: 'Asesoría 1:1' },
-    { id: 'sesion', label: 'Sesión de fotos' },
+    { id: 'servicios', label: 'Servicios' },
   ]
 
   return (
@@ -143,52 +143,43 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
             ))}
           </section>
 
-          <section className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-brand-deep/10" aria-labelledby="t-asesoria">
+          <section className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-brand-deep/10" aria-labelledby="t-servicios">
             <div>
-              <h2 id="t-asesoria" className="text-lg font-extrabold text-brand-deep">
-                Asesoría 1:1
+              <h2 id="t-servicios" className="text-lg font-extrabold text-brand-deep">
+                Servicios
               </h2>
-              <p className="text-sm text-brand-night/60">Opcional. Si lo dejás vacío, la web no muestra precio y se consulta por WhatsApp.</p>
+              <p className="text-sm text-brand-night/60">Todos opcionales. Si dejás el precio vacío, la web no lo muestra y se consulta por WhatsApp.</p>
             </div>
-            <Field label="Precio" htmlFor="p-asesoria">
-              <PriceInput id="p-asesoria" value={prices.asesoria.price} suffix="USD" onFocus={() => setArea('asesoria')} onChange={(v) => update((p) => ({ ...p, asesoria: { ...p.asesoria, price: v } }))} />
-            </Field>
-            <Field label="Detalle" htmlFor="d-asesoria" hint="Ej.: por sesión · 1 hora">
-              <input
-                id="d-asesoria"
-                value={prices.asesoria.detail}
-                maxLength={PRICE_DETAIL_MAX}
-                onFocus={() => setArea('asesoria')}
-                onChange={(e) => update((p) => ({ ...p, asesoria: { ...p.asesoria, detail: e.target.value } }))}
-                className={inputClass}
-                placeholder="por sesión"
-              />
-            </Field>
-          </section>
-
-          <section className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-brand-deep/10" aria-labelledby="t-sesion">
-            <div>
-              <h2 id="t-sesion" className="text-lg font-extrabold text-brand-deep">
-                Sesión de fotos y videos
-              </h2>
-              <p className="text-sm text-brand-night/60">Aparece en “También hacemos”, debajo de los planes, y en la página de Contenido.</p>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field label="Precio" htmlFor="p-sesion">
-                <PriceInput id="p-sesion" value={prices.sesion.price} suffix="USD" onFocus={() => setArea('sesion')} onChange={(v) => update((p) => ({ ...p, sesion: { ...p.sesion, price: v } }))} />
-              </Field>
-              <Field label="Duración" htmlFor="d-sesion">
-                <input
-                  id="d-sesion"
-                  value={prices.sesion.detail}
-                  maxLength={PRICE_DETAIL_MAX}
-                  onFocus={() => setArea('sesion')}
-                  onChange={(e) => update((p) => ({ ...p, sesion: { ...p.sesion, detail: e.target.value } }))}
-                  className={inputClass}
-                  placeholder="2 horas"
-                />
-              </Field>
-            </div>
+            {SERVICE_PRICES.map((sv) => (
+              <div key={sv.id} className="grid grid-cols-1 gap-3 border-t border-brand-deep/10 pt-4 first-of-type:border-0 sm:grid-cols-2">
+                <Field label={sv.name} htmlFor={`p-${sv.id}`}>
+                  <PriceInput
+                    id={`p-${sv.id}`}
+                    value={prices[sv.id].price}
+                    suffix="USD"
+                    placeholder="Sin precio"
+                    onFocus={() => {
+                      setArea('servicios')
+                      setFocusService(sv.id)
+                    }}
+                    onChange={(v) => update((p) => ({ ...p, [sv.id]: { ...p[sv.id], price: v } }))}
+                  />
+                </Field>
+                <Field label="Detalle" htmlFor={`d-${sv.id}`} hint={sv.detailHint}>
+                  <input
+                    id={`d-${sv.id}`}
+                    value={prices[sv.id].detail}
+                    maxLength={PRICE_DETAIL_MAX}
+                    onFocus={() => {
+                      setArea('servicios')
+                      setFocusService(sv.id)
+                    }}
+                    onChange={(e) => update((p) => ({ ...p, [sv.id]: { ...p[sv.id], detail: e.target.value } }))}
+                    className={inputClass}
+                  />
+                </Field>
+              </div>
+            ))}
           </section>
 
           <div className="hidden flex-col gap-3 lg:flex">
@@ -225,14 +216,9 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
               <PlansPreview prices={prices} highlight={focusPlan} texts={texts} />
             </PreviewFrame>
           )}
-          {area === 'asesoria' && (
-            <PreviewFrame path="/#asesoria">
-              <AsesoriaPreview price={prices.asesoria.price} detail={prices.asesoria.detail} currency={prices.currency} texts={texts} />
-            </PreviewFrame>
-          )}
-          {area === 'sesion' && (
+          {area === 'servicios' && (
             <PreviewFrame path="/#servicios">
-              <SesionPreview price={prices.sesion.price} detail={prices.sesion.detail} currency={prices.currency} texts={texts} />
+              <ServicesPricePreview prices={prices} focus={focusService} />
             </PreviewFrame>
           )}
         </aside>

@@ -7,12 +7,13 @@ import { RollText } from './RollText'
 type Variant = 'signal' | 'night' | 'white' | 'onSignal'
 
 // cara · relleno que sube al hover · círculo del ícono. Sobre naranja el texto va en tinta (contraste AA).
+// El ícono (WhatsApp o flecha) va SIEMPRE en blanco (pedido del cliente): el círculo es oscuro o azul según el botón.
 const STYLES: Record<Variant, { face: string; fill: string; badge: string }> = {
-  signal: { face: 'bg-brand-signal text-brand-ink group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-ink text-white group-hover:bg-brand-signal group-hover:text-brand-ink' },
-  night: { face: 'bg-brand-night text-white shadow-soft group-hover:text-brand-ink', fill: 'bg-brand-signal', badge: 'bg-brand-signal text-brand-ink group-hover:bg-brand-ink group-hover:text-white' },
+  signal: { face: 'bg-brand-signal text-brand-ink group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-ink text-white group-hover:bg-brand-deep' },
+  night: { face: 'bg-brand-night text-white shadow-soft group-hover:text-brand-ink', fill: 'bg-brand-signal', badge: 'bg-brand-deep text-white group-hover:bg-brand-ink' },
   white: { face: 'bg-white text-brand-night shadow-soft group-hover:text-brand-ink', fill: 'bg-brand-signal', badge: 'bg-brand-night text-white' },
   // sobre fondo naranja: el relleno del hover no puede ser del mismo naranja
-  onSignal: { face: 'bg-white text-brand-night shadow-soft group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-signal text-brand-ink' },
+  onSignal: { face: 'bg-white text-brand-night shadow-soft group-hover:text-white', fill: 'bg-brand-night', badge: 'bg-brand-night text-white group-hover:bg-brand-deep' },
 }
 
 interface ButtonProps {

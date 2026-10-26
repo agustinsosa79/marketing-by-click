@@ -18,7 +18,8 @@ function LoopIcon({ className = '' }: { className?: string }) {
 /**
  * Cómo trabajamos: el primer mes en tres pasos, una línea cada uno, unidos por una línea de tiempo.
  * Debajo, lo que se repite desde el mes 2 (el trabajo es un ciclo). Sin fijar la sección al scrollear:
- * se lee de un vistazo y no corta el ritmo de la página. Va sobre el azul Clic, entre Proyectos (azul noche) y Planes (blanco).
+ * se lee de un vistazo. Va después de Nosotros (pedido del cliente: es información para después de decidir),
+ * sobre el azul Clic, entre Nosotros (azul noche) y Preguntas (blanco).
  */
 export function Proceso() {
   const ref = useRef<HTMLElement>(null)

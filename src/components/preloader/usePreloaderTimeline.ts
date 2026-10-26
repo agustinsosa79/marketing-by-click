@@ -35,7 +35,7 @@ function takeOverIntro(inners: HTMLElement[]) {
  *   click    → el cursor se hunde, saltan las tres líneas del clic y se abre la burbuja naranja desde la punta
  *   message  → sobre la burbuja, la frase de la marca
  *   collapse → la burbuja se achica hasta el botón "Hablemos por WhatsApp" del hero
- *   handoff  → navbar + titular palabra por palabra + foto, lenis.start()
+ *   handoff  → navbar + titular palabra por palabra + foto (el scroll se habilita recién al terminar todo)
  * Debug: ?debug=preloader deja la timeline en pausa en window.__preloaderTl.
  */
 export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
@@ -73,7 +73,19 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
       // la punta del puntero (3, 2 en un viewBox de 24) queda en el punto exacto
       gsap.set(cursor.querySelector('[data-cursor-svg]'), { xPercent: -12.5, yPercent: -8.33 })
 
+      // Mientras dura la intro no se puede interactuar: ni rueda, ni dedo, ni teclas de scroll mueven la página
+      // de fondo (el preloader ya tapa los clics). Se libera al terminar.
+      const SCROLL_KEYS = [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End']
+      const block = (e: Event) => {
+        if (e instanceof KeyboardEvent && !SCROLL_KEYS.includes(e.key)) return
+        e.preventDefault()
+      }
+      const lockEvents = ['wheel', 'touchmove', 'keydown'] as const
+      lockEvents.forEach((e) => window.addEventListener(e, block, { passive: false }))
+      const unlock = () => lockEvents.forEach((e) => window.removeEventListener(e, block))
+
       const finish = () => {
+        unlock()
         document.documentElement.dataset.ready = ''
         start()
         onComplete()
@@ -180,29 +192,18 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
           .set(refs.caption.current, { autoAlpha: 0 }, 'collapse+=0.2')
           .to(fill, { x: cx, y: cy, scale: 0, duration: 0.85, ease: 'power3.inOut' }, 'collapse')
           .addLabel('handoff', 'collapse+=0.1')
-          .call(start, undefined, 'handoff')
         revealHero(tl, 'handoff')
 
-        // Quien no quiere esperar la intro: con un clic (o tap) o una tecla, la animación se acelera y termina.
-        // El scroll NO la controla: rueda y arrastre del dedo no la tocan (click no se dispara al arrastrar)
-        // (la intro es parte de la marca, pero nunca un muro). Se quita sola al terminar.
-        const events = ['click', 'keydown'] as const
-        const skip = () => {
-          tl.timeScale(5)
-          events.forEach((e) => window.removeEventListener(e, skip))
-        }
-        if (!debug) events.forEach((e) => window.addEventListener(e, skip, { passive: true }))
-        tl.eventCallback('onComplete', () => {
-          events.forEach((e) => window.removeEventListener(e, skip))
-          finish()
-        })
+        // La intro corre siempre a su ritmo: ni clics, ni teclas, ni scroll la aceleran. Mientras dura, el
+        // preloader tapa la pantalla y la web se habilita recién al terminar.
+        tl.eventCallback('onComplete', finish)
 
         if (debug || import.meta.env.DEV) (window as unknown as { __preloaderTl: gsap.core.Timeline }).__preloaderTl = tl
         if (debug) tl.pause()
         releaseDeferred()
       })
 
-      // Medir con la fuente del wordmark ya cargada (guarda para el doble montaje de StrictMode)
+      // Medir con la fuente de la frase ya cargada (guarda para el doble montaje de StrictMode)
       let alive = true
       fontReady('700 1em Carlito').then(() => {
         if (!alive) return
@@ -212,6 +213,7 @@ export function usePreloaderTimeline({ scope, refs, onComplete }: Options) {
       })
       return () => {
         alive = false
+        unlock()
       }
     },
     { scope, dependencies: [reduced] },

@@ -47,12 +47,12 @@ await p.screenshot({ path: `${out}/tx-02-planes.png` })
 const preview = await p.locator('aside[aria-label="Vista previa"]').textContent()
 log('vista previa actualizada:', preview.includes('Para vender más con anuncios.') && preview.includes('10 reels'))
 
-// Servicios: quitar un ítem de la lista de Branding
-await p.click('nav[aria-label="Secciones de la web"] >> text=Servicios')
-await p.locator('section[aria-label="Branding"] button[aria-label="Quitar el ítem 5"]').click()
-// Nosotros: cita
+// Método: quitar un ítem de la lista de Diseño
+await p.click('nav[aria-label="Secciones de la web"] >> text=Método')
+await p.locator('section[aria-label="Diseño"] button[aria-label="Quitar el ítem 5"]').click()
+// Nosotros: misión
 await p.click('nav[aria-label="Secciones de la web"] >> text=Nosotros')
-await p.fill('[id="t-nosotros.quote"]', 'Hola, soy Ian. Ayudo a marcas con buen producto a ordenar su comunicación y vender más en redes.')
+await p.fill('[id="t-nosotros.missionLead"]', 'Hola, soy Ian. Ayudo a marcas con buen producto a ordenar su comunicación y vender más en redes.')
 await p.screenshot({ path: `${out}/tx-03-nosotros.png` })
 await p.click('button:has-text("Guardar textos") >> visible=true')
 await p.waitForSelector('text=Textos guardados')

@@ -8,7 +8,7 @@ import { deferSetup } from '../../lib/schedule'
 import { BlogCta } from '../blog/BlogCta'
 import { CategoryChip } from '../blog/PostCard'
 import { Footer } from '../sections/footer/Footer'
-import { Arrow } from '../ui/Icon'
+import { Arrow, Icon, SocialIcon } from '../ui/Icon'
 import { Label } from '../ui/Title'
 
 /** Párrafos separados por una línea en blanco (lo que se escribe en el panel). */
@@ -94,6 +94,25 @@ export function ProjectPage({ project }: { project: Project }) {
                     </div>
                   ))}
                 </dl>
+              )}
+              {project.links.length > 0 && (
+                <div className="intro-delay-3 flex animate-intro flex-wrap items-center gap-2">
+                  <span className="font-label text-label text-brand-night/55">{d.channels}</span>
+                  {project.links.map((l) => (
+                    <a
+                      key={l.key}
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 text-sm font-bold text-brand-night shadow-soft ring-1 ring-brand-deep/10 transition duration-300 hover:ring-brand-deep/30"
+                    >
+                      <span className="grid size-8 place-items-center rounded-full bg-brand-deep text-white transition-transform duration-500 ease-expo group-hover:-rotate-12">
+                        {l.key === 'instagram' ? <Icon name="instagram" className="size-4" /> : <SocialIcon name={l.key} className="size-4" />}
+                      </span>
+                      {l.label}
+                    </a>
+                  ))}
+                </div>
               )}
             </div>
             <figure className="intro-delay-2 animate-intro overflow-hidden rounded-4xl bg-white shadow-soft ring-1 ring-brand-deep/10 lg:col-span-7">

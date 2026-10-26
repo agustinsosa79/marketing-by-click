@@ -23,7 +23,7 @@ await p.click('button[type=submit]')
 await p.waitForSelector('text=Tu web, en un solo lugar')
 
 await p.goto(`${base}/#/precios`, { waitUntil: 'networkidle' })
-for (const tab of ['Asesoría 1:1', 'Sesión de fotos', 'Planes']) {
+for (const tab of ['Servicios', 'Planes']) {
   await p.click(`main button:has-text("${tab}")`)
   await p.waitForTimeout(400)
   check(`precios · ${tab}`, (await alive()) && errors.length === 0)

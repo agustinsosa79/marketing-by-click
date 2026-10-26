@@ -68,7 +68,7 @@ export const TEXT_SECTIONS: TextSection[] = [
     path: '/#inicio',
     intro: 'La portada concentra lo que Google usa para entender de qué trata el sitio. No se edita desde el panel.',
     locked: [
-      { label: 'Título principal (H1)', value: 'Agencia de marketing digital y redes sociales.' },
+      { label: 'Título principal (H1)', value: 'Estudio de marketing digital y redes sociales.' },
       { label: 'Bajada', value: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.' },
       { label: 'Botón', value: 'Hablemos por WhatsApp' },
       { label: 'Enlace', value: 'Ver planes' },
@@ -77,19 +77,20 @@ export const TEXT_SECTIONS: TextSection[] = [
   },
   {
     id: 'servicios',
-    label: 'Servicios',
-    path: '/servicios/estrategia',
-    intro: 'Qué incluye cada servicio. Se ve en la página de cada servicio (en el inicio va solo el nombre y una frase).',
+    label: 'Método',
+    path: '/#metodo',
+    intro: 'El método en el inicio (el círculo con las cuatro partes) y qué incluye cada parte, que se ve en su página.',
     locked: [
       { label: 'Título', value: 'Todo lo que tu marca necesita para vender en redes.' },
-      { label: 'Nombres de los servicios', value: 'Estrategia · Contenido · Meta Ads · Branding' },
+      { label: 'Nombres de las partes', value: 'Estrategia · Contenido · Meta Ads · Diseño' },
       { label: 'Texto corto de cada servicio', value: 'Ej.: “Entendemos tu negocio y armamos un plan de acción 100% a medida.”', reason: 'Se envía a Google como descripción del servicio.' },
     ],
     groups: [
-      { title: 'Estrategia', fields: [list('servicios.estrategia.includes', 'Qué incluye', ['Reunión inicial para conocer tu negocio y tus objetivos', 'Investigación de tu marca, tu público y tu competencia', 'Propuesta y planificación para tus redes', 'Análisis básico en el plan Inicial y avanzado en Plus y Premium', 'Llamadas 1:1 semanales en el plan Premium'], [3, 6], [6, 90])] },
+      { title: 'Estrategia', fields: [text('servicios.estrategia.short', 'Frase en el inicio', 'Un plan de acción a medida.', 6, 60), list('servicios.estrategia.includes', 'Qué incluye', ['Reunión inicial para conocer tu negocio y tus objetivos', 'Investigación de tu marca, tu público y tu competencia', 'Propuesta y planificación para tus redes', 'Análisis básico en el plan Inicial y avanzado en Plus y Premium', 'Llamadas 1:1 semanales en el plan Premium'], [3, 6], [6, 90])] },
       {
         title: 'Contenido',
         fields: [
+          text('servicios.contenido.short', 'Frase en el inicio', 'Conectá con tu audiencia.', 6, 60),
           list(
             'servicios.contenido.includes',
             'Qué incluye',
@@ -100,9 +101,9 @@ export const TEXT_SECTIONS: TextSection[] = [
           ),
         ],
       },
-      { title: 'Meta Ads', fields: [list('servicios.meta-ads.includes', 'Qué incluye', ['Anuncios estratégicos en Instagram y Facebook', '2 campañas en el plan Plus', 'Hasta 5 campañas simultáneas en el plan Premium', 'Reporte de resultados cada mes', 'La inversión en publicidad se cotiza aparte'], [3, 6], [6, 90])] },
-      { title: 'Branding', fields: [list('servicios.branding.includes', 'Qué incluye', ['Logo completo', 'Versión reducida para espacios chicos', 'Aplicaciones en productos reales', 'Manual de marca para una comunicación coherente y reconocible', 'Más de 10 años de experiencia en identidad visual'], [3, 6], [6, 90])] },
-      { title: 'Botón', fields: [button('servicios.cta', 'Consultar por WhatsApp')] },
+      { title: 'Meta Ads', fields: [text('servicios.meta-ads.short', 'Frase en el inicio', 'Anuncios para impulsar tus ventas.', 6, 60), list('servicios.meta-ads.includes', 'Qué incluye', ['Anuncios estratégicos en Instagram y Facebook', '2 campañas en el plan Plus', 'Hasta 5 campañas simultáneas en el plan Premium', 'Reporte de resultados cada mes', 'La inversión en publicidad se cotiza aparte'], [3, 6], [6, 90])] },
+      { title: 'Diseño', fields: [text('servicios.branding.short', 'Frase en el inicio', 'Una identidad que te represente.', 6, 60), list('servicios.branding.includes', 'Qué incluye', ['Logo completo', 'Versión reducida para espacios chicos', 'Aplicaciones en productos reales', 'Manual de marca para una comunicación coherente y reconocible', 'Más de 10 años de experiencia en identidad visual'], [3, 6], [6, 90])] },
+      { title: 'Botones', fields: [text('servicios.planCta', 'Botón del inicio', 'Encontrá el plan para tu marca', 4, 32), button('servicios.cta', 'Consultar por WhatsApp')] },
     ],
   },
   {
@@ -124,12 +125,12 @@ export const TEXT_SECTIONS: TextSection[] = [
     intro: 'Una línea por etapa del primer mes, y lo que se repite después. Se ve en el inicio y en las páginas de servicio.',
     locked: [
       { label: 'Título', value: 'Tu primer mes, en tres etapas.' },
-      { label: 'Nombre y semanas de cada etapa', value: 'Diagnóstico · Estrategia · Ejecución · Cada mes' },
+      { label: 'Nombre y semanas de cada etapa', value: 'Diagnóstico y Estrategia (semanas 1 y 2) · Ejecución (a partir de la semana 3) · Cada mes' },
     ],
     groups: [
       { title: 'Diagnóstico · Semanas 1 y 2', fields: [area('proceso.diagnostico.text', 'Texto', 'Conocemos tu marca, tu público y tu competencia antes de proponer nada.', 20, 120)] },
       { title: 'Estrategia · Semanas 1 y 2', fields: [area('proceso.estrategia.text', 'Texto', 'Armamos el plan para tus redes y lo ajustamos con vos.', 20, 120)] },
-      { title: 'Ejecución · Semanas 3 y 4', fields: [area('proceso.ejecucion.text', 'Texto', 'Producimos el contenido, lo aprobás y lo publicamos.', 20, 120)] },
+      { title: 'Ejecución · A partir de la semana 3', fields: [area('proceso.ejecucion.text', 'Texto', 'Producimos el contenido, lo aprobás y lo publicamos.', 20, 120)] },
       { title: 'Cada mes · Desde el mes 2', fields: [area('proceso.mensual.text', 'Texto', 'El ciclo se repite: medimos, ajustamos y seguimos creciendo.', 20, 120)] },
       { title: 'Botón', fields: [button('proceso.cta', 'Empezar mi primer mes', 30)] },
     ],
@@ -200,12 +201,12 @@ export const TEXT_SECTIONS: TextSection[] = [
   },
   {
     id: 'asesoria',
-    label: 'Asesoría y extras',
-    path: '/#asesoria',
-    intro: 'La asesoría 1:1 y los servicios fuera de los planes, en la fila de abajo de los planes. Los precios se cambian en la sección Precios.',
+    label: 'Servicios',
+    path: '/#servicios',
+    intro: 'Los servicios fuera de los planes: la asesoría 1:1 y los proyectos puntuales. Cada uno tiene su texto y su mensaje de WhatsApp. Los precios se cambian en la sección Precios.',
     locked: [
       { label: 'Título de la asesoría', value: 'Una asesoría 1:1, 100% personalizada.' },
-      { label: 'Nombres de los extras', value: 'Sitio web / e-commerce · Sesión de fotos y videos · Branding · Soluciones a medida' },
+      { label: 'Nombres de los servicios', value: 'Asesoría 1:1 · Sitio web / e-commerce · Sesión de fotos y videos · Branding · Soluciones a medida' },
     ],
     groups: [
       {
@@ -216,10 +217,16 @@ export const TEXT_SECTIONS: TextSection[] = [
           message('asesoria.message', 'Hola! Quiero una asesoría 1:1.'),
         ],
       },
-      { title: 'Sitio web / e-commerce', fields: [message('extras.web.message', 'Hola! Quiero consultar por un sitio web.')] },
-      { title: 'Sesión de fotos y videos', fields: [message('extras.sesion.message', 'Hola! Quiero consultar por una sesión de fotos y videos.')] },
-      { title: 'Branding', fields: [message('extras.branding.message', 'Hola! Quiero consultar por branding para mi marca.')] },
-      { title: 'Soluciones a medida', fields: [message('extras.medida.message', 'Hola! Necesito algo a medida para mi marca.')] },
+      { title: 'Sitio web / e-commerce', fields: [area('extras.web.text', 'Texto', 'Tu web o tu tienda online, pensada para que te encuentren y te escriban.', 20, 220), message('extras.web.message', 'Hola! Quiero consultar por un sitio web.')] },
+      { title: 'Sesión de fotos y videos', fields: [area('extras.sesion.text', 'Texto', 'Contenido propio para tus redes, hecho en una sola jornada.', 20, 220), message('extras.sesion.message', 'Hola! Quiero consultar por una sesión de fotos y videos.')] },
+      {
+        title: 'Branding',
+        fields: [
+          area('extras.branding.text', 'Texto', 'Tu marca necesita más que un logo: necesita una identidad. Diseñamos el logo, su versión reducida, las aplicaciones y el manual de marca para que comuniques de forma coherente y reconocible.', 20, 260),
+          message('extras.branding.message', 'Hola! Quiero consultar por branding para mi marca.'),
+        ],
+      },
+      { title: 'Soluciones a medida', fields: [area('extras.medida.text', 'Texto', 'Planificamos estrategias creativas y prácticas para conectar con tus clientes.', 20, 220), message('extras.medida.message', 'Hola! Necesito algo a medida para mi marca.')] },
       { title: 'Textos comunes', fields: [text('extras.cta', 'Acción de cada extra', 'Consultar', 4, 16)] },
     ],
   },
@@ -235,14 +242,35 @@ export const TEXT_SECTIONS: TextSection[] = [
     id: 'nosotros',
     label: 'Nosotros',
     path: '/#nosotros',
-    intro: 'La frase de Ian, junto al video.',
-    locked: [{ label: 'Título', value: 'Construimos marcas que venden más.' }],
+    intro: 'Primero el estudio (la misión) y después Ian como fundador, junto al video.',
+    locked: [{ label: 'Título', value: 'Tu marca tiene algo que la hace única.' }],
     groups: [
       {
+        title: 'Clic Studio',
         fields: [
-          area('nosotros.quote', 'Frase de Ian', 'Hola, soy Ian. Creé Clic Studio para ayudar a marcas con un gran producto que necesitan más claridad y estrategia.', 40, 200),
-          button('nosotros.cta', 'Hablemos con Ian'),
-          text('nosotros.instagram', 'Texto del enlace a Instagram', 'El Instagram de Ian', 6, 30),
+          area('nosotros.missionLead', 'Misión (destacada)', 'Nuestra misión es que las personas lo vean, lo entiendan y la elijan.', 20, 160),
+          area(
+            'nosotros.missionText',
+            'Texto',
+            'Diseñamos estrategias digitales a medida, uniendo contenido y publicidad para conectar con tu audiencia y generar oportunidades para tu negocio. Cada proyecto empieza por entender quién sos, qué ofrecés y qué querés lograr. Ese es el punto de partida para construir una presencia digital que impulse tu crecimiento.',
+            40,
+            500,
+          ),
+          button('nosotros.cta', 'Escribinos'),
+        ],
+      },
+      {
+        title: 'Ian · Founder',
+        fields: [
+          area('nosotros.founderTitle', 'Frase destacada', 'Me apasiona el marketing y, sobre todo, las personas detrás de cada negocio.', 20, 160),
+          area(
+            'nosotros.founderText',
+            'Primer párrafo',
+            'Creé Clic Studio para acompañar a quienes tienen algo valioso para ofrecer y necesitan claridad para comunicarlo. Para mí, una buena estrategia empieza por una conversación: conocer tu historia, entender tus desafíos y descubrir hacia dónde querés ir.',
+            40,
+            500,
+          ),
+          area('nosotros.founderText2', 'Segundo párrafo', 'Desde ahí, mi trabajo es ayudarte a ordenar las ideas, tomar decisiones con un propósito y hacer crecer tu marca sin perder la esencia que la hace tuya.', 20, 500),
         ],
       },
     ],

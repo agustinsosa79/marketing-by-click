@@ -1,6 +1,7 @@
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml'
 import {
-  CATEGORIES,
+  categoryError,
+  cleanCategory,
   DATE_RE,
   LIMITS,
   MEDIA_DIR,
@@ -80,7 +81,7 @@ function validate(raw: PostInput): PostInput {
     title: oneLine(raw.title),
     description: oneLine(raw.description),
     date: String(raw.date ?? ''),
-    category: raw.category,
+    category: cleanCategory(raw.category),
     cover: String(raw.cover ?? ''),
     coverAlt: oneLine(raw.coverAlt),
     author: oneLine(raw.author) || 'Ian',
@@ -90,7 +91,8 @@ function validate(raw: PostInput): PostInput {
   if (!SLUG_RE.test(post.slug) || post.slug.length > LIMITS.slug.max) throw new UserError('La dirección de la nota no es válida.')
   if (post.title.length < LIMITS.title.min || post.title.length > LIMITS.title.max) throw new UserError(`El título tiene que tener entre ${LIMITS.title.min} y ${LIMITS.title.max} caracteres.`)
   if (post.description.length > LIMITS.description.max) throw new UserError(`El resumen puede tener hasta ${LIMITS.description.max} caracteres.`)
-  if (!CATEGORIES.includes(post.category)) throw new UserError('Elegí una categoría.')
+  const catError = categoryError(post.category)
+  if (catError) throw new UserError(catError)
   if (!DATE_RE.test(post.date) || Number.isNaN(Date.parse(post.date))) throw new UserError('La fecha no es válida.')
   if (post.coverAlt.length > LIMITS.coverAlt.max || post.author.length > LIMITS.author.max) throw new UserError('Algún campo es demasiado largo.')
   if (post.body.length > LIMITS.body.max) throw new UserError('El texto es demasiado largo.')

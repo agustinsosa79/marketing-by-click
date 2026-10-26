@@ -20,7 +20,7 @@ interface NavbarProps {
  */
 const QUICK: { label: string; short?: string; id: string }[] = [
   { label: nav.plansLabel, id: sections.planes },
-  { label: nav.asesoriaLabel, short: nav.asesoriaShort, id: sections.asesoria },
+  { label: nav.servicesLabel, id: sections.servicios },
 ]
 
 /** Link de la barra: en el inicio scrollea con Lenis; desde otra página lleva a /#sección. */
@@ -56,7 +56,7 @@ function NavLink({ id, label, short, href, isHome }: { id: string; label: string
  * Barra de navegación a todo el ancho (pedido del cliente: el logo se veía chico dentro de la cápsula).
  * Patrones de UX que sigue:
  *  - logo arriba a la izquierda y clickeable al inicio (NN/g: mejor orientación y recuerdo de marca)
- *  - sin repetir el menú: solo Planes y Asesoría (lo que más se busca) junto a la acción principal
+ *  - sin repetir el menú: solo Planes y Servicios (lo que más se busca) junto a la acción principal
  *  - logo en el azul Clic; el naranja queda solo para la acción principal ("Hablemos")
  *  - "parcialmente fija": se esconde al bajar y vuelve al subir (no tapa el contenido y la navegación está a mano)
  *  - arriba de todo es transparente; al scrollear toma fondo blanco con sombra y el logo se achica un poco
@@ -173,7 +173,7 @@ export function Navbar({ menuOpen, onToggle, toggleRef, isHome }: NavbarProps) {
               <span className="relative hidden transition-colors duration-300 group-hover:text-white sm:inline">
                 <RollText text={nav.ctaLabel} active={hoverCta} />
               </span>
-              <span className="relative grid size-9 place-items-center rounded-full bg-brand-ink text-white transition duration-500 ease-expo group-hover:-rotate-12 group-hover:bg-brand-signal group-hover:text-brand-ink">
+              <span className="relative grid size-9 place-items-center rounded-full bg-brand-ink text-white transition duration-500 ease-expo group-hover:-rotate-12 group-hover:bg-brand-deep">
                 <Icon name="whatsapp" className="size-4" />
               </span>
             </a>

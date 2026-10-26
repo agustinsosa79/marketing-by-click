@@ -16,6 +16,10 @@ html.lenis body {
 html.lenis.lenis-stopped {
   overflow: hidden;
 }
+/* Durante el preloader la página no se mueve, ni siquiera antes de que cargue el JS (lo libera data-ready) */
+html:not([data-ready]):has([data-preloader]) {
+  overflow: hidden;
+}
 
 /* ------------------------------------------------------------------
    Paleta Clic Studio (manual de marca): naranja f2750e · marrón a15a1f · azul noche 063c73 · azul 2673bf.
@@ -87,6 +91,8 @@ html.lenis.lenis-stopped {
   --spacing-gallery: min(62svh, 40rem); /* galería del caso de éxito en desktop */
   --spacing-panel: min(64svh, 40rem); /* panel del servicio activo en desktop */
   --spacing-hair: 0.0625rem;
+  --spacing-wordmark: min(16vw, 30svh); /* alto del logo tipográfico del preloader (ancho ≈ 4,6 veces el alto) */
+  --spacing-eco: calc(var(--eco-d) + 5rem); /* alto del círculo del método con sus partes */
   --spacing-modal-h: calc(100svh - 2rem); /* alto máximo de las ventanas (Modal) */
   --spacing-modal-w: calc(100% - 2rem); /* ancho de las ventanas en el celular */
   --spacing-descender: 0.16em; /* aire para tildes y descendentes dentro de las máscaras de línea */
@@ -432,6 +438,44 @@ html.lenis.lenis-stopped {
   html[data-from-site] [data-preloader] {
     display: none;
   }
+}
+
+/* Método "ecosistema" (sections/servicios/Servicios.tsx): círculo con las cuatro partes a 45°.
+   Se posiciona con la propiedad translate (no transform) para no pisar las animaciones de entrada (GSAP usa transform). */
+:root {
+  --eco-d: 25rem;
+}
+@media (min-width: 80rem) {
+  :root {
+    --eco-d: 28rem;
+  }
+}
+.eco-ring {
+  width: var(--eco-d);
+  height: var(--eco-d);
+  translate: -50% -50%;
+}
+.eco-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: calc(-50% + var(--dx)) calc(-50% + var(--dy));
+}
+.eco-tl {
+  --dx: calc(var(--eco-d) * -0.3536);
+  --dy: calc(var(--eco-d) * -0.3536);
+}
+.eco-tr {
+  --dx: calc(var(--eco-d) * 0.3536);
+  --dy: calc(var(--eco-d) * -0.3536);
+}
+.eco-bl {
+  --dx: calc(var(--eco-d) * -0.3536);
+  --dy: calc(var(--eco-d) * 0.3536);
+}
+.eco-br {
+  --dx: calc(var(--eco-d) * 0.3536);
+  --dy: calc(var(--eco-d) * 0.3536);
 }
 
 /* Ventanas (components/ui/Modal.tsx): suben y aparecen; el fondo se funde */

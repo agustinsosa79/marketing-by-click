@@ -8,10 +8,12 @@
  */
 
 import faqData from '../../content/faq.json'
+import testimoniosData from '../../content/testimonios.json'
 import preciosData from '../../content/precios.json'
 import textosData from '../../content/textos.json'
 import { formatDuration, resolveImage, resolveVideo } from '../../panel/shared/media'
 import { resolveList, resolveText, TOKENS } from '../../panel/shared/texts'
+import { priceLabel, SERVICE_PRICES, type PriceDetail } from '../../panel/shared/site'
 import mediosData from '../../content/medios.json'
 
 export interface Link {
@@ -41,18 +43,25 @@ const whatsappWith = (text: string) => `${WHATSAPP}?text=${encodeURIComponent(te
 const prices = {
   currency: preciosData.currency || 'USD',
   plans: { inicial: preciosData.plans?.inicial || '115', plus: preciosData.plans?.plus || '135', premium: preciosData.plans?.premium || '155' },
-  asesoria: { price: preciosData.asesoria?.price ?? '', detail: preciosData.asesoria?.detail ?? '' },
-  sesion: { price: preciosData.sesion?.price || '100', detail: preciosData.sesion?.detail ?? '' },
+  // servicios fuera de los planes: precio opcional (vacío = no se muestra y se consulta por WhatsApp)
+  services: Object.fromEntries(
+    SERVICE_PRICES.map((s) => {
+      const raw = (preciosData as Record<string, unknown>)[s.id] as Partial<PriceDetail> | undefined
+      return [s.id, { price: String(raw?.price ?? ''), detail: String(raw?.detail ?? '') }]
+    }),
+  ) as Record<(typeof SERVICE_PRICES)[number]['id'], PriceDetail>,
 }
+const servicePrice = (id: (typeof SERVICE_PRICES)[number]['id']) => priceLabel(prices.services[id], prices.currency)
 const minPlanPrice = Math.min(...Object.values(prices.plans).map(Number).filter(Number.isFinite))
 /** "2 horas · 100 USD" */
-const sesionPrice = [prices.sesion.detail, `${prices.sesion.price} ${prices.currency}`].filter(Boolean).join(' · ')
+const sesionPrice = servicePrice('sesion')
 
 /**
  * Textos editables desde el panel (content/textos.json; reglas y originales en panel/shared/texts.ts).
  * Si un texto no se cambió o no es válido, queda el original.
  */
-const withTokens = (s: string) => s.split(TOKENS.precioSesion).join(sesionPrice)
+// sin precio de la sesión, "…opcional: {precio_sesion}" queda "…opcional"
+const withTokens = (s: string) => (sesionPrice ? s.split(TOKENS.precioSesion).join(sesionPrice) : s.replace(new RegExp(`:?\\s*${TOKENS.precioSesion}`, 'g'), ''))
 const txt = (key: string) => withTokens(resolveText(textosData.values, key))
 const list = (key: string) => resolveList(textosData.values, key).map(withTokens)
 
@@ -69,6 +78,7 @@ export const contact = {
   whatsappMessage: WHATSAPP_MESSAGE,
   instagram: { label: '@clicstd', href: 'https://www.instagram.com/clicstd/' },
   founderInstagram: { label: '@ianmarketer', href: 'https://www.instagram.com/ianmarketer' },
+  founderLinkedin: { label: 'LinkedIn de Ian', href: 'https://www.linkedin.com/in/ian-mark-straitas-a240b1302/' },
 } as const
 
 export const brand = {
@@ -79,8 +89,8 @@ export const brand = {
 
 /** Title y description de index.html (se mantienen iguales a mano: el HTML se sirve antes que el JS). */
 export const seo = {
-  title: 'Agencia de marketing digital y redes sociales | Clic Studio',
-  description: 'Agencia de marketing digital: estrategia, contenido para redes sociales y anuncios en Instagram y Facebook para que tu marca venda más. Escribinos por WhatsApp.',
+  title: 'Estudio de marketing digital y redes sociales | Clic Studio',
+  description: 'Estudio de marketing digital: estrategia, contenido para redes sociales y anuncios en Instagram y Facebook. Tu agencia de redes, de cerca y a medida. Escribinos por WhatsApp.',
 }
 
 export const preloader = {
@@ -91,11 +101,13 @@ export const preloader = {
 export const sections = {
   hero: 'inicio',
   nosotros: 'nosotros',
+  metodo: 'metodo',
   servicios: 'servicios',
   proceso: 'proceso',
   planes: 'planes',
   asesoria: 'asesoria',
   proyectos: 'proyectos',
+  testimonios: 'testimonios',
   diagnostico: 'diagnostico',
   faq: 'preguntas',
   contacto: 'contacto',
@@ -109,20 +121,19 @@ export const nav = {
   skipLink: 'Saltar al contenido',
   homeLabel: 'Clic Studio, volver al inicio',
   items: [
-    { label: 'Servicios', id: sections.servicios },
+    { label: 'Método', id: sections.metodo },
     { label: 'Proyectos', id: sections.proyectos },
-    { label: 'Cómo trabajamos', id: sections.proceso },
     { label: 'Planes', id: sections.planes },
-    { label: 'Asesoría 1:1', id: sections.asesoria },
+    { label: 'Servicios', id: sections.servicios },
     { label: 'Nosotros', id: sections.nosotros },
+    { label: 'Tu primer mes', id: sections.proceso },
     { label: 'Preguntas', id: sections.faq },
     { label: 'Contacto', id: sections.contacto },
     { label: 'Blog', id: 'blog', href: '/blog' },
   ] as { label: string; id: string; href?: string }[],
-  // Links de la barra fija (el botón principal es "Hablemos" por WhatsApp). En el celular la asesoría va corta.
+  // Links de la barra fija (el botón principal es "Hablemos" por WhatsApp)
   plansLabel: 'Planes',
-  asesoriaLabel: 'Asesoría 1:1',
-  asesoriaShort: 'Asesoría',
+  servicesLabel: 'Servicios',
   ctaLabel: 'Hablemos',
   ctaCursor: 'Escribinos',
   contactTitle: 'Escribinos', // TODO copy
@@ -133,8 +144,8 @@ export const nav = {
 }
 
 export const hero = {
-  // H1: lo que se busca en Google ("agencia de marketing digital", "agencia de redes sociales").
-  title: { text: 'Agencia de marketing digital y redes sociales.', emphasis: 'redes sociales.' } satisfies Headline,
+  // H1: el cliente es un estudio. "Agencia" (lo más buscado) queda en el title y la descripción de la página.
+  title: { text: 'Estudio de marketing digital y redes sociales.', emphasis: 'redes sociales.' } satisfies Headline,
   // La promesa real de la marca ("convertir tus redes en un sistema de ventas") pasa a la bajada, con las palabras que usa la gente
   subtitle: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.', // TODO copy
   cta: { label: 'Hablemos por WhatsApp', href: WHATSAPP },
@@ -155,10 +166,21 @@ export const hero = {
 export const nosotros = {
   eyebrow: 'Nosotros',
   cta: { label: txt('nosotros.cta'), href: WHATSAPP },
-  // Bio de Instagram: "Construimos marcas que venden más."
-  title: { text: 'Construimos marcas que venden más.', emphasis: 'venden más.' } satisfies Headline,
-  quote: txt('nosotros.quote'),
-  instagram: { ...contact.founderInstagram, text: txt('nosotros.instagram') },
+  title: { text: 'Tu marca tiene algo que la hace única.', emphasis: 'única.' } satisfies Headline,
+  missionLead: txt('nosotros.missionLead'),
+  missionText: txt('nosotros.missionText'),
+  studioInstagram: { ...contact.instagram, text: 'El Instagram de Clic Studio' },
+  founder: {
+    name: 'Ian',
+    role: 'Founder de Clic Studio',
+    photo: authorPhoto.src,
+    title: txt('nosotros.founderTitle'),
+    text: [txt('nosotros.founderText'), txt('nosotros.founderText2')].filter(Boolean),
+    links: [
+      { label: contact.founderInstagram.label, href: contact.founderInstagram.href, icon: 'instagram' as const },
+      { label: 'LinkedIn', href: contact.founderLinkedin.href, icon: 'linkedin' as const },
+    ],
+  },
   video: { src: ianVideo.src, fallback: ianVideo.fallback, poster: ianVideo.poster, duration: ianVideo.duration, label: 'Ian presenta Clic Studio' },
   player: {
     play: 'Mirá el video',
@@ -180,6 +202,8 @@ export interface Service {
   name: string
   text: string
   icon: 'strategy' | 'content' | 'ads' | 'branding'
+  /** Frase corta del círculo del método (inicio). */
+  short: string
   image: ImageAsset
   /** Categoría del blog con notas relacionadas. */
   blogCategory: string
@@ -188,9 +212,14 @@ export interface Service {
   seo: { title: string; description: string }
 }
 
+/**
+ * Método (sección del inicio, "ecosistema"): las cuatro partes del trabajo. Cada una lleva a su página
+ * (/servicios/<slug>). El cliente cuenta su método más que vender cada servicio por separado.
+ */
 export const servicios = {
-  eyebrow: 'Servicios',
-  title: { text: 'Todo lo que tu marca necesita para vender en redes.', emphasis: 'vender en redes.' } satisfies Headline, // TODO copy
+  eyebrow: 'Método',
+  title: { text: 'Todo lo que tu marca necesita para vender en redes.', emphasis: 'vender en redes.' } satisfies Headline,
+  planCta: { label: txt('servicios.planCta'), id: sections.planes },
   cursor: 'Consultar',
   ctaHref: WHATSAPP_MESSAGE,
   items: [
@@ -199,6 +228,7 @@ export const servicios = {
       name: 'Estrategia',
       text: 'Entendemos tu negocio y armamos un plan de acción 100% a medida.',
       icon: 'strategy',
+      short: txt('servicios.estrategia.short'),
       blogCategory: 'Estrategia',
       includes: list('servicios.estrategia.includes'),
       seo: {
@@ -212,6 +242,7 @@ export const servicios = {
       name: 'Contenido',
       text: 'Contenido que conecta con tu audiencia y mejora tu visibilidad.',
       icon: 'content',
+      short: txt('servicios.contenido.short'),
       blogCategory: 'Contenido',
       includes: list('servicios.contenido.includes'),
       seo: {
@@ -225,6 +256,7 @@ export const servicios = {
       name: 'Meta Ads',
       text: 'Anuncios estratégicos en Instagram y Facebook para que vendas de verdad.',
       icon: 'ads',
+      short: txt('servicios.meta-ads.short'),
       blogCategory: 'Meta Ads',
       includes: list('servicios.meta-ads.includes'),
       seo: {
@@ -234,14 +266,16 @@ export const servicios = {
       image: { src: '/media/servicio-meta-ads-duo.webp', alt: 'Celular y laptop con métricas en pantalla', width: 720, height: 404 },
     },
     {
-      slug: 'branding',
-      name: 'Branding',
+      // "Diseño" (pedido del cliente): es transversal al branding y a la gestión de redes
+      slug: 'diseno',
+      name: 'Diseño',
       text: 'Tu marca necesita más que un logo: necesita una identidad.',
       icon: 'branding',
-      blogCategory: 'Branding',
+      short: txt('servicios.branding.short'),
+      blogCategory: 'Diseño',
       includes: list('servicios.branding.includes'),
       seo: {
-        title: 'Branding e identidad de marca | Clic Studio',
+        title: 'Diseño e identidad de marca (branding) | Clic Studio',
         description: 'Tu marca necesita más que un logo: necesita una identidad. Logo, versión reducida, aplicaciones y manual de marca. Escribinos por WhatsApp.',
       },
       image: { src: '/media/duende-mockup-duo.webp', alt: 'Remeras con la identidad del Hostel El Duende Errante', width: 720, height: 720 },
@@ -250,7 +284,7 @@ export const servicios = {
   includesLabel: 'Qué incluye',
   // etiquetas dentro de las mini animaciones de cada servicio
   demo: { reels: 'Reels', ads: 'Meta Ads' },
-  more: 'Ver el servicio',
+  more: 'Conocé nuestra propuesta',
   cta: txt('servicios.cta'),
   listAria: 'Elegí un servicio',
 }
@@ -263,7 +297,7 @@ export const proceso = {
   stages: [
     { name: 'Diagnóstico', when: 'Semanas 1 y 2', text: txt('proceso.diagnostico.text') },
     { name: 'Estrategia', when: 'Semanas 1 y 2', text: txt('proceso.estrategia.text') },
-    { name: 'Ejecución', when: 'Semanas 3 y 4', text: txt('proceso.ejecucion.text') },
+    { name: 'Ejecución', when: 'A partir de la semana 3', text: txt('proceso.ejecucion.text') },
   ],
   monthly: { name: 'Cada mes', when: 'Desde el mes 2', text: txt('proceso.mensual.text') },
 }
@@ -344,47 +378,100 @@ export const asesoria = {
   eyebrow: 'Asesoría 1:1',
   title: { text: 'Una asesoría 1:1, 100% personalizada.', emphasis: '100% personalizada.' } satisfies Headline,
   text: txt('asesoria.text'),
-  price: prices.asesoria.price ? { value: prices.asesoria.price, currency: prices.currency, detail: prices.asesoria.detail } : null,
+  price: servicePrice('asesoria'),
   cta: { label: txt('asesoria.cta'), href: whatsappWith(txt('asesoria.message')) },
   // Foto real del sitio anterior: Ian en una videollamada
   image: { src: asesoriaPhoto.src, alt: asesoriaPhoto.alt, width: asesoriaPhoto.width, height: asesoriaPhoto.height } satisfies ImageAsset,
 }
 
 /**
- * Además de los planes: lo que se hace por proyecto, no por mes. Va junto a la asesoría, después de Planes.
- * Servicios reales del sitio anterior: "Sitio web / e-commerce", "Sesión de fotos & videos" y
- * "Soluciones a medida: Planificamos estrategias creativas y prácticas para conectar con tus clientes."
+ * Servicios (sección propia, después del diagnóstico): la asesoría 1:1 y lo que se hace por proyecto.
+ * A la izquierda la lista; a la derecha el detalle del elegido, con su foto, su texto y su WhatsApp ya escrito.
+ * Los textos y los mensajes se editan en el panel (Textos → Servicios); los precios, en Precios.
  */
+export interface ServiceOffer {
+  key: 'asesoria' | 'web' | 'sesion' | 'branding' | 'medida'
+  icon: 'person' | 'web' | 'camera' | 'branding' | 'custom'
+  name: string
+  title: Headline
+  text: string
+  price: string
+  image: ImageAsset
+  cta: { label: string; href: string }
+}
+
 export const extras = {
-  eyebrow: 'También hacemos',
-  title: 'Proyectos fuera de los planes', // TODO copy
-  cta: txt('extras.cta'),
+  eyebrow: 'Servicios',
+  title: { text: 'Más allá de los planes.', emphasis: 'los planes.' } satisfies Headline,
+  listAria: 'Elegí un servicio',
   items: [
     {
+      key: 'asesoria',
+      icon: 'person',
+      name: 'Asesoría 1:1',
+      title: asesoria.title,
+      text: asesoria.text,
+      price: asesoria.price,
+      image: asesoria.image,
+      cta: asesoria.cta,
+    },
+    {
+      key: 'web',
       icon: 'web',
       name: 'Sitio web / e-commerce',
-      price: '',
-      href: whatsappWith(txt('extras.web.message')),
+      title: { text: 'Tu sitio web o tienda online.', emphasis: 'tienda online.' },
+      text: txt('extras.web.text'),
+      price: servicePrice('web'),
+      image: { src: '/media/servicio-meta-ads-foto.webp', alt: 'Laptop y celular sobre un escritorio de madera', width: 1200, height: 675 },
+      cta: { label: txt('extras.cta'), href: whatsappWith(txt('extras.web.message')) },
     },
     {
+      key: 'sesion',
       icon: 'camera',
       name: 'Sesión de fotos y videos',
+      title: { text: 'Sesión de fotos y videos.', emphasis: 'fotos y videos.' },
+      text: txt('extras.sesion.text'),
       price: sesionPrice,
-      href: whatsappWith(txt('extras.sesion.message')),
+      image: { src: '/media/servicio-contenido-foto.webp', alt: 'Manos sosteniendo un celular', width: 1200, height: 675 },
+      cta: { label: txt('extras.cta'), href: whatsappWith(txt('extras.sesion.message')) },
     },
     {
+      key: 'branding',
       icon: 'branding',
       name: 'Branding',
-      price: '',
-      href: whatsappWith(txt('extras.branding.message')),
+      title: { text: 'Branding: la identidad de tu marca.', emphasis: 'la identidad de tu marca.' },
+      text: txt('extras.branding.text'),
+      price: servicePrice('branding'),
+      image: { src: '/media/duende-mockup.webp', alt: 'Remeras con la identidad del Hostel El Duende Errante', width: 1200, height: 1200 },
+      cta: { label: txt('extras.cta'), href: whatsappWith(txt('extras.branding.message')) },
     },
     {
+      key: 'medida',
       icon: 'custom',
       name: 'Soluciones a medida',
-      price: '',
-      href: whatsappWith(txt('extras.medida.message')),
+      title: { text: 'Soluciones a medida.', emphasis: 'a medida.' },
+      text: txt('extras.medida.text'),
+      price: servicePrice('medida'),
+      image: { src: '/media/servicio-estrategia-foto.webp', alt: 'Persona trabajando en una mesa con papeles y una laptop', width: 1200, height: 675 },
+      cta: { label: txt('extras.cta'), href: whatsappWith(txt('extras.medida.message')) },
     },
-  ] as { icon: 'web' | 'camera' | 'branding' | 'custom'; name: string; price: string; href: string }[],
+  ] satisfies ServiceOffer[],
+}
+
+/**
+ * Testimonios (debajo de los proyectos): los carga el cliente desde el panel (content/testimonios.json).
+ * El texto va entre comillas automáticamente; si no hay foto, se muestran las iniciales.
+ */
+export interface Testimonial {
+  name: string
+  role: string
+  text: string
+  photo: { src: string; alt: string } | null
+}
+export const testimonios = {
+  eyebrow: 'Testimonios',
+  title: { text: 'Lo que dicen quienes trabajaron con nosotros.', emphasis: 'trabajaron con nosotros.' } satisfies Headline,
+  items: ((testimoniosData.items ?? []) as Testimonial[]).filter((t) => t.name?.trim() && t.text?.trim()),
 }
 
 /**
@@ -411,6 +498,7 @@ export const proyectos = {
     empty: 'Todavía no hay proyectos de este servicio.',
   },
   detail: {
+    channels: 'Sus redes',
     breadcrumb: 'Proyectos',
     services: 'Servicios',
     sector: 'Rubro',
@@ -456,7 +544,7 @@ export const blog = {
   intro: 'Estrategia, contenido, Meta Ads y branding, explicados simple para que los apliques en tu marca.', // TODO copy
   seo: {
     title: 'Blog de marketing digital | Clic Studio',
-    description: 'Notas sobre estrategia, contenido, Meta Ads y branding para que tus redes vendan más. Por Clic Studio, agencia nacida en la Patagonia.',
+    description: 'Notas sobre estrategia, contenido, Meta Ads y branding para que tus redes vendan más. Por Clic Studio, estudio nacido en la Patagonia.',
   },
   all: 'Todas',
   filterAria: 'Filtrar notas por categoría',

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { CATEGORIES, postUrl, type PostSummary } from '../../shared/blog'
+import { postUrl, type PostSummary } from '../../shared/blog'
 import { api, ApiError, mediaSrc } from '../api'
 import { go } from '../lib/nav'
 import { Badge, Button, ConfirmDialog, Spinner, inputClass, type ToastData } from '../components/ui'
@@ -67,7 +67,7 @@ export function PostList({ notify }: { notify: (t: ToastData) => void }) {
       <div className="flex flex-col gap-3 sm:flex-row">
         <input type="search" placeholder="Buscar por título…" value={query} onChange={(e) => setQuery(e.target.value)} className={`${inputClass} sm:max-w-xs`} aria-label="Buscar nota" />
         <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
-          {['', ...CATEGORIES].map((c) => (
+          {['', ...new Set((posts ?? []).map((p) => p.category).filter(Boolean))].map((c) => (
             <button
               key={c || 'todas'}
               type="button"

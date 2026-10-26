@@ -35,7 +35,11 @@ export interface Project {
   draft: boolean
   /** Elegido en el panel para la sección del inicio. */
   home: boolean
+  /** Canales del cliente (solo los cargados). */
+  links: { key: 'instagram' | 'tiktok' | 'linkedin'; label: string; href: string }[]
 }
+
+const LINK_LABELS = { instagram: 'Instagram', tiktok: 'TikTok', linkedin: 'LinkedIn' } as const
 
 /** Cuántos proyectos entran en la sección del inicio (los elige el cliente en el panel). */
 export const HOME_LIMIT = 4
@@ -76,6 +80,9 @@ function normalize(raw: Record<string, unknown>): Project | null {
     order: Number(raw.order) || 0,
     draft: raw.draft === true,
     home: raw.home === true,
+    links: (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
+      .map((key) => ({ key, label: LINK_LABELS[key], href: str((raw.links as Record<string, unknown> | undefined)?.[key]) }))
+      .filter((l) => /^https:\/\//.test(l.href)),
   }
 }
 
@@ -95,7 +102,7 @@ export const projects: Project[] = Object.values(modules)
 const marked = projects.filter((p) => p.home)
 export const homeProjects: Project[] = (marked.length ? marked : projects).slice(0, HOME_LIMIT)
 
-const SERVICE_ORDER = ['Estrategia', 'Contenido', 'Meta Ads', 'Branding']
+const SERVICE_ORDER = ['Plan de redes', 'Asesoría', 'Branding', 'Servicios adicionales']
 const rank = (s: string) => (SERVICE_ORDER.includes(s) ? SERVICE_ORDER.indexOf(s) : SERVICE_ORDER.length)
 
 /** Servicios presentes en el portfolio (para el filtro de /proyectos), en el orden de los servicios del sitio. */

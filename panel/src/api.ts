@@ -1,5 +1,5 @@
 import type { NewImage, PostInput, PostSummary } from '../shared/blog'
-import type { FaqItem, PricesInput, ProjectInput, ProjectSummary, Versioned } from '../shared/site'
+import type { FaqItem, PricesInput, ProjectInput, ProjectSummary, TestimonialItem, Versioned } from '../shared/site'
 import type { TextValues } from '../shared/texts'
 import type { MediaValue, MediaValues } from '../shared/media'
 
@@ -63,6 +63,9 @@ export const api = {
   prices: () => request<Versioned<PricesInput>>('/api/prices'),
   savePrices: (data: PricesInput, version: string) => request<{ version: string }>('/api/prices', { method: 'PUT', body: JSON.stringify({ data, version }) }),
   faq: () => request<Versioned<FaqItem[]>>('/api/faq'),
+  testimonials: () => request<Versioned<TestimonialItem[]>>('/api/testimonials'),
+  saveTestimonials: (data: TestimonialItem[], version: string, photos: { name: string; base64: string }[]) =>
+    request<{ version: string }>('/api/testimonials', { method: 'PUT', body: JSON.stringify({ data, version, photos }) }),
   saveFaq: (data: FaqItem[], version: string) => request<{ version: string }>('/api/faq', { method: 'PUT', body: JSON.stringify({ data, version }) }),
   texts: () => request<Versioned<TextValues>>('/api/texts'),
   saveTexts: (data: TextValues, version: string) => request<{ version: string }>('/api/texts', { method: 'PUT', body: JSON.stringify({ data, version }) }),

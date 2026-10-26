@@ -54,7 +54,7 @@ function CaseCard({ project, wide }: { project: Project; wide: boolean }) {
 }
 
 /**
- * Proyectos (inicio), sobre azul noche: los que el cliente elige en el panel (hasta 4).
+ * Proyectos (inicio), sobre azul noche: los que el cliente elige en el panel (hasta 4). Los testimonios van en su sección, debajo.
  * La grilla se arma según cuántos haya: 1 → caso a todo el ancho · 2 → dos columnas
  * · 3 → el primero ancho y dos debajo · 4 → 2×2. Arriba, el acceso al portfolio completo.
  */

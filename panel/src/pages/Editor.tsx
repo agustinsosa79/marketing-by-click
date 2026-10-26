@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { CATEGORIES, LIMITS, MEDIA_URL, postUrl, slugify, today, type Category, type PostInput } from '../../shared/blog'
+import { CATEGORY_LIMITS, cleanCategory, LIMITS, MEDIA_URL, postUrl, slugify, SUGGESTED_CATEGORIES, today, type PostInput } from '../../shared/blog'
 import { api, ApiError, mediaSrc } from '../api'
 import { go, leaveTo, unsaved, useLeaveGuard } from '../lib/nav'
 import { useSnapshot } from '../lib/snapshot'
@@ -14,7 +14,7 @@ const EMPTY: PostInput = {
   title: '',
   description: '',
   date: today(),
-  category: 'Estrategia',
+  category: '',
   cover: '',
   coverAlt: '',
   author: 'Ian',
@@ -33,12 +33,19 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
   const [pending, setPending] = useState<Record<string, PreparedImage>>({})
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [usedCategories, setUsedCategories] = useState<string[]>([])
+  useEffect(() => {
+    api
+      .posts()
+      .then(({ posts }) => setUsedCategories(posts.map((p) => cleanCategory(p.category)).filter(Boolean)))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (!slug) return
     api
       .post(slug)
-      .then(({ post: p }) => setPost({ ...EMPTY, ...p, category: (CATEGORIES as readonly string[]).includes(p.category) ? p.category : 'Estrategia' }))
+      .then(({ post: p }) => setPost({ ...EMPTY, ...p, category: cleanCategory(p.category) }))
       .catch((e) => setLoadError(e instanceof ApiError ? e.message : 'No se pudo cargar la nota.'))
   }, [slug])
 
@@ -68,6 +75,8 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
   )
 
   const coverPreview = post?.cover ? resolveImage(post.cover) : ''
+  // sugerencias: las del estudio, las que ya se usan y la de esta nota (si es nueva)
+  const categoryOptions = [...new Set([...SUGGESTED_CATEGORIES, ...usedCategories, ...(post?.category ? [cleanCategory(post.category)] : [])])].filter(Boolean)
 
   const back = () => leaveTo('#/blog')
 
@@ -183,20 +192,31 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
           </Field>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_auto]">
-            <Field label="Categoría">
-              <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Categoría">
-                {CATEGORIES.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    role="radio"
-                    aria-checked={post.category === c}
-                    onClick={() => set('category', c as Category)}
-                    className={`rounded-full px-4 py-2 text-sm font-bold ring-1 transition ${post.category === c ? 'bg-brand-deep text-white ring-brand-deep' : 'bg-white text-brand-deep ring-brand-deep/15 hover:ring-brand-deep/40'}`}
-                  >
-                    {c}
-                  </button>
-                ))}
+            <Field label="Categoría" htmlFor="category" hint="Elegí una o escribí una nueva. En el blog se usan para filtrar las notas.">
+              <div className="flex flex-col gap-2.5">
+                <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Categorías sugeridas">
+                  {categoryOptions.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      role="radio"
+                      aria-checked={post.category === c}
+                      onClick={() => set('category', c)}
+                      className={`rounded-full px-4 py-2 text-sm font-bold ring-1 transition ${post.category === c ? 'bg-brand-deep text-white ring-brand-deep' : 'bg-white text-brand-deep ring-brand-deep/15 hover:ring-brand-deep/40'}`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+                <input
+                  id="category"
+                  value={post.category}
+                  maxLength={CATEGORY_LIMITS.max}
+                  onChange={(e) => set('category', e.target.value)}
+                  onBlur={(e) => set('category', cleanCategory(e.target.value))}
+                  placeholder="Otra categoría…"
+                  className={`${inputClass} sm:max-w-xs`}
+                />
               </div>
             </Field>
             <Field label="Fecha" htmlFor="date">

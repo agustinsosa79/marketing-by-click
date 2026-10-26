@@ -6,6 +6,9 @@ import {
   PROJECTS_MEDIA_DIR,
   PROJECTS_MEDIA_URL,
   SERVICES,
+  cleanProjectLink,
+  EMPTY_LINKS,
+  PROJECT_LINKS,
   type ProjectImage,
   type ProjectInput,
   type ProjectStep,
@@ -70,6 +73,7 @@ function toInput(slug: string, source: string): ProjectInput | null {
     order: Number(raw.order) || 0,
     draft: raw.draft === true,
     home: raw.home === true,
+    links: { ...EMPTY_LINKS, ...(raw.links && typeof raw.links === 'object' ? Object.fromEntries(PROJECT_LINKS.map((l) => [l.key, String((raw.links as Record<string, unknown>)[l.key] ?? '')])) : {}) },
   }
 }
 
@@ -141,6 +145,12 @@ function validate(raw: ProjectInput): ProjectInput {
     order: Math.round(Number(raw.order)) || 0,
     draft: raw.draft === true,
     home: false,
+    links: { ...EMPTY_LINKS },
+  }
+  for (const l of PROJECT_LINKS) {
+    const r = cleanProjectLink(l.key, (raw.links as Record<string, unknown> | undefined)?.[l.key])
+    if (r.error) throw new UserError(r.error)
+    p.links[l.key] = r.value
   }
   if (!SLUG_RE.test(p.slug) || p.slug.length > LIMITS.slug.max) throw new UserError('La dirección del proyecto no es válida.')
   if (p.brand.length < L.brand.min || p.brand.length > L.brand.max) throw new UserError(`El nombre de la marca tiene que tener entre ${L.brand.min} y ${L.brand.max} caracteres.`)

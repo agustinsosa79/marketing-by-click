@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SITE_URL } from '../../shared/blog'
-import type { FaqItem, PlanId, PricesInput, ProjectImage, ProjectInput } from '../../shared/site'
+import { priceLabel, SERVICE_PRICES, type FaqItem, type PlanId, type PricesInput, type ProjectImage, type ProjectInput, type ServicePriceId } from '../../shared/site'
 import { textReader, type TextReader } from '../lib/texts'
 
 /**
@@ -389,6 +389,32 @@ export function ProjectPagePreview({ project, resolve }: { project: ProjectInput
           ¿Querés algo así para <span className="text-brand-haze">tu marca?</span>
         </p>
       </div>
+    </div>
+  )
+}
+
+/** La lista de Servicios de la web con sus precios (vacío = sin precio). Resalta el que se está editando. */
+export function ServicesPricePreview({ prices, focus }: { prices: PricesInput; focus: ServicePriceId }) {
+  return (
+    <div className="bg-white px-4 py-6 sm:px-6">
+      <div className="flex flex-col gap-1 rounded-3xl bg-white p-3 shadow-soft ring-1 ring-brand-deep/10">
+        <p className="px-2 pt-1 pb-2 text-[0.65rem] font-bold tracking-widest text-brand-deep uppercase">Servicios</p>
+        {SERVICE_PRICES.map((sv) => {
+          const label = priceLabel(prices[sv.id], prices.currency)
+          const on = sv.id === focus
+          return (
+            <div key={sv.id} className={`flex items-center gap-3 rounded-2xl p-2.5 transition ${on ? 'bg-brand-night text-white' : 'text-brand-night'}`}>
+              <span className={`size-8 shrink-0 rounded-xl ${on ? 'bg-white/15' : 'bg-brand-paper'}`} />
+              <span className="flex flex-1 flex-col">
+                <span className="text-sm font-bold">{sv.name}</span>
+                <span className={`text-xs ${on ? 'text-brand-haze' : 'text-brand-night/60'}`}>{label || 'Sin precio · se consulta por WhatsApp'}</span>
+              </span>
+              <span aria-hidden="true">›</span>
+            </div>
+          )
+        })}
+      </div>
+      <p className="mt-3 text-[0.7rem] text-brand-night/60">El precio también aparece en el detalle del servicio, arriba del botón de WhatsApp.</p>
     </div>
   )
 }

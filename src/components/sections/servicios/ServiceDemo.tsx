@@ -136,7 +136,7 @@ export function ServiceDemo({ name, active }: { name: Service['icon']; active: b
               <span data-guide className="absolute inset-8 rounded-full border border-white/25" />
               <span data-axis-x className="absolute inset-x-0 top-1/2 h-px bg-white/30" />
               <span data-axis-y className="absolute inset-y-0 left-1/2 w-px bg-white/30" />
-              <Isotipo data-mark rays className="relative w-20 md:w-24" />
+              <Isotipo data-mark rays bubble="fill-brand-deep" className="relative w-20 md:w-24" />
             </div>
             <div className="hidden gap-2 md:flex">
               {['bg-brand-signal', 'bg-brand-ember', 'bg-brand-night ring-1 ring-white/40', 'bg-brand-deep ring-1 ring-white/40', 'bg-brand-paper'].map((c) => (

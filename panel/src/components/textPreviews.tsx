@@ -17,7 +17,7 @@ const Em = ({ children, haze = false, dark = false }: { children: ReactNode; haz
 /** Botón como los de la web: pastilla con el círculo del ícono. */
 function Pill({ children, tone = 'signal' }: { children: ReactNode; tone?: 'signal' | 'white' | 'night' }) {
   const face = { signal: 'bg-brand-signal text-brand-ink', white: 'bg-white text-brand-night', night: 'bg-brand-night text-white' }[tone]
-  const badge = { signal: 'bg-brand-ink text-white', white: 'bg-brand-night text-white', night: 'bg-brand-signal text-brand-ink' }[tone]
+  const badge = { signal: 'bg-brand-ink text-white', white: 'bg-brand-night text-white', night: 'bg-brand-deep text-white' }[tone]
   return (
     <span className={`inline-flex items-center gap-3 rounded-full py-1 pr-1 pl-4 text-xs font-bold ${face}`}>
       {children}
@@ -49,12 +49,12 @@ const SERVICES = [
   { slug: 'estrategia', name: 'Estrategia' },
   { slug: 'contenido', name: 'Contenido' },
   { slug: 'meta-ads', name: 'Meta Ads' },
-  { slug: 'branding', name: 'Branding' },
+  { slug: 'branding', name: 'Diseño' },
 ]
 const STAGES = [
   { key: 'diagnostico', name: 'Diagnóstico', when: 'Semanas 1 y 2' },
   { key: 'estrategia', name: 'Estrategia', when: 'Semanas 1 y 2' },
-  { key: 'ejecucion', name: 'Ejecución', when: 'Semanas 3 y 4' },
+  { key: 'ejecucion', name: 'Ejecución', when: 'A partir de la semana 3' },
   { key: 'mensual', name: 'Cada mes', when: 'Desde el mes 2' },
 ]
 
@@ -72,7 +72,7 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
       return (
         <div className="bg-brand-paper px-5 py-7">
           <p className="font-display text-3xl leading-none text-brand-night">
-            Agencia de marketing digital y <Em>redes sociales.</Em>
+            Estudio de marketing digital y <Em>redes sociales.</Em>
           </p>
           <p className="mt-3 text-xs text-brand-night/75">Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.</p>
           <div className="mt-4 flex items-center gap-4">
@@ -85,26 +85,29 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
     case 'servicios': {
       const active = SERVICES[Math.min(group, 3)]
       return (
-        <div className="bg-brand-paper px-5 py-7">
-          <Eyebrow>Servicios</Eyebrow>
+        <div className="bg-white px-5 py-7">
+          <Eyebrow>Método</Eyebrow>
           <Title>
             Todo lo que tu marca necesita para <Em>vender en redes.</Em>
           </Title>
-          <div className="mt-4 flex flex-wrap gap-1.5">
+          <div className="mt-4 grid grid-cols-2 gap-2">
             {SERVICES.map((s) => (
-              <span key={s.slug} className={`rounded-full px-3 py-1 text-[0.7rem] font-bold ${s.slug === active.slug ? 'bg-brand-deep text-white' : 'bg-white text-brand-deep ring-1 ring-brand-deep/15'}`}>
-                {s.name}
-              </span>
+              <div key={s.slug} className={`rounded-2xl p-3 ring-1 ${s.slug === active.slug ? 'bg-brand-paper ring-brand-deep' : 'ring-brand-deep/10'}`}>
+                <p className="text-xs font-bold text-brand-night">{s.name}</p>
+                <p className="mt-0.5 text-[0.7rem] text-brand-night/70">{tx.get(`servicios.${s.slug}.short`)}</p>
+              </div>
             ))}
           </div>
-          <div className="mt-3 rounded-3xl bg-brand-deep p-4 text-white">
-            <p className="font-label text-brand-haze">Qué incluye · {active.name}</p>
+          <div className="mt-3">
+            <Pill>{tx.get('servicios.planCta')}</Pill>
+          </div>
+          <div className="mt-4 rounded-3xl bg-brand-night p-4 text-white">
+            <p className="font-label text-brand-haze">Qué incluye · {active.name} (en su página)</p>
             <Steps items={tx.list(`servicios.${active.slug}.includes`)} dark />
             <div className="mt-4">
-              <Pill tone="white">{tx.get('servicios.cta')}</Pill>
+              <Pill>{tx.get('servicios.cta')}</Pill>
             </div>
           </div>
-          <p className="mt-2 text-[0.65rem] text-brand-night/55">Esta lista se ve en la página del servicio; en el inicio va solo el nombre y una frase.</p>
         </div>
       )
     }
@@ -199,37 +202,32 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
       return prices ? <PlansPreview prices={prices} texts={tx} highlight={(['inicial', 'plus', 'premium'] as const)[group] ?? null} /> : null
 
     case 'asesoria': {
-      const extras = [
+      const items = [
+        { key: 'asesoria', name: 'Asesoría 1:1' },
         { key: 'web', name: 'Sitio web / e-commerce' },
         { key: 'sesion', name: 'Sesión de fotos y videos' },
         { key: 'branding', name: 'Branding' },
         { key: 'medida', name: 'Soluciones a medida' },
       ]
-      const focusExtra = group >= 1 && group <= 4 ? extras[group - 1] : null
+      const current = items[Math.min(group, 4)] ?? items[0]
+      const isAsesoria = current.key === 'asesoria'
       return (
-        <div className="flex flex-col gap-3 bg-brand-paper px-5 py-7">
+        <div className="flex flex-col gap-3 bg-white px-5 py-7">
+          <Eyebrow>Servicios</Eyebrow>
+          <ul className="flex flex-col gap-1">
+            {items.map((e) => (
+              <li key={e.key} className={`rounded-xl px-3 py-2 text-xs font-bold ${current.key === e.key ? 'bg-brand-night text-white' : 'text-brand-night'}`}>
+                {e.name}
+              </li>
+            ))}
+          </ul>
           <div className="rounded-3xl bg-white p-4 ring-1 ring-brand-deep/10">
-            <Eyebrow>Asesoría 1:1</Eyebrow>
-            <p className="font-display text-xl text-brand-deep">
-              Una asesoría 1:1, <Em>100% personalizada.</Em>
-            </p>
-            <p className="mt-2 text-[0.7rem] text-brand-night/75">{tx.get('asesoria.text')}</p>
+            <p className="font-label text-[0.6rem] text-brand-deep">{current.name}</p>
+            <p className="mt-2 text-[0.75rem] text-brand-night/75">{tx.get(isAsesoria ? 'asesoria.text' : `extras.${current.key}.text`)}</p>
             <div className="mt-3">
-              <Pill>{tx.get('asesoria.cta')}</Pill>
+              <Pill tone="night">{isAsesoria ? tx.get('asesoria.cta') : tx.get('extras.cta')}</Pill>
             </div>
-            {group === 0 && <Bubble text={tx.get('asesoria.message')} />}
-          </div>
-          <div className="rounded-3xl bg-white p-4 ring-1 ring-brand-deep/10">
-            <Eyebrow>También hacemos</Eyebrow>
-            <ul className="mt-3 flex flex-col gap-2">
-              {extras.map((e) => (
-                <li key={e.key} className={`flex items-center justify-between rounded-2xl bg-brand-paper p-3 ring-1 ${focusExtra?.key === e.key ? 'ring-brand-deep' : 'ring-transparent'}`}>
-                  <p className="text-xs font-bold text-brand-night">{e.name}</p>
-                  <p className="text-[0.7rem] font-bold text-brand-deep">{tx.get('extras.cta')} ↗</p>
-                </li>
-              ))}
-            </ul>
-            {focusExtra && <Bubble text={tx.get(`extras.${focusExtra.key}.message`)} />}
+            <Bubble text={tx.get(isAsesoria ? 'asesoria.message' : `extras.${current.key}.message`)} />
           </div>
         </div>
       )
@@ -254,12 +252,20 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
         <div className="bg-brand-night px-5 py-7 text-white">
           <Eyebrow dark>Nosotros</Eyebrow>
           <Title dark>
-            Construimos marcas que <Em>venden más.</Em>
+            Tu marca tiene algo que la hace <Em dark>única.</Em>
           </Title>
-          <blockquote className="mt-4 rounded-2xl bg-brand-navy p-3 text-xs font-semibold">“{tx.get('nosotros.quote')}”</blockquote>
+          <p className={`mt-3 rounded-xl p-2 text-xs font-bold ${group === 0 ? 'ring-1 ring-brand-haze' : ''}`}>{tx.get('nosotros.missionLead')}</p>
+          <p className="mt-1 text-[0.7rem] text-brand-haze">{tx.get('nosotros.missionText')}</p>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <Pill>{tx.get('nosotros.cta')}</Pill>
-            <span className="text-[0.7rem] font-bold underline">{tx.get('nosotros.instagram')}</span>
+            <span className="text-[0.7rem] font-bold underline">@clicstd</span>
+          </div>
+          <div className={`mt-4 rounded-2xl bg-brand-navy p-3 ring-1 ${group === 1 ? 'ring-brand-haze' : 'ring-white/10'}`}>
+            <p className="font-label text-[0.6rem] text-brand-haze">Ian · Founder de Clic Studio</p>
+            <p className="mt-1 text-sm font-bold">{tx.get('nosotros.founderTitle')}</p>
+            <p className="mt-1 text-[0.7rem] text-brand-haze">{tx.get('nosotros.founderText')}</p>
+            <p className="mt-1 text-[0.7rem] text-brand-haze">{tx.get('nosotros.founderText2')}</p>
+            <p className="mt-2 text-[0.7rem] font-bold underline">@ianmarketer · LinkedIn</p>
           </div>
         </div>
       )
@@ -276,7 +282,8 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
             </div>
           </div>
           <div className="bg-brand-night px-5 py-4">
-            <p className="text-2xl font-bold tracking-tight text-white">clic<span className="font-normal text-brand-haze">studio</span></p>
+            {/* logo tipográfico original, igual que en el pie de la web */}
+            <img src="/wordmark-footer.svg" alt="clicstudio" width={168} height={37} className="h-7 w-auto" />
             <p className="mt-2 border-t border-white/10 pt-2 text-[0.7rem] font-bold text-white">{tx.get('footer.line')}</p>
           </div>
           <div className="grid grid-cols-1 gap-2 bg-brand-paper p-4 sm:grid-cols-2">

@@ -1,7 +1,7 @@
 import type { RefObject } from 'react'
-import { brand, preloader } from '../../data/content'
+import { preloader } from '../../data/content'
 import { splitHeadline } from '../../lib/headline'
-import { Bubble, Isotipo } from '../ui/Icon'
+import { Bubble, Isotipo, WordmarkPart } from '../ui/Icon'
 import { Pointer } from '../ui/Pointer'
 
 export interface PreloaderRefs {
@@ -16,33 +16,33 @@ export interface PreloaderRefs {
 
 /**
  * Preloader "un clic" (lo anima usePreloaderTimeline):
- *   z-10  stage   → papel + wordmark "clicstudio" (entra con CSS antes del JS: es el LCP) + isotipo
+ *   z-10  stage   → papel + logo tipográfico "clicstudio" (entra con CSS antes del JS: es el LCP) + isotipo
  *   z-20  fill    → burbuja naranja de la marca que se abre desde el clic; después se cierra sobre el CTA del hero
  *         caption → la frase, encima de la burbuja (no escala con ella)
  *   z-30  cursor  → puntero que cruza la pantalla, subraya "clic" como un link y hace clic
  *         ripple  → las tres líneas del clic (variante secundaria del logo)
  */
 export function Preloader({ refs }: { refs: PreloaderRefs }) {
-  const [clic, studio] = brand.wordmark
   const [before, em] = splitHeadline(preloader.caption)
 
   return (
     <div data-preloader aria-hidden="true" className="absolute inset-x-0 top-0 z-50 h-svh overflow-hidden">
       <div ref={refs.stage} className="absolute inset-0 z-10 bg-brand-paper text-brand-night">
-        {/* Wordmark en una línea, como la versión reducida del logo */}
-        <div ref={refs.title} className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center font-wordmark text-wordmark whitespace-nowrap">
-          <span className="inline-block whitespace-nowrap align-top">
-            <span data-preloader-inner className="inline-block animate-rise">
+        {/* Logo tipográfico original (trazos del archivo del cliente): "clic" y "studio" comparten la misma
+            caja de alto, así quedan con la proporción y la línea de base exactas del logo */}
+        <div ref={refs.title} className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
+          <span className="block">
+            <span data-preloader-inner className="block animate-rise">
               {/* "clic": el cursor lo subraya como un link antes de hacer clic */}
-              <span ref={refs.clic} className="relative inline-block">
-                {clic}
-                <span data-clic-line className="absolute inset-x-0 bottom-0 block h-1.5 origin-left scale-x-0 rounded-full bg-brand-signal md:h-3" />
+              <span ref={refs.clic} className="relative block">
+                <WordmarkPart part="clic" className="h-wordmark" />
+                <span data-clic-line className="absolute inset-x-0 -bottom-1 block h-1.5 origin-left scale-x-0 rounded-full bg-brand-signal md:-bottom-2 md:h-3" />
               </span>
             </span>
           </span>
-          <span className="inline-block whitespace-nowrap align-top">
-            <span data-preloader-inner className="animation-delay-word inline-block animate-rise font-normal text-brand-deep">
-              {studio}
+          <span className="block">
+            <span data-preloader-inner className="animation-delay-word block animate-rise">
+              <WordmarkPart part="studio" className="h-wordmark" />
             </span>
           </span>
         </div>

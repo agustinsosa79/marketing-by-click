@@ -6,6 +6,7 @@ import { DialogHost } from './components/DialogHost'
 import { confirmLeave, go, unsaved } from './lib/nav'
 import { Editor } from './pages/Editor'
 import { Faq } from './pages/Faq'
+import { Testimonials } from './pages/Testimonials'
 import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 import { PostList } from './pages/PostList'
@@ -32,6 +33,7 @@ type Route =
   | { name: 'project-edit'; slug: string }
   | { name: 'prices' }
   | { name: 'faq' }
+  | { name: 'testimonials' }
   | { name: 'texts' }
   | { name: 'media' }
 
@@ -47,6 +49,7 @@ function parse(hash: string): Route {
   if ((m = path.match(/^\/proyectos\/editar\/([a-z0-9-]+)$/))) return { name: 'project-edit', slug: m[1] }
   if (path === '/precios') return { name: 'prices' }
   if (path === '/preguntas') return { name: 'faq' }
+  if (path === '/testimonios') return { name: 'testimonials' }
   if (path === '/textos') return { name: 'texts' }
   if (path === '/fotos') return { name: 'media' }
   return { name: 'home' }
@@ -58,6 +61,7 @@ const SECTIONS = [
   { id: 'projects', label: 'Proyectos', href: '#/proyectos' },
   { id: 'prices', label: 'Precios', href: '#/precios' },
   { id: 'faq', label: 'Preguntas', href: '#/preguntas' },
+  { id: 'testimonials', label: 'Testimonios', href: '#/testimonios' },
   { id: 'texts', label: 'Textos', href: '#/textos' },
   { id: 'media', label: 'Fotos', href: '#/fotos' },
 ] as const
@@ -165,7 +169,7 @@ export function App() {
           </div>
         </div>
         {/* Celular: las secciones en una fila que se desliza */}
-        <nav aria-label="Secciones del panel" className="grid grid-cols-4 gap-1 border-t border-brand-deep/5 px-2 py-2 sm:grid-cols-7 sm:px-4 lg:hidden">
+        <nav aria-label="Secciones del panel" className="grid grid-cols-4 gap-1 border-t border-brand-deep/5 px-2 py-2 sm:grid-cols-8 sm:px-4 lg:hidden">
           {SECTIONS.map((s) => (
             <a
               key={s.id}
@@ -190,6 +194,7 @@ export function App() {
         {route.name === 'project-edit' && <ProjectEditor key={route.slug} slug={route.slug} notify={setToast} />}
         {route.name === 'prices' && <Prices notify={setToast} />}
         {route.name === 'faq' && <Faq notify={setToast} />}
+        {route.name === 'testimonials' && <Testimonials notify={setToast} />}
         {route.name === 'texts' && <Texts notify={setToast} />}
         {route.name === 'media' && <Media notify={setToast} />}
       </main>

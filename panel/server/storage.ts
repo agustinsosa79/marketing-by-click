@@ -2,7 +2,7 @@ import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { MEDIA_DIR, POSTS_DIR } from '../shared/blog.js'
 import { MEDIA_FILE, SITE_MEDIA_DIR } from '../shared/media.js'
-import { FAQ_FILE, PRICES_FILE, PROJECTS_DIR, PROJECTS_MEDIA_DIR, TEXTS_FILE } from '../shared/site.js'
+import { TESTIMONIALS_FILE, TESTIMONIALS_MEDIA_DIR, FAQ_FILE, PRICES_FILE, PROJECTS_DIR, PROJECTS_MEDIA_DIR, TEXTS_FILE } from '../shared/site.js'
 import { UserError } from './http.js'
 
 /**
@@ -31,6 +31,7 @@ export interface Storage {
  *   content/blog/*.md · public/media/blog/*.webp|jpg|png
  *   content/proyectos/*.json · public/media/proyectos/*.webp
  *   public/media/sitio/*.webp|mp4|webm · content/precios.json · content/faq.json · content/textos.json · content/medios.json
+ *   content/testimonios.json · public/media/testimonios/*.webp
  */
 export function assertAllowedPath(file: string) {
   const inDir = (dir: string, re: RegExp) => file.startsWith(`${dir}/`) && re.test(file.slice(dir.length + 1))
@@ -43,7 +44,9 @@ export function assertAllowedPath(file: string) {
     file === PRICES_FILE ||
     file === FAQ_FILE ||
     file === TEXTS_FILE ||
-    file === MEDIA_FILE
+    file === MEDIA_FILE ||
+    file === TESTIMONIALS_FILE ||
+    inDir(TESTIMONIALS_MEDIA_DIR, /^[a-z0-9-]+\.webp$/)
   if (!ok || file.includes('..')) throw new UserError('Ruta no permitida.', 403)
 }
 

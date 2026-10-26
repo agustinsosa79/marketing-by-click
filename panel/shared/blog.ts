@@ -6,9 +6,22 @@
 /** Sitio público donde se ven las notas. */
 export const SITE_URL = 'https://marketingbyclic.com'
 
-/** Categorías del blog (coinciden con los servicios del sitio). */
-export const CATEGORIES = ['Estrategia', 'Contenido', 'Meta Ads', 'Branding'] as const
-export type Category = (typeof CATEGORIES)[number]
+/**
+ * Categorías del blog: libres (las escribe el cliente). Estas son sugerencias para empezar, pensadas para el
+ * lector (temas de interés, no servicios); el panel también sugiere las que ya usan otras notas.
+ */
+export const SUGGESTED_CATEGORIES = ['Redes sociales', 'Marketing', 'Negocios', 'Actualidad'] as const
+export type Category = string
+export const CATEGORY_LIMITS = { min: 2, max: 30 }
+/** Texto plano, sin espacios de más y con mayúscula inicial: así "redes sociales" y "Redes sociales" son la misma. */
+export const cleanCategory = (v: unknown) =>
+  String(v ?? '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^./, (c) => c.toLocaleUpperCase('es'))
+export const categoryError = (v: string) =>
+  v.length < CATEGORY_LIMITS.min || v.length > CATEGORY_LIMITS.max ? `Elegí o escribí una categoría (entre ${CATEGORY_LIMITS.min} y ${CATEGORY_LIMITS.max} caracteres).` : null
 
 /** Carpetas del repo que el panel puede tocar. Nada fuera de acá. */
 export const POSTS_DIR = 'content/blog'

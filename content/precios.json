@@ -12,5 +12,17 @@
   "sesion": {
     "price": "100",
     "detail": "2 horas"
+  },
+  "web": {
+    "price": "",
+    "detail": ""
+  },
+  "branding": {
+    "price": "",
+    "detail": ""
+  },
+  "medida": {
+    "price": "",
+    "detail": ""
   }
 }

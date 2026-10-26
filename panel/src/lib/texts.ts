@@ -1,4 +1,4 @@
-import type { PricesInput } from '../../shared/site'
+import { priceLabel, type PricesInput } from '../../shared/site'
 import { resolveList, resolveText, TOKENS, type TextValues } from '../../shared/texts'
 
 /** Lee los textos de la web como los vería el sitio: el editado si es válido, si no el original. */
@@ -8,12 +8,12 @@ export interface TextReader {
 }
 
 /** "2 horas · 100 USD", igual que en el sitio. */
-export const sesionLabel = (prices: PricesInput | null) =>
-  prices ? [prices.sesion.detail, /^\d{1,6}$/.test(prices.sesion.price) ? `${prices.sesion.price} ${prices.currency}` : ''].filter(Boolean).join(' · ') : '2 horas · 100 USD'
+export const sesionLabel = (prices: PricesInput | null) => (prices ? priceLabel(prices.sesion, prices.currency) : '2 horas · 100 USD')
 
 export function textReader(values: TextValues = {}, prices: PricesInput | null = null): TextReader {
   const sesion = sesionLabel(prices)
-  const tokens = (s: string) => s.split(TOKENS.precioSesion).join(sesion)
+  // sin precio de la sesión: "…opcional: {precio_sesion}" queda "…opcional" (igual que en la web)
+  const tokens = (s: string) => (sesion ? s.split(TOKENS.precioSesion).join(sesion) : s.replace(new RegExp(`:?\\s*${TOKENS.precioSesion}`, 'g'), ''))
   return {
     get: (key) => tokens(resolveText(values, key)),
     list: (key) => resolveList(values, key).map(tokens),

@@ -1,127 +1,95 @@
-import { useRef, useState, type KeyboardEvent } from 'react'
-import { sections, servicios } from '../../../data/content'
-import { useReducedMotion } from '../../../hooks/useReducedMotion'
-import { gsap, useGSAP } from '../../../lib/gsap'
+import { useRef } from 'react'
+import { brand, sections, servicios, type Service } from '../../../data/content'
+import { useGSAP } from '../../../lib/gsap'
 import { setupReveals } from '../../../lib/motion'
 import { deferSetup } from '../../../lib/schedule'
 import { Button } from '../../ui/Button'
-import { Arrow, ServiceIcon } from '../../ui/Icon'
+import { Arrow, Isotipo, ServiceIcon } from '../../ui/Icon'
 import { Section } from '../../ui/Section'
 import { Label, Title } from '../../ui/Title'
-import { ServiceDemo } from './ServiceDemo'
 
 const ITEMS = servicios.items
+// posición de cada parte alrededor del círculo (desktop): arriba izq., arriba der., abajo izq., abajo der.
+const SPOTS = ['eco-tl', 'eco-tr', 'eco-bl', 'eco-br'] as const
+
+const serviceHref = (s: Service) => `/servicios/${s.slug}`
+
+/** Una parte del método en el círculo (desktop): el ícono va sobre el círculo y el texto hacia afuera. */
+function Node({ s, spot }: { s: Service; spot: (typeof SPOTS)[number] }) {
+  const left = spot === 'eco-tl' || spot === 'eco-bl'
+  return (
+    <div className={`eco-node ${spot}`}>
+      <a href={serviceHref(s)} data-reveal className="group relative block" aria-label={`${s.name}: ${s.short}`}>
+        <span className="grid size-20 place-items-center rounded-full bg-brand-deep text-white shadow-lift ring-8 ring-white transition duration-500 ease-expo group-hover:scale-110 group-hover:bg-brand-night xl:size-24">
+          <ServiceIcon name={s.icon} className="size-8 xl:size-9" />
+        </span>
+        <span className={`absolute top-1/2 flex w-52 -translate-y-1/2 flex-col gap-1.5 ${left ? 'right-full mr-6 items-end text-right' : 'left-full ml-6 items-start'}`}>
+          <span className="font-display text-2xl text-brand-night transition-colors duration-300 group-hover:text-brand-deep xl:text-3xl">{s.name}</span>
+          <span aria-hidden="true" className="block h-0.5 w-8 rounded-full bg-brand-deep" />
+          <span className="text-brand-night/75">{s.short}</span>
+        </span>
+      </a>
+    </div>
+  )
+}
 
 /**
- * Servicios: un servicio a la vez.
- *  - izquierda: los cuatro servicios (click o flechas del teclado para cambiar)
- *  Sección sobre el azul Clic (celeste del manual), entre el inicio blanco y Proyectos en azul noche.
- *  - derecha: panel azul noche con la mini animación del servicio, una frase y dos salidas (WhatsApp o su página)
- * El detalle de qué incluye cada uno vive en su página (/servicios/<slug>).
+ * Método ("ecosistema", pedido del cliente): las cuatro partes del trabajo alrededor de un círculo con la marca
+ * en el centro. Cuenta el método más que vender cada servicio; cada parte lleva a su página (/servicios/<slug>),
+ * donde se explica en profundidad. Fondo blanco. En el celular, la marca arriba y las partes en tarjetas.
  */
 export function Servicios() {
   const ref = useRef<HTMLElement>(null)
-  const panel = useRef<HTMLDivElement>(null)
-  const [active, setActive] = useState(0)
-  const reduced = useReducedMotion()
-  const first = useRef(true)
-  const item = ITEMS[active]
-
   useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
 
-  // Al cambiar de servicio, el texto del panel entra de nuevo (la animación del servicio va en ServiceDemo)
-  useGSAP(
-    () => {
-      if (first.current) {
-        first.current = false
-        return
-      }
-      const parts = panel.current!.querySelectorAll('[data-panel-part]')
-      if (reduced) gsap.fromTo(parts, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 })
-      else gsap.fromTo(parts, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.05, ease: 'reveal' })
-    },
-    { scope: ref, dependencies: [active] },
-  )
-
-  const onKey = (e: KeyboardEvent) => {
-    if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) return
-    e.preventDefault()
-    const next = (active + (e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : -1) + ITEMS.length) % ITEMS.length
-    setActive(next)
-    ref.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus()
-  }
-
   return (
-    <Section id={sections.servicios} ref={ref} bg="deep" className="flex min-h-svh flex-col justify-center px-5 pt-20 pb-8 md:px-10 md:pt-28 md:pb-14">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-10">
-        <div className="flex flex-col gap-5 lg:col-span-5 lg:gap-6">
-          <div className="flex flex-col gap-4">
-            <Label tone="deep">{servicios.eyebrow}</Label>
-            <Title title={servicios.title} tone="deep" />
-          </div>
+    <Section id={sections.metodo} ref={ref} bg="paper" className="px-5 pb-20 md:px-10 md:pb-28">
+      {/* el inicio también es blanco: una línea fina marca que empieza otra sección */}
+      <div aria-hidden="true" className="h-px bg-brand-deep/10" />
+      <div className="flex flex-col items-center gap-4 pt-24 text-center md:pt-32">
+        <Label>{servicios.eyebrow}</Label>
+        <Title title={servicios.title} tone="paper" className="lg:w-3/4" />
+      </div>
 
-          <div role="tablist" aria-label={servicios.listAria} onKeyDown={onKey} className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0">
-            {ITEMS.map((s, i) => {
-              const on = i === active
-              return (
-                <button
-                  key={s.slug}
-                  type="button"
-                  role="tab"
-                  id={`servicio-tab-${s.slug}`}
-                  aria-selected={on}
-                  aria-controls="servicio-panel"
-                  tabIndex={on ? 0 : -1}
-                  onClick={() => setActive(i)}
-                  className={`group flex shrink-0 items-center gap-3 rounded-full py-2 pr-4 pl-2 text-left transition duration-500 ease-expo lg:rounded-3xl lg:py-2 lg:pr-5 lg:pl-2 ${
-                    on ? 'bg-white shadow-soft' : 'hover:bg-white/10'
-                  }`}
-                >
-                  <span className={`grid size-9 shrink-0 place-items-center rounded-2xl transition duration-500 ease-expo lg:size-11 ${on ? 'bg-brand-deep text-white' : 'bg-white/15 text-white'}`}>
-                    <ServiceIcon name={s.icon} className="size-4 lg:size-6" />
-                  </span>
-                  <span className={`font-display text-base whitespace-nowrap transition-colors duration-500 lg:flex-1 lg:text-xl ${on ? 'text-brand-deep' : 'text-white'}`}>{s.name}</span>
-                  <Arrow className={`hidden size-5 text-brand-deep transition duration-500 ease-expo lg:block ${on ? 'rotate-45 opacity-100' : 'opacity-0'}`} />
-                </button>
-              )
-            })}
+      {/* Desktop: el círculo */}
+      <div className="relative mx-auto mt-14 hidden h-eco lg:block">
+        <div className="eco-ring absolute top-1/2 left-1/2 grid place-items-center rounded-full border-2 border-brand-deep/25">
+          <div data-reveal className="flex flex-col items-center gap-3">
+            <Isotipo className="w-24 xl:w-28" />
+            <span className="font-display text-2xl text-brand-night xl:text-3xl">{brand.name}</span>
           </div>
         </div>
+        {ITEMS.map((s, i) => (
+          <Node key={s.slug} s={s} spot={SPOTS[i]} />
+        ))}
+      </div>
 
-        <div
-          ref={panel}
-          id="servicio-panel"
-          role="tabpanel"
-          aria-labelledby={`servicio-tab-${item.slug}`}
-          data-reveal="fade"
-          className="flex flex-col gap-4 rounded-4xl bg-brand-night p-3 text-white shadow-lift md:gap-5 md:p-4 lg:col-span-7 lg:h-panel"
-        >
-          <div className="h-44 shrink-0 overflow-hidden rounded-3xl bg-white/5 md:h-64 lg:h-auto lg:flex-1">
-            {ITEMS.map((s, i) => (
-              <div key={s.slug} className={i === active ? 'size-full' : 'hidden'}>
-                <ServiceDemo name={s.icon} active={i === active} />
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-4 px-2 pb-2 md:px-4 md:pb-4 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
-            <div className="flex flex-col gap-3">
-              <h3 data-panel-part className="font-display text-big">
-                {item.name}
-              </h3>
-              <p data-panel-part className="text-base text-brand-haze md:text-lg">
-                {item.text}
-              </p>
-            </div>
-            <div data-panel-part className="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3 lg:flex-col lg:items-end">
-              <Button href={servicios.ctaHref} label={servicios.cta} variant="signal" icon="whatsapp" cursor={servicios.cursor} />
-              <a href={`/servicios/${item.slug}`} className="group flex items-center gap-2 text-sm font-bold">
-                <span className="link-underline">{servicios.more}</span>
-                <Arrow className="size-4 transition-transform duration-500 ease-expo group-hover:rotate-45" />
+      {/* Celular y tablet: la marca y las partes en tarjetas */}
+      <div className="mt-10 lg:hidden">
+        <div data-reveal className="flex flex-col items-center gap-2">
+          <Isotipo className="w-16" />
+          <span className="font-display text-xl text-brand-night">{brand.name}</span>
+        </div>
+        <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {ITEMS.map((s, i) => (
+            <li key={s.slug} data-reveal data-reveal-delay={i * 0.06}>
+              <a href={serviceHref(s)} className="group flex h-full items-center gap-4 rounded-3xl bg-white p-4 shadow-soft ring-1 ring-brand-deep/10">
+                <span className="grid size-14 shrink-0 place-items-center rounded-full bg-brand-deep text-white">
+                  <ServiceIcon name={s.icon} className="size-6" />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className="font-display text-xl text-brand-night">{s.name}</span>
+                  <span className="text-brand-night/75">{s.short}</span>
+                </span>
+                <Arrow className="size-5 shrink-0 text-brand-deep transition-transform duration-500 ease-expo group-hover:rotate-45" />
               </a>
-            </div>
-          </div>
-        </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div data-reveal className="mt-10 flex flex-col items-center gap-4 lg:mt-6">
+        <Button href={`#${servicios.planCta.id}`} label={servicios.planCta.label} variant="signal" icon="arrow" cursor="Ver planes" />
       </div>
     </Section>
   )

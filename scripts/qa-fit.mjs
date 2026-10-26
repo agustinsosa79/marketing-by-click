@@ -25,7 +25,7 @@ await p.waitForTimeout(1200)
 await p.screenshot({ path: `${out}/${prefix}-fit-01-hero-card.png` })
 
 // secciones de una pantalla (Planes y Nosotros son bloques largos a propósito: incluyen la asesoría y las preguntas)
-const ids = ['servicios', 'contacto']
+const ids = ['contacto']
 for (const [i, id] of ids.entries()) {
   await p.evaluate((id) => window.__lenis.scrollTo(document.getElementById(id), { immediate: true }), id)
   await p.waitForTimeout(400)

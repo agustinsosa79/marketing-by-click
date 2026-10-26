@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { LIMITS, slugify } from '../../shared/blog'
 import {
+  EMPTY_LINKS,
   HOME_LIMIT,
+  PROJECT_LINKS,
   homeSlugs,
   PROJECT_LIMITS as L,
   PROJECTS_MEDIA_URL,
@@ -37,6 +39,7 @@ const EMPTY: ProjectInput = {
   order: 0,
   draft: false,
   home: false,
+  links: { instagram: '', tiktok: '', linkedin: '' },
 }
 
 const nameOf = (src: string) => (src.startsWith(`${PROJECTS_MEDIA_URL}/`) ? src.slice(PROJECTS_MEDIA_URL.length + 1) : '')
@@ -85,7 +88,7 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
     if (!slug) return
     api
       .project(slug)
-      .then(({ project: p }) => setProject({ ...EMPTY, ...p }))
+      .then(({ project: p }) => setProject({ ...EMPTY, ...p, links: { ...EMPTY_LINKS, ...p.links } }))
       .catch((e) => setLoadError(e instanceof ApiError ? e.message : 'No se pudo cargar el proyecto.'))
   }, [slug])
 
@@ -329,6 +332,21 @@ export function ProjectEditor({ slug, notify }: { slug?: string; notify: (t: Toa
                     <input id="year" value={project.year} maxLength={L.short.max} onChange={(e) => set('year', e.target.value)} className={inputClass} placeholder="Ej.: 2025" />
                   </Field>
                 </div>
+                <Field label="Canales del cliente" hint="Opcional. Se ven en la página del proyecto como links a sus redes.">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    {PROJECT_LINKS.map((l) => (
+                      <input
+                        key={l.key}
+                        aria-label={`${l.label} del cliente`}
+                        value={project.links?.[l.key] ?? ''}
+                        maxLength={200}
+                        onChange={(e) => set('links', { ...EMPTY_LINKS, ...project.links, [l.key]: e.target.value })}
+                        className={inputClass}
+                        placeholder={l.placeholder}
+                      />
+                    ))}
+                  </div>
+                </Field>
               </Block>
 
               <Block title="Portada" hint="La imagen principal: en la tarjeta, arriba de la página y al compartir el link.">
