@@ -9,6 +9,9 @@ import path from 'node:path'
 
 const out = process.env.TEMP.split(String.fromCharCode(92)).join('/') + '/qa'
 const [base = 'http://localhost:5180', password = '', root = ''] = process.argv.slice(2)
+// textos que el cliente ya había cambiado antes de la prueba (no cuentan como cambios de esta prueba)
+const before = () => Object.keys(JSON.parse(readFileSync(path.join(root, 'content/textos.json'), 'utf8')).values)
+const initial = before()
 const log = (...a) => console.log('·', ...a)
 const b = await chromium.launch()
 const p = await b.newPage({ viewport: { width: 1440, height: 900 } })
@@ -47,8 +50,8 @@ await p.screenshot({ path: `${out}/tx-02-planes.png` })
 const preview = await p.locator('aside[aria-label="Vista previa"]').textContent()
 log('vista previa actualizada:', preview.includes('Para vender más con anuncios.') && preview.includes('10 reels'))
 
-// Método: quitar un ítem de la lista de Diseño
-await p.click('nav[aria-label="Secciones de la web"] >> text=Método')
+// Servicios: quitar un ítem de la lista de Diseño
+await p.click('nav[aria-label="Secciones de la web"] button >> text=/^Servicios\d*$/')
 await p.locator('section[aria-label="Diseño"] button[aria-label="Quitar el ítem 5"]').click()
 // Nosotros: misión
 await p.click('nav[aria-label="Secciones de la web"] >> text=Nosotros')
@@ -58,7 +61,7 @@ await p.click('button:has-text("Guardar textos") >> visible=true')
 await p.waitForSelector('text=Textos guardados')
 const saved = JSON.parse(readFileSync(path.join(root, 'content/textos.json'), 'utf8')).values
 log('archivo:', Object.keys(saved).sort().join(', '))
-log('solo cambios (sin el badge restaurado):', !('planes.badge' in saved) && Object.keys(saved).length === 4)
+log('solo cambios (sin el badge restaurado):', !('planes.badge' in saved) && Object.keys(saved).filter((k) => !initial.includes(k)).length === 4)
 
 // Sección bloqueada
 await p.click('nav[aria-label="Secciones de la web"] >> text=Inicio (portada)')

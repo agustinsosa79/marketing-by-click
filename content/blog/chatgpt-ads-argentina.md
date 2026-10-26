@@ -13,13 +13,13 @@ draft: false
 
 Tu próximo cliente puede estar organizando un viaje, buscando un proveedor o evaluando un servicio dentro de ChatGPT. Ahora, esas conversaciones también abren una oportunidad publicitaria para las marcas argentinas.
 
-El 21 de octubre de 2026, OpenAI anunció la llegada de **ChatGPT Ads a Argentina** como parte de su expansión internacional. Además, el país ya figura entre los mercados habilitados para acceder a su administrador de anuncios. :chatgpt-content-reference{index="0"}
+El 21 de octubre de 2026, OpenAI anunció la llegada de **ChatGPT Ads a Argentina** como parte de su expansión internacional. Además, el país ya figura entre los mercados habilitados para acceder a su administrador de anuncios.
 
 ## ¿Qué es ChatGPT Ads y cómo funciona?
 
-ChatGPT Ads permite mostrar anuncios relacionados con lo que una persona está explorando en la plataforma. Pueden aparecer para usuarios de los planes Gratis y Go, identificados como publicidad y separados de las respuestas. Anunciarse no permite modificar lo que responde ChatGPT. :chatgpt-content-reference{index="1"}
+ChatGPT Ads permite mostrar anuncios relacionados con lo que una persona está explorando en la plataforma. Pueden aparecer para usuarios de los planes Gratis y Go, identificados como publicidad y separados de las respuestas. Anunciarse no permite modificar lo que responde ChatGPT.
 
-Para seleccionar los anuncios, el sistema considera señales como el contexto y la intención de la conversación, el contenido del anuncio y su página de destino. Según la configuración del usuario, también puede utilizar señales de personalización. :chatgpt-content-reference{index="2"}
+Para seleccionar los anuncios, el sistema considera señales como el contexto y la intención de la conversación, el contenido del anuncio y su página de destino. Según la configuración del usuario, también puede utilizar señales de personalización.
 
 ## Hipersegmentación: conectar con una necesidad concreta
 
@@ -27,7 +27,7 @@ Imaginá a alguien que está buscando un viaje grupal a Italia, con acompañamie
 
 **En Clic Studio vemos en este modelo una oportunidad para avanzar hacia una hipersegmentación basada en el contexto y la intención.** Desde nuestra mirada, el valor está en acercar una propuesta relevante cuando la persona está poniendo en palabras lo que necesita.
 
-Esa precisión tiene un límite claro: los anunciantes no reciben las conversaciones privadas ni las memorias de los usuarios. OpenAI comparte información agregada sobre el rendimiento publicitario. :chatgpt-content-reference{index="3"}
+Esa precisión tiene un límite claro: los anunciantes no reciben las conversaciones privadas ni las memorias de los usuarios. OpenAI comparte información agregada sobre el rendimiento publicitario.
 
 ## ¿Qué cambia para la estrategia de tu marca?
 

@@ -75,6 +75,10 @@ export async function getPost(slug: string) {
 
 const oneLine = (s: unknown) => String(s ?? '').replace(/\s+/g, ' ').trim()
 
+/** Marcas de cita que quedan al pegar texto de ChatGPT (":chatgpt-content-reference{index="0"}", "【4†fuente】"). */
+const stripAiCitations = (body: string) =>
+  body.replace(/ ?:?[\w-]*content-?reference(\[[^\]]*\])?(\{[^}]*\})?/gi, '').replace(/【[^】]*】/g, '')
+
 function validate(raw: PostInput): PostInput {
   const post: PostInput = {
     slug: String(raw.slug ?? ''),
@@ -86,7 +90,7 @@ function validate(raw: PostInput): PostInput {
     coverAlt: oneLine(raw.coverAlt),
     author: oneLine(raw.author) || 'Ian',
     draft: Boolean(raw.draft),
-    body: String(raw.body ?? '').replace(/\r\n/g, '\n'),
+    body: stripAiCitations(String(raw.body ?? '').replace(/\r\n/g, '\n')),
   }
   if (!SLUG_RE.test(post.slug) || post.slug.length > LIMITS.slug.max) throw new UserError('La dirección de la nota no es válida.')
   if (post.title.length < LIMITS.title.min || post.title.length > LIMITS.title.max) throw new UserError(`El título tiene que tener entre ${LIMITS.title.min} y ${LIMITS.title.max} caracteres.`)

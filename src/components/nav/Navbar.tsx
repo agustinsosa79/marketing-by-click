@@ -20,7 +20,7 @@ interface NavbarProps {
  */
 const QUICK: { label: string; short?: string; id: string }[] = [
   { label: nav.plansLabel, id: sections.planes },
-  { label: nav.servicesLabel, id: sections.servicios },
+  { label: nav.solutionsLabel, id: sections.soluciones },
 ]
 
 /** Link de la barra: en el inicio scrollea con Lenis; desde otra página lleva a /#sección. */

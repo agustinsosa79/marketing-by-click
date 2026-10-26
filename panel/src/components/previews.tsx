@@ -393,12 +393,12 @@ export function ProjectPagePreview({ project, resolve }: { project: ProjectInput
   )
 }
 
-/** La lista de Servicios de la web con sus precios (vacío = sin precio). Resalta el que se está editando. */
+/** La lista de Soluciones de la web con sus precios (vacío = sin precio). Resalta el que se está editando. */
 export function ServicesPricePreview({ prices, focus }: { prices: PricesInput; focus: ServicePriceId }) {
   return (
     <div className="bg-white px-4 py-6 sm:px-6">
       <div className="flex flex-col gap-1 rounded-3xl bg-white p-3 shadow-soft ring-1 ring-brand-deep/10">
-        <p className="px-2 pt-1 pb-2 text-[0.65rem] font-bold tracking-widest text-brand-deep uppercase">Servicios</p>
+        <p className="px-2 pt-1 pb-2 text-[0.65rem] font-bold tracking-widest text-brand-deep uppercase">Soluciones</p>
         {SERVICE_PRICES.map((sv) => {
           const label = priceLabel(prices[sv.id], prices.currency)
           const on = sv.id === focus

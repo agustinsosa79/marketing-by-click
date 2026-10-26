@@ -101,8 +101,8 @@ export const preloader = {
 export const sections = {
   hero: 'inicio',
   nosotros: 'nosotros',
-  metodo: 'metodo',
   servicios: 'servicios',
+  soluciones: 'soluciones',
   proceso: 'proceso',
   planes: 'planes',
   asesoria: 'asesoria',
@@ -121,10 +121,10 @@ export const nav = {
   skipLink: 'Saltar al contenido',
   homeLabel: 'Clic Studio, volver al inicio',
   items: [
-    { label: 'Método', id: sections.metodo },
+    { label: 'Servicios', id: sections.servicios },
     { label: 'Proyectos', id: sections.proyectos },
     { label: 'Planes', id: sections.planes },
-    { label: 'Servicios', id: sections.servicios },
+    { label: 'Soluciones', id: sections.soluciones },
     { label: 'Nosotros', id: sections.nosotros },
     { label: 'Tu primer mes', id: sections.proceso },
     { label: 'Preguntas', id: sections.faq },
@@ -133,7 +133,7 @@ export const nav = {
   ] as { label: string; id: string; href?: string }[],
   // Links de la barra fija (el botón principal es "Hablemos" por WhatsApp)
   plansLabel: 'Planes',
-  servicesLabel: 'Servicios',
+  solutionsLabel: 'Soluciones',
   ctaLabel: 'Hablemos',
   ctaCursor: 'Escribinos',
   contactTitle: 'Escribinos', // TODO copy
@@ -213,11 +213,11 @@ export interface Service {
 }
 
 /**
- * Método (sección del inicio, "ecosistema"): las cuatro partes del trabajo. Cada una lleva a su página
+ * Servicios (sección del inicio, "ecosistema"): las cuatro partes del trabajo, con el mismo nombre que sus páginas. Cada una lleva a su página
  * (/servicios/<slug>). El cliente cuenta su método más que vender cada servicio por separado.
  */
 export const servicios = {
-  eyebrow: 'Método',
+  eyebrow: 'Servicios',
   title: { text: 'Todo lo que tu marca necesita para vender en redes.', emphasis: 'vender en redes.' } satisfies Headline,
   planCta: { label: txt('servicios.planCta'), id: sections.planes },
   cursor: 'Consultar',
@@ -286,7 +286,7 @@ export const servicios = {
   demo: { reels: 'Reels', ads: 'Meta Ads' },
   more: 'Conocé nuestra propuesta',
   cta: txt('servicios.cta'),
-  listAria: 'Elegí un servicio',
+  listAria: 'Elegí una solución',
 }
 
 export const proceso = {
@@ -359,7 +359,7 @@ export const planes = {
   cardFeatures: 3,
   compare: {
     open: 'Comparar planes',
-    title: 'Los tres planes, lado a lado',
+    title: 'Compará los tres planes',
     label: 'Planes',
     price: 'Precio',
     // filas de la comparación: el n-ésimo ítem de cada plan habla de lo mismo (así están cargados en el panel)
@@ -401,9 +401,9 @@ export interface ServiceOffer {
 }
 
 export const extras = {
-  eyebrow: 'Servicios',
+  eyebrow: 'Soluciones',
   title: { text: 'Más allá de los planes.', emphasis: 'los planes.' } satisfies Headline,
-  listAria: 'Elegí un servicio',
+  listAria: 'Elegí una solución',
   items: [
     {
       key: 'asesoria',

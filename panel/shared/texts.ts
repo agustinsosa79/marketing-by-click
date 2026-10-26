@@ -77,9 +77,9 @@ export const TEXT_SECTIONS: TextSection[] = [
   },
   {
     id: 'servicios',
-    label: 'Método',
-    path: '/#metodo',
-    intro: 'El método en el inicio (el círculo con las cuatro partes) y qué incluye cada parte, que se ve en su página.',
+    label: 'Servicios',
+    path: '/#servicios',
+    intro: 'Los servicios en el inicio (el círculo con las cuatro partes) y qué incluye cada parte, que se ve en su página.',
     locked: [
       { label: 'Título', value: 'Todo lo que tu marca necesita para vender en redes.' },
       { label: 'Nombres de las partes', value: 'Estrategia · Contenido · Meta Ads · Diseño' },
@@ -201,9 +201,9 @@ export const TEXT_SECTIONS: TextSection[] = [
   },
   {
     id: 'asesoria',
-    label: 'Servicios',
-    path: '/#servicios',
-    intro: 'Los servicios fuera de los planes: la asesoría 1:1 y los proyectos puntuales. Cada uno tiene su texto y su mensaje de WhatsApp. Los precios se cambian en la sección Precios.',
+    label: 'Soluciones',
+    path: '/#soluciones',
+    intro: 'Las soluciones fuera de los planes: la asesoría 1:1 y los proyectos puntuales. Cada uno tiene su texto y su mensaje de WhatsApp. Los precios se cambian en la sección Precios.',
     locked: [
       { label: 'Título de la asesoría', value: 'Una asesoría 1:1, 100% personalizada.' },
       { label: 'Nombres de los servicios', value: 'Asesoría 1:1 · Sitio web / e-commerce · Sesión de fotos y videos · Branding · Soluciones a medida' },

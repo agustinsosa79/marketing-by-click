@@ -100,7 +100,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
 
   const tabs: { id: Area; label: string }[] = [
     { id: 'planes', label: 'Planes' },
-    { id: 'servicios', label: 'Servicios' },
+    { id: 'servicios', label: 'Soluciones' },
   ]
 
   return (
@@ -146,7 +146,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
           <section className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-brand-deep/10" aria-labelledby="t-servicios">
             <div>
               <h2 id="t-servicios" className="text-lg font-extrabold text-brand-deep">
-                Servicios
+                Soluciones
               </h2>
               <p className="text-sm text-brand-night/60">Todos opcionales. Si dejás el precio vacío, la web no lo muestra y se consulta por WhatsApp.</p>
             </div>
@@ -217,7 +217,7 @@ export function Prices({ notify }: { notify: (t: ToastData) => void }) {
             </PreviewFrame>
           )}
           {area === 'servicios' && (
-            <PreviewFrame path="/#servicios">
+            <PreviewFrame path="/#soluciones">
               <ServicesPricePreview prices={prices} focus={focusService} />
             </PreviewFrame>
           )}

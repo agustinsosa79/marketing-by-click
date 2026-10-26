@@ -86,7 +86,7 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
       const active = SERVICES[Math.min(group, 3)]
       return (
         <div className="bg-white px-5 py-7">
-          <Eyebrow>Método</Eyebrow>
+          <Eyebrow>Servicios</Eyebrow>
           <Title>
             Todo lo que tu marca necesita para <Em>vender en redes.</Em>
           </Title>
@@ -213,7 +213,7 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
       const isAsesoria = current.key === 'asesoria'
       return (
         <div className="flex flex-col gap-3 bg-white px-5 py-7">
-          <Eyebrow>Servicios</Eyebrow>
+          <Eyebrow>Soluciones</Eyebrow>
           <ul className="flex flex-col gap-1">
             {items.map((e) => (
               <li key={e.key} className={`rounded-xl px-3 py-2 text-xs font-bold ${current.key === e.key ? 'bg-brand-night text-white' : 'text-brand-night'}`}>

@@ -34,7 +34,7 @@ function Node({ s, spot }: { s: Service; spot: (typeof SPOTS)[number] }) {
 }
 
 /**
- * Método ("ecosistema", pedido del cliente): las cuatro partes del trabajo alrededor de un círculo con la marca
+ * Servicios ("ecosistema", pedido del cliente): las cuatro partes del trabajo alrededor de un círculo con la marca
  * en el centro. Cuenta el método más que vender cada servicio; cada parte lleva a su página (/servicios/<slug>),
  * donde se explica en profundidad. Fondo blanco. En el celular, la marca arriba y las partes en tarjetas.
  */
@@ -43,7 +43,7 @@ export function Servicios() {
   useGSAP((_, contextSafe) => deferSetup(contextSafe!(() => setupReveals(ref.current!))), { scope: ref })
 
   return (
-    <Section id={sections.metodo} ref={ref} bg="paper" className="px-5 pb-20 md:px-10 md:pb-28">
+    <Section id={sections.servicios} ref={ref} bg="paper" className="px-5 pb-20 md:px-10 md:pb-28">
       {/* el inicio también es blanco: una línea fina marca que empieza otra sección */}
       <div aria-hidden="true" className="h-px bg-brand-deep/10" />
       <div className="flex flex-col items-center gap-4 pt-24 text-center md:pt-32">

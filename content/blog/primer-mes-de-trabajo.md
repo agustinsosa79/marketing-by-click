@@ -32,7 +32,7 @@ Con el diagnóstico hecho, armamos el plan.
 - **Propuesta.** Te presentamos la estrategia para tus redes.
 - **Planificación y desarrollo.** Definimos qué vamos a publicar, en qué canales y cuándo.
 
-## Semanas 3 y 4: ejecución
+## A partir de la semana 3: ejecución
 
 Es el momento de producir.
 

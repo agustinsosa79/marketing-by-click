@@ -34,7 +34,7 @@ await p.waitForTimeout(1500)
 
 await p.click('button:has-text("Comparar planes")')
 await p.waitForTimeout(700)
-check('comparar: se abre', await p.locator('dialog[open]:has-text("lado a lado")').isVisible())
+check('comparar: se abre', await p.locator('dialog[open]:has-text("Compará los tres planes")').isVisible())
 check('comparar: tabla con los 3 planes', (await p.locator('dialog[open] thead th').count()) === 4)
 check('comparar: el fondo no scrollea (Lenis detenido)', await p.evaluate(() => window.__lenis.isStopped))
 await p.mouse.move(700, 420)

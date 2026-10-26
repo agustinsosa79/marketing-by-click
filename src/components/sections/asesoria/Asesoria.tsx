@@ -67,7 +67,7 @@ export function ServiciosSection() {
   }
 
   return (
-    <Section id={sections.servicios} ref={ref} bg="paper" className="px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-28">
+    <Section id={sections.soluciones} ref={ref} bg="paper" className="px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-28">
       <span id={sections.asesoria} aria-hidden="true" className="absolute top-0" />
       <div className="flex flex-col gap-4">
         <Label>{extras.eyebrow}</Label>
