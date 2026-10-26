@@ -54,6 +54,9 @@ function image(v: unknown): ProjectImage | null {
   return { src, alt: str(i.alt), width: Number(i.width) || 1200, height: Number(i.height) || 900 }
 }
 
+/** Categorías anteriores → las actuales (proyectos cargados antes del cambio). */
+const LEGACY_SERVICES: Record<string, string> = { Estrategia: 'Plan de redes', Contenido: 'Plan de redes', 'Meta Ads': 'Plan de redes', Diseño: 'Branding' }
+
 /** Normaliza un proyecto: si al JSON le falta algo, el sitio no se rompe (el panel valida al guardar). */
 function normalize(raw: Record<string, unknown>): Project | null {
   const cover = image(raw.cover)
@@ -67,7 +70,7 @@ function normalize(raw: Record<string, unknown>): Project | null {
     sector: str(raw.sector),
     location: str(raw.location),
     year: str(raw.year),
-    services: Array.isArray(raw.services) ? raw.services.map(str).filter(Boolean) : [],
+    services: Array.isArray(raw.services) ? [...new Set(raw.services.map(str).filter(Boolean).map((s) => LEGACY_SERVICES[s] ?? s))] : [],
     cover,
     challenge: str(raw.challenge),
     process: Array.isArray(raw.process)

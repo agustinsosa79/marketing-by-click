@@ -22,6 +22,10 @@ export const TESTIMONIALS_MEDIA_URL = '/media/testimonios'
 /** Categorías del portfolio: las propuestas que maneja el estudio. */
 export const SERVICES = ['Plan de redes', 'Asesoría', 'Branding', 'Servicios adicionales'] as const
 
+/** Categorías anteriores → las actuales (proyectos cargados antes del cambio), sin repetir. */
+const LEGACY_SERVICES: Record<string, string> = { Estrategia: 'Plan de redes', Contenido: 'Plan de redes', 'Meta Ads': 'Plan de redes', Diseño: 'Branding' }
+export const normalizeServices = (list: unknown[]) => [...new Set(list.map((s) => LEGACY_SERVICES[String(s)] ?? String(s)))]
+
 /** Canales del cliente que se pueden enlazar desde su proyecto (solo direcciones de cada red). */
 export const PROJECT_LINKS = [
   { key: 'instagram', label: 'Instagram', host: 'instagram.com', placeholder: 'https://www.instagram.com/marca' },
