@@ -6,20 +6,20 @@
     "premium": "155"
   },
   "asesoria": {
-    "price": "135",
+    "price": "155",
+    "detail": "Mensual"
+  },
+  "web": {
+    "price": "",
     "detail": ""
   },
   "sesion": {
     "price": "100",
     "detail": "2 horas"
   },
-  "web": {
-    "price": "",
-    "detail": ""
-  },
   "branding": {
-    "price": "",
-    "detail": ""
+    "price": "200",
+    "detail": "Por proyecto"
   },
   "medida": {
     "price": "",
