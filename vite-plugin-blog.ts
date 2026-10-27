@@ -63,7 +63,7 @@ function compile(id: string, source: string) {
         return `<figure><img src="${safeUrl(token.href)}" alt="${escapeHtml(token.text)}" loading="lazy" decoding="async" />${caption}</figure>`
       },
       link(this: { parser: { parseInline: (t: Tokens.Generic[]) => string } }, token: Tokens.Link) {
-        const external = /^https?:\/\//.test(token.href) && !token.href.includes('marketingbyclic.com')
+        const external = /^https?:\/\//.test(token.href) && !token.href.includes('clicstudio.com.ar')
         const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : ''
         return `<a href="${safeUrl(token.href)}"${attrs}>${this.parser.parseInline(token.tokens)}</a>`
       },

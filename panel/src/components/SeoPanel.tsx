@@ -36,7 +36,7 @@ export function SeoPanel({ slug, title, description, coverAlt, hasCover, body }:
         <p className="text-xs font-bold tracking-widest text-brand-deep/60 uppercase">Así se vería en Google</p>
         <div className="mt-3 font-[Arial,sans-serif]">
           <p className="truncate text-xs text-[#202124]">
-            marketingbyclic.com <span className="text-[#5f6368]">› blog › {slug || 'direccion-de-la-nota'}</span>
+            clicstudio.com.ar <span className="text-[#5f6368]">› blog › {slug || 'direccion-de-la-nota'}</span>
           </p>
           <p className="mt-1 text-lg leading-snug text-[#1a0dab]">{cut(title || 'Título de la nota', 62)} | Blog de Clic Studio</p>
           <p className="mt-1 text-sm leading-snug text-[#4d5156]">{cut(description || 'El resumen de la nota aparece acá.', 160)}</p>

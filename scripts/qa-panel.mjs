@@ -41,7 +41,7 @@ await p.waitForSelector('text=Cambiar portada')
 await p.fill('#coverAlt', 'Ian frente a un lago de la Patagonia')
 await p.fill(
   'textarea[aria-label="Texto de la nota"]',
-  'Tener muchos seguidores no siempre significa vender. Estos son los tres números que miramos cada mes.\n\n## Consultas por WhatsApp\n\nCuántas personas escriben desde Instagram.\n\n## Ventas atribuidas\n\n- Una lista\n- Con **negrita**\n\n> Más visibilidad, más clientes, más ventas.\n\nMirá nuestro servicio de [Meta Ads](https://marketingbyclic.com/servicios/meta-ads).\n\n<script>alert(1)</script>',
+  'Tener muchos seguidores no siempre significa vender. Estos son los tres números que miramos cada mes.\n\n## Consultas por WhatsApp\n\nCuántas personas escriben desde Instagram.\n\n## Ventas atribuidas\n\n- Una lista\n- Con **negrita**\n\n> Más visibilidad, más clientes, más ventas.\n\nMirá nuestro servicio de [Meta Ads](https://clicstudio.com.ar/servicios/meta-ads).\n\n<script>alert(1)</script>',
 )
 await p.waitForTimeout(400)
 await shot('03-editor', true)

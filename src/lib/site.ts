@@ -1,1 +1,1 @@
-export const SITE_URL = 'https://marketingbyclic.com'
+export const SITE_URL = 'https://clicstudio.com.ar'

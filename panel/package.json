@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Panel para administrar el blog de marketingbyclic.com (se publica aparte, en su propia URL).",
+  "description": "Panel para administrar el blog de clicstudio.com.ar (se publica aparte, en su propia URL).",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

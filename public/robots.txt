@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://marketingbyclic.com/sitemap.xml
+Sitemap: https://clicstudio.com.ar/sitemap.xml

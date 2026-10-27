@@ -65,10 +65,10 @@ export function MarkdownEditor({ value, onChange, imageBase, onImage, resolveIma
       title: 'Agregar enlace',
       text: 'Se aplica sobre el texto seleccionado. Para enlazar a un servicio o a otra nota, copiá la dirección desde la web.',
       label: 'Dirección',
-      placeholder: 'https://marketingbyclic.com/servicios/meta-ads',
+      placeholder: 'https://clicstudio.com.ar/servicios/meta-ads',
       initial: 'https://',
       confirmLabel: 'Agregar enlace',
-      validate: (v) => (/^(https?:\/\/\S+\.\S+|\/\S*|mailto:\S+)$/.test(v) ? null : 'Escribí una dirección completa, por ejemplo https://marketingbyclic.com/blog'),
+      validate: (v) => (/^(https?:\/\/\S+\.\S+|\/\S*|mailto:\S+)$/.test(v) ? null : 'Escribí una dirección completa, por ejemplo https://clicstudio.com.ar/blog'),
     })
     if (!url) return
     el.focus()

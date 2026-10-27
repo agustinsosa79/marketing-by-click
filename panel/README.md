@@ -17,7 +17,7 @@ Todas las pantallas tienen vista previa con el diseño del sitio antes de guarda
 cliente ──► panel (link de Vercel, con contraseña)
                │  "Guardar" = 1 commit en GitHub (solo los archivos de la tabla de arriba)
                ▼
-            GitHub ──► Vercel reconstruye marketingbyclic.com  (1–2 min)
+            GitHub ──► Vercel reconstruye clicstudio.com.ar  (1–2 min)
 ```
 
 No hay base de datos: todo son archivos del repo que el sitio lee al construirse (SEO intacto). El cliente no necesita cuenta de GitHub.
@@ -53,7 +53,7 @@ Si algo quedó mal configurado, el panel lo dice al abrirlo (ej. *"Falta la vari
 
 ### Opcionales
 
-- **Dominio propio** (`panel.marketingbyclic.com`): Settings → Domains. No hace falta, el link de Vercel funciona igual.
+- **Dominio propio** (`panel.clicstudio.com.ar`): Settings → Domains. No hace falta, el link de Vercel funciona igual.
 - **Que no se reconstruyan de más:** Settings → Build and Deployment → Ignored Build Step → Custom. En el panel `git diff --quiet HEAD^ HEAD -- .`; en el sitio `git diff --quiet HEAD^ HEAD -- . ':(exclude)panel' panel/shared` (el sitio importa `panel/shared/texts.ts`: un cambio ahí tiene que reconstruirlo). Sin esto todo funciona igual, solo hay builds de más.
 - `GITHUB_BRANCH` (por defecto `master`) y `GITHUB_REPO` (por defecto `agustinsosa79/marketing-by-click`) si alguna vez cambian.
 

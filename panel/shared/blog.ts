@@ -4,7 +4,7 @@
  */
 
 /** Sitio público donde se ven las notas. */
-export const SITE_URL = 'https://marketingbyclic.com'
+export const SITE_URL = 'https://clicstudio.com.ar'
 
 /**
  * Categorías del blog: libres (las escribe el cliente). Estas son sugerencias para empezar, pensadas para el

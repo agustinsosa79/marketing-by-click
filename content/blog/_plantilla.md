@@ -15,7 +15,7 @@ Primer párrafo: de qué trata la nota y por qué le sirve al lector.
 
 ## Subtítulo (aparece en el índice de la nota)
 
-Texto con **negritas**, [links](https://marketingbyclic.com) y listas:
+Texto con **negritas**, [links](https://clicstudio.com.ar) y listas:
 
 - Un punto
 - Otro punto

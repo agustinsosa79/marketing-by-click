@@ -171,7 +171,7 @@ export function Editor({ slug, notify }: { slug?: string; notify: (t: ToastData)
           >
             <div className="flex overflow-hidden rounded-xl bg-white ring-1 ring-brand-deep/15 transition focus-within:ring-2 focus-within:ring-brand-signal">
               <span className="flex shrink-0 items-center bg-brand-paper px-3 text-sm font-semibold text-brand-night/50">
-                <span className="max-sm:hidden">marketingbyclic.com</span>/blog/
+                <span className="max-sm:hidden">clicstudio.com.ar</span>/blog/
               </span>
               <input
                 id="slug"
