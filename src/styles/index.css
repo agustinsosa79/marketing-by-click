@@ -12,6 +12,10 @@ html.lenis body {
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
+/* El espacio de la barra de scroll queda reservado siempre: al bloquear/liberar el scroll el ancho no cambia y los títulos no se reacomodan */
+html {
+  scrollbar-gutter: stable;
+}
 /* lenis.css usa overflow: clip, que además bloquea el scroll programático (lenis.scrollTo con force) */
 html.lenis.lenis-stopped {
   overflow: hidden;

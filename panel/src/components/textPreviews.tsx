@@ -74,7 +74,7 @@ export function TextSectionPreview({ id, tx, prices, group }: Props) {
           <p className="font-display text-3xl leading-none text-brand-night">
             Estudio de marketing digital y <Em>redes sociales.</Em>
           </p>
-          <p className="mt-3 text-xs text-brand-night/75">Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.</p>
+          <p className="mt-3 text-xs text-brand-night/75">Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en redes.</p>
           <div className="mt-4 flex items-center gap-4">
             <Pill>Hablemos por WhatsApp</Pill>
             <span className="text-[0.7rem] font-bold text-brand-night underline">Ver planes ↓</span>

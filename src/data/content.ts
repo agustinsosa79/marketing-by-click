@@ -147,7 +147,7 @@ export const hero = {
   // H1: el cliente es un estudio. "Agencia" (lo más buscado) queda en el title y la descripción de la página.
   title: { text: 'Estudio de marketing digital y redes sociales.', emphasis: 'redes sociales.' } satisfies Headline,
   // La promesa real de la marca ("convertir tus redes en un sistema de ventas") pasa a la bajada, con las palabras que usa la gente
-  subtitle: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.', // TODO copy
+  subtitle: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en redes.', // TODO copy
   cta: { label: 'Hablemos por WhatsApp', href: WHATSAPP },
   // salida secundaria: quien todavía no quiere escribir, va a ver precios
   secondary: { label: 'Ver planes', id: sections.planes },

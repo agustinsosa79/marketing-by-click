@@ -69,7 +69,7 @@ export const TEXT_SECTIONS: TextSection[] = [
     intro: 'La portada concentra lo que Google usa para entender de qué trata el sitio. No se edita desde el panel.',
     locked: [
       { label: 'Título principal (H1)', value: 'Estudio de marketing digital y redes sociales.' },
-      { label: 'Bajada', value: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en Instagram y Facebook.' },
+      { label: 'Bajada', value: 'Convertimos tus redes en un sistema de ventas con estrategia, contenido y anuncios en redes.' },
       { label: 'Botón', value: 'Hablemos por WhatsApp' },
       { label: 'Enlace', value: 'Ver planes' },
     ],
