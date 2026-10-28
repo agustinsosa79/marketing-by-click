@@ -1,9 +1,9 @@
 {
   "currency": "USD",
   "plans": {
-    "inicial": "115",
-    "plus": "135",
-    "premium": "155"
+    "inicial": "135",
+    "plus": "165",
+    "premium": "195"
   },
   "asesoria": {
     "price": "155",
@@ -14,12 +14,12 @@
     "detail": ""
   },
   "sesion": {
-    "price": "100",
+    "price": "",
     "detail": "2 horas"
   },
   "branding": {
-    "price": "200",
-    "detail": "Por proyecto"
+    "price": "",
+    "detail": ""
   },
   "medida": {
     "price": "",
