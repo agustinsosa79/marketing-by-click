@@ -11,10 +11,10 @@
     "Branding"
   ],
   "cover": {
-    "src": "/media/proyectos/joaquin-santos-estudio-juridico-portada-r3oy0f.webp",
+    "src": "/media/proyectos/joaquin-santos-estudio-juridico-portada-48qeqd.webp",
     "alt": "logotipo del estudio jurídico Joaquín Santos",
     "width": 1600,
-    "height": 1112
+    "height": 900
   },
   "challenge": "El estudio necesitaba construir su presencia digital desde cero y presentar su propuesta profesional con claridad. La identidad visual, los contenidos y la publicidad debían trabajar en conjunto.\n\nEl desafío era desarrollar una comunicación coherente que permitiera conocer al estudio y sus servicios.",
   "process": [
@@ -43,5 +43,10 @@
   "gallery": [],
   "order": 5,
   "draft": false,
-  "home": true
+  "home": true,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
 }
