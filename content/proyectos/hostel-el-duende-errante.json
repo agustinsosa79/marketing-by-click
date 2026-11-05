@@ -10,10 +10,10 @@
     "Branding"
   ],
   "cover": {
-    "src": "/media/proyectos/hostel-el-duende-errante-remeras.webp",
+    "src": "/media/proyectos/hostel-el-duende-errante-portada-eapkwa.webp",
     "alt": "Remeras blancas y negras con el logo del Hostel El Duende Errante",
-    "width": 800,
-    "height": 800
+    "width": 1600,
+    "height": 900
   },
   "challenge": "Un logo solo no alcanza. El hostel necesitaba una identidad: un sistema de piezas que funcionen juntas, en cualquier tamaño y en cualquier soporte.",
   "process": [
@@ -52,5 +52,10 @@
   "gallery": [],
   "order": 1,
   "draft": false,
-  "home": false
+  "home": false,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
 }
