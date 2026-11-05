@@ -10,10 +10,10 @@
     "Plan de redes"
   ],
   "cover": {
-    "src": "/media/proyectos/moniketa-musica-portada-sjvddu.webp",
+    "src": "/media/proyectos/moniketa-musica-portada-mjf2tv.webp",
     "alt": "Album Choque Los Cinco de Moniketa",
     "width": 1600,
-    "height": 1429
+    "height": 900
   },
   "challenge": "Moniketa necesitaba acercar su universo musical a familias y centros educativos. La comunicación debía transmitir el carácter creativo de su propuesta y mostrar el valor de sus contenidos y recursos.\n\nEl desafío era conectar con las personas que eligen experiencias musicales para las infancias.",
   "process": [
@@ -37,5 +37,10 @@
   "gallery": [],
   "order": 4,
   "draft": false,
-  "home": false
+  "home": false,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
 }
