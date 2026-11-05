@@ -43,7 +43,7 @@
   "gallery": [],
   "order": 3,
   "draft": false,
-  "home": false,
+  "home": true,
   "links": {
     "instagram": "",
     "tiktok": "",
