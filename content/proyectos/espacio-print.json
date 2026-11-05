@@ -10,10 +10,10 @@
     "Plan de redes"
   ],
   "cover": {
-    "src": "/media/proyectos/espacio-print-portada-daop0f.webp",
+    "src": "/media/proyectos/espacio-print-portada-joxsxt.webp",
     "alt": "Logo Espacio Print",
-    "width": 1080,
-    "height": 1080
+    "width": 1600,
+    "height": 900
   },
   "challenge": "Espacio Print necesitaba mostrar la variedad de soluciones que ofrece esta empresa familiar de Plottier. Su comunicación debía ayudar a particulares, marcas y organizadores de eventos a reconocer qué podían resolver con sus servicios.\n\nEl desafío era hacer visible esa diversidad a través de contenido claro y concreto.",
   "process": [
@@ -37,5 +37,10 @@
   "gallery": [],
   "order": 3,
   "draft": false,
-  "home": false
+  "home": false,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
 }
