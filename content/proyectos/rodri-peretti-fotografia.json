@@ -10,10 +10,10 @@
     "Plan de redes"
   ],
   "cover": {
-    "src": "/media/proyectos/rodri-peretti-fotografia-portada-sb18wj.webp",
+    "src": "/media/proyectos/rodri-peretti-fotografia-portada-lzpvup.webp",
     "alt": "Logotipo de Rodri Peretti",
     "width": 1600,
-    "height": 1600
+    "height": 900
   },
   "challenge": "Rodri necesitaba que su comunicación digital transmitiera la sensibilidad que caracteriza a sus fotografías. Sus redes debían ayudar a conocer su mirada y el valor de las historias que retrata.\n\nEl desafío era comunicar la experiencia de trabajar con él y la importancia de conservar esos momentos.",
   "process": [
@@ -37,5 +37,10 @@
   "gallery": [],
   "order": 8,
   "draft": false,
-  "home": true
+  "home": true,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
 }
