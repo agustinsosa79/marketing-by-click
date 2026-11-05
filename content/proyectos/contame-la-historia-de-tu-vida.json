@@ -10,10 +10,10 @@
     "Plan de redes"
   ],
   "cover": {
-    "src": "/media/proyectos/contame-la-historia-de-tu-vida-portada-xk4q9i.webp",
+    "src": "/media/proyectos/contame-la-historia-de-tu-vida-portada-w3ruvf.webp",
     "alt": "Cuaderno autoguiado de Contame La Historia de tu Vida",
-    "width": 1363,
-    "height": 1814
+    "width": 1600,
+    "height": 900
   },
   "challenge": "La marca necesitaba presentar su cuaderno autoguiado y comunicar el valor emocional de completarlo. Era importante conectar el producto con las historias, los recuerdos y las experiencias que invita a compartir.\n\nEl desafío era despertar interés desde una narrativa humana y cercana.",
   "process": [
@@ -37,5 +37,10 @@
   "gallery": [],
   "order": 2,
   "draft": false,
-  "home": true
+  "home": true,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
 }
