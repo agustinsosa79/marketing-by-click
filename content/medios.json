@@ -1,17 +1,17 @@
 {
   "values": {
+    "hero.photo": {
+      "src": "/media/sitio/hero-photo-1cb6cd.webp",
+      "alt": "Ian, fundador de Clic Studio",
+      "width": 1086,
+      "height": 1448,
+      "srcSm": "/media/sitio/hero-photo-1cb6cd-sm.webp"
+    },
     "blog.author": {
       "src": "/media/founder-ian-sm.webp",
       "alt": "Ian, fundador de Clic Studio",
       "width": 600,
       "height": 800
-    },
-    "hero.photo": {
-      "src": "/media/sitio/hero-photo-e75359.webp",
-      "alt": "Ian, fundador de Clic Studio",
-      "width": 853,
-      "height": 1844,
-      "srcSm": "/media/sitio/hero-photo-e75359-sm.webp"
     }
   }
 }
