@@ -4,6 +4,15 @@
       "name": "Jael Queipo",
       "role": "Influencer",
       "text": "El servicio de asesorías me ayudó a enfocarme con claridad en mi proyecto. Gracias al acompañamiento personalizado pude avanzar hacia mis objetivos con una estrategia más clara.",
+      "photo": {
+        "src": "/media/testimonios/testimonio-jael-queipo-xaogpz.webp",
+        "alt": "Jael Queipo"
+      }
+    },
+    {
+      "name": "Ohana",
+      "role": "Residencia Universitaria",
+      "text": "Llenamos mas de 15 lugares en nuestro alojamiento gracias a contenido orgánico y campañas Meta Ads",
       "photo": null
     }
   ]
