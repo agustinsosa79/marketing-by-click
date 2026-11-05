@@ -10,10 +10,10 @@
     "Plan de redes"
   ],
   "cover": {
-    "src": "/media/proyectos/ohana-residencia-universitaria-portada-p3nla9.webp",
+    "src": "/media/proyectos/ohana-residencia-universitaria-portada-f3ozor.webp",
     "alt": "Habitación de Ohana",
-    "width": 1284,
-    "height": 1704
+    "width": 1600,
+    "height": 900
   },
   "challenge": "Ohana necesitaba llegar a estudiantes que buscaban dónde vivir en Buenos Aires y comunicar su propuesta de alojamiento. Era necesario mostrar la residencia y facilitar el paso del interés a la consulta.\n\nEl objetivo era acompañar la captación de residentes y cubrir los lugares disponibles.",
   "process": [
@@ -37,5 +37,10 @@
   "gallery": [],
   "order": 7,
   "draft": false,
-  "home": true
+  "home": true,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
 }
