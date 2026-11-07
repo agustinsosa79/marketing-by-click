@@ -2,19 +2,19 @@
   "values": {
     "asesoria.text": "Potenciá tu negocio con sesiones 1:1 semanales, asesoría estratégica y gestión de campañas de Meta Ads. Tomá mejores decisiones, optimizá tu inversión y hacé crecer tu marca con objetivos más claros y acciones concretas.",
     "planes.inicial.features": [
-      "Contenido orgánico, sin anuncios",
+      "Principalmente orgánico, 1 campaña de Meta ADS*",
       "Hasta 2 canales",
-      "6 posteos, 8 historias y 2 reels al mes"
+      "4 posteos, 8 historias y 2 videos al mes"
     ],
     "planes.plus.features": [
-      "Contenido + 2 campañas de Meta Ads*",
+      "Hasta 2 campañas de Meta Ads*",
       "Hasta 3 canales",
-      "8 posteos, 12 historias y 4 reels al mes"
+      "8 posteos, 12 historias y 4 videos al mes"
     ],
     "planes.premium.features": [
       "Hasta 5 campañas de Meta Ads simultáneas*",
       "Todas las redes necesarias",
-      "8 posteos, 12 historias y 8 reels al mes"
+      "8 posteos, 12 historias y 8 videos al mes"
     ],
     "diagnostico.q1.o1": "Solo una campaña",
     "diagnostico.q2.o1": "Hasta dos",
