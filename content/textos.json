@@ -15,6 +15,10 @@
       "Hasta 5 campañas de Meta Ads simultáneas*",
       "Todas las redes necesarias",
       "8 posteos, 12 historias y 8 reels al mes"
-    ]
+    ],
+    "diagnostico.q1.o1": "Solo una campaña",
+    "diagnostico.q2.o1": "Hasta dos",
+    "diagnostico.q2.o2": "Hasta tres",
+    "diagnostico.q3": "¿Te sirven llamadas 1:1?"
   }
 }
