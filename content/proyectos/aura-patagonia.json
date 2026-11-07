@@ -1,0 +1,46 @@
+{
+  "slug": "aura-patagonia",
+  "brand": "Aura Patagonia",
+  "title": "Transformamos la esencia de la Patagonia en una comunicación visual y de contenido con identidad propia.",
+  "summary": "Acompañamos a Aura Patagonia en la comunicación de su marca de indumentaria, creando contenido que conecta sus colecciones con los paisajes y la identidad de la Comarca Andina.",
+  "sector": "Moda e indumentaria",
+  "location": "Patagonia Argentina · Comarca Andina",
+  "year": "2026",
+  "services": [
+    "Plan de redes"
+  ],
+  "cover": {
+    "src": "/media/proyectos/aura-patagonia-portada-yuu0km.webp",
+    "alt": "Logo de Aura Patagonia",
+    "width": 1600,
+    "height": 900
+  },
+  "challenge": "Aura Patagonia es una marca de indumentaria que encuentra su inspiración en el territorio, la naturaleza y la identidad de la Comarca Andina.\n\nEl desafío era trasladar ese universo a su comunicación digital, logrando que cada publicación transmitiera algo más que las prendas: una historia, una inspiración y una forma de conectar con el paisaje.",
+  "process": [
+    {
+      "title": "Entender la identidad de la marca",
+      "text": "Partimos del universo de Aura Patagonia: sus inspiraciones, su vínculo con la Comarca Andina y los elementos que hacen reconocible su propuesta.\n\nEl objetivo fue construir una comunicación coherente con esa identidad, sin perder la cercanía ni la autenticidad de la marca.",
+      "image": null
+    },
+    {
+      "title": "Desarrollar contenido con una narrativa propia",
+      "text": "Trabajamos en la comunicación de sus colecciones, conectando las prendas con las historias y los paisajes que las inspiran.\n\nEn la colección Los Ríos, por ejemplo, el agua, las formas fluidas, las texturas y los colores del entorno se convirtieron en elementos centrales del relato.",
+      "image": null
+    },
+    {
+      "title": "Conectar producto, estética y territorio",
+      "text": "Buscamos que el contenido no se limitara a mostrar indumentaria, sino que también transmitiera el universo de la marca.\n\nCada pieza de comunicación fue una oportunidad para reforzar su personalidad y construir una conexión más significativa con su comunidad.",
+      "image": null
+    }
+  ],
+  "result": "Un trabajo de comunicación que permitió expresar el universo de Aura Patagonia a través de sus colecciones y contenidos digitales.\n\nMás allá de mostrar productos, buscamos darles contexto, contar qué los inspira y fortalecer una identidad vinculada con el territorio.\n\nPorque creemos que una marca no se construye solamente desde lo que vende, sino también desde lo que tiene para contar.",
+  "gallery": [],
+  "order": 16,
+  "draft": false,
+  "home": false,
+  "links": {
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
+}
