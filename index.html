@@ -56,6 +56,43 @@
         if (r && r.origin === location.origin && r.pathname !== location.pathname && (!n || n.type === 'navigate')) document.documentElement.setAttribute('data-from-site', '')
       } catch (e) {}
     </script>
+
+    <!-- Google Analytics 4 (G-108LVVWJY1) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-108LVVWJY1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-108LVVWJY1');
+    </script>
+
+    <!-- Meta Pixel Code (1452870216810607) -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window,document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1452870216810607');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1452870216810607&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
+
+    <!-- Clic en cualquier botón de WhatsApp = contacto (Meta: Contact · GA4: generate_lead). No cuenta "Compartir por WhatsApp" del blog. -->
+    <script>
+      document.addEventListener('click', function (e) {
+        var a = e.target && e.target.closest && e.target.closest('a[href]')
+        if (!a) return
+        var href = a.getAttribute('href') || ''
+        if (!/wa\.me\/(\d|message\/)/.test(href)) return
+        try { fbq('track', 'Contact') } catch (err) {}
+        try { gtag('event', 'generate_lead', { method: 'whatsapp', link_text: (a.textContent || '').trim().slice(0, 100), page_path: location.pathname }) } catch (err) {}
+      }, true)
+    </script>
   </head>
   <body>
     <div id="root"></div>
